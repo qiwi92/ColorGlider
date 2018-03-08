@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+
 namespace Assets
 {
     public class Glider : MonoBehaviour
@@ -13,8 +14,8 @@ namespace Assets
         public ParticleSystem EngineParticleSystem;
         public ParticleSystem EngineDustParticleSystem;
 
-        public ParticleSystem SwitchParticleSystem;
-        public ParticleSystem SwitchParticleSystemBlured;
+       
+
 
         private Vector3 _mousePosition;
         public float moveSpeed = 0.01f;
@@ -26,12 +27,12 @@ namespace Assets
 
         private void Update()
         {
-            if (Input.GetMouseButton(0))
-            {
-                _mousePosition = Input.mousePosition;
-                _mousePosition = Camera.main.ScreenToWorldPoint(_mousePosition);
-                transform.position = Vector2.Lerp(Vector3.right* transform.position.x + Vector3.down*Height, Vector3.right * _mousePosition.x, moveSpeed);
-            }
+            //if (Input.GetMouseButton(0))
+            //{
+            //    _mousePosition = Input.mousePosition;
+            //    _mousePosition = Camera.main.ScreenToWorldPoint(_mousePosition);
+            //    transform.position = Vector2.Lerp(Vector3.right* transform.position.x + Vector3.down*Height, Vector3.right * _mousePosition.x, moveSpeed);
+            //}
 
             if (this.IsAlive == false)
             {
@@ -46,8 +47,30 @@ namespace Assets
             EngineParticleSystem.startColor = color;
             EngineDustParticleSystem.startColor = color;
 
-            SwitchParticleSystem.startColor = color;
-            SwitchParticleSystemBlured.startColor = color;
-        }     
+        }
+
+        public void Move(float speed, float maxWidth, Direction direction)
+        {
+            Direction curentDirection;
+
+            if (this.transform.position.x > 0)
+            {
+                curentDirection = Direction.Right;
+            }
+            else
+            {
+                curentDirection = Direction.Left;
+            }
+
+            if (direction != curentDirection)
+            {
+                transform.position += speed * Vector3.right * ((float)direction) * Time.deltaTime;
+            }
+            else if (Mathf.Abs(this.transform.position.x) < maxWidth)
+            {
+                transform.position += speed * Vector3.right * ((float)direction) * Time.deltaTime;
+            }
+
+        }
     }
 }

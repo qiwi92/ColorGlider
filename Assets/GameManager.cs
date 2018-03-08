@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets
 {
@@ -9,6 +10,13 @@ namespace Assets
         public Glider Glider;
         private Collisions _collisions;
         public ScoreView ScoreView;
+
+
+        public float GliderMoveSpeed;
+        public float MaxGliderRange;
+
+        public ButtonPressed LeftButtonPressed;
+        public ButtonPressed RighButtonPressed;
 
         void Start ()
         {
@@ -25,6 +33,9 @@ namespace Assets
 
 
             ScoreView.Collisions = _collisions;
+
+            RighButtonPressed.Action = () => MoveGlider(Direction.Right);
+            LeftButtonPressed.Action = () => MoveGlider(Direction.Left);
         }
 
         void Update()
@@ -60,13 +71,14 @@ namespace Assets
 
             emitParams.position = Vector3.up*4.2f;
             emitParams.applyShapeToPosition = true;
-            
-
-            Glider.SwitchParticleSystem.Emit(emitParams,20);
-            Glider.SwitchParticleSystemBlured.Emit(30);
             ScoreView.SetColor(color);
         }
 
-       
+        private void MoveGlider(Direction direction)
+        {
+            Glider.Move(GliderMoveSpeed, MaxGliderRange,direction);
+        }
+
+        
     }
 }
