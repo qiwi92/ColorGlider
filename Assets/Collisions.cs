@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-
-namespace Assets
+﻿namespace Assets
 {
     public class Collisions
     {
