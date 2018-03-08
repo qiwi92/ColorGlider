@@ -52,13 +52,10 @@ namespace Assets
         }
 	
 
-        void Update ()
-        {
-            SetPos();
-        }
+  
 
 
-        private void SetPos()
+        public void Move()
         {
             foreach (var circle in Circles)
             {
@@ -80,6 +77,32 @@ namespace Assets
                 }
 
                 circle.GameObject.transform.position += circle.Speed * Time.deltaTime * Vector3.down;
+            }
+        }
+
+
+        public void Explode()
+        {
+            foreach (var circle in Circles)
+            {
+                if (!circle.Alive)
+                {
+                    _emitParams.position = circle.GameObject.transform.position;
+                    ParticleSystem.startColor = ColorPalette.Colors[circle.Id];
+
+                    ParticleSystem.Emit(_emitParams, 10);
+                }
+            }
+        }
+
+
+
+
+        public void ResetAllPositions()
+        {
+            foreach (var circle in Circles)
+            {
+                ResetCircle(circle);
             }
         }
 

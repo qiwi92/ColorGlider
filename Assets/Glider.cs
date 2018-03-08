@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using DG.Tweening;
+using UnityEngine;
 
 
 namespace Assets
@@ -14,31 +15,14 @@ namespace Assets
         public ParticleSystem EngineParticleSystem;
         public ParticleSystem EngineDustParticleSystem;
 
-       
-
-
-        private Vector3 _mousePosition;
-        public float moveSpeed = 0.01f;
-
-        public void SetUp(Color color)
+        public void ResetPositionSmooth()
         {
-            IsAlive = true;
+            this.transform.DOMove(Vector3.down * Height, 0.7f);
         }
 
-        private void Update()
+        public void ResetPosition()
         {
-            //if (Input.GetMouseButton(0))
-            //{
-            //    _mousePosition = Input.mousePosition;
-            //    _mousePosition = Camera.main.ScreenToWorldPoint(_mousePosition);
-            //    transform.position = Vector2.Lerp(Vector3.right* transform.position.x + Vector3.down*Height, Vector3.right * _mousePosition.x, moveSpeed);
-            //}
-
-            if (this.IsAlive == false)
-            {
-                this.transform.position = Vector3.down * Height;
-                IsAlive = true;
-            }
+            this.transform.position = Vector3.down * Height;
         }
 
         public void SetColor(Color color)
@@ -46,7 +30,6 @@ namespace Assets
             SpriteRenderer.color = color;
             EngineParticleSystem.startColor = color;
             EngineDustParticleSystem.startColor = color;
-
         }
 
         public void Move(float speed, float maxWidth, Direction direction)
