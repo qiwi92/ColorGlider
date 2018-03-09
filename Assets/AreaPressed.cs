@@ -14,7 +14,6 @@ namespace Assets
             if (_ispressed)
             {
                 Action();
-                Debug.Log("Pressed");
             }             
         }
         

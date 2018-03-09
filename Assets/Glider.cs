@@ -52,8 +52,7 @@ namespace Assets
             else if (Mathf.Abs(this.transform.position.x) < maxWidth)
             {
                 transform.position += speed * Vector3.right * ((float)direction) * Time.deltaTime;
-            }
-
-        }
+            }                     
+        }           
     }
 }

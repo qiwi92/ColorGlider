@@ -43,8 +43,6 @@ namespace Assets
             _gameIsRunning = false;
             CirclesView.ColorPalette = ColorPalette;
             CirclesView.SetUp();
-            
-            
 
             _collisions = new Collisions();
             _collisions.Circles = CirclesView.Circles;
@@ -67,6 +65,8 @@ namespace Assets
             GameStateText.text = "New Game";
         }
 
+
+
         void Update()
         {
 
@@ -80,7 +80,8 @@ namespace Assets
                 CirclesView.Move();
                 SwitchColors();
             }
-            if(!Glider.IsAlive && _gameIsRunning)
+
+            if (!Glider.IsAlive && _gameIsRunning)
             {
                 CirclesView.Explode();
                 CirclesView.ResetAllPositions();
@@ -91,7 +92,7 @@ namespace Assets
             }
 
 
-            
+
             if (_gameIsRunning)
             {
                 _deathSound = true;
@@ -106,7 +107,7 @@ namespace Assets
                 PlayButton.transform.DOLocalMove(Vector3.zero, 0.2f);
                 PanelImage.DOFade(0.8f, 0.2f);
                 MainTheme.Stop();
-                
+
 
                 if (_deathSound)
                 {
@@ -114,8 +115,12 @@ namespace Assets
                     DeathTheme.Play();
                     _deathSound = false;
                 }
-                
+
             }
+
+
+
+       
         }
 
         private void StartGame()
@@ -128,6 +133,7 @@ namespace Assets
                 MainTheme.Play();
                 DeathTheme.Stop();
                 StartGameSound.Play();
+                SetColors();
             }
             
         }
@@ -141,6 +147,12 @@ namespace Assets
             emitParams.position = Vector3.up*4.2f;
             emitParams.applyShapeToPosition = true;
             ScoreView.SetColor(color);
+
+            foreach (var scoreCircle in ScoreView.IndicatorImages)
+            {
+                scoreCircle.SetColor(color);
+                StartCoroutine(scoreCircle.Empty());
+            }
         }
 
         private void MoveGlider(Direction direction)

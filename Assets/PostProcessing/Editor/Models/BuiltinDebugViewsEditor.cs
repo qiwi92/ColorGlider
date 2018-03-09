@@ -61,7 +61,7 @@ namespace UnityEditor.PostProcessing
             {
                 EditorGUILayout.HelpBox("Switch to play mode to see motion vectors.", MessageType.Info);
 
-                EditorGUILayout.LabelField("Source Image", EditorStyles.boldLabel);
+                EditorGUILayout.LabelField("Source ScoreImage", EditorStyles.boldLabel);
                 EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(m_MotionVectors.sourceOpacity, EditorGUIHelper.GetContent("Opacity"));
                 EditorGUI.indentLevel--;
