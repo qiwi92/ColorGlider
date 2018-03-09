@@ -26,6 +26,8 @@ namespace Assets
                 var circlePos = circle.GameObject.transform.position;
                 var distanceSquared = (circlePos.x - gliderPos.x)* (circlePos.x - gliderPos.x) + (circlePos.y - gliderPos.y) * (circlePos.y - gliderPos.y);
 
+                circle.SetFill(Glider.Id);
+
                 if (distanceSquared < Glider.CollisionDistance)
                 {
                     circle.Alive = false;

@@ -18,12 +18,13 @@ namespace Assets
         public float GliderMoveSpeed;
         public float MaxGliderRange;
 
-        public ButtonPressed LeftButtonPressed;
-        public ButtonPressed RighButtonPressed;
+        public AreaPressed LeftAreaPressed;
+        public AreaPressed RighAreaPressed;
 
         public Button PlayButton;
         public Image PanelImage;
-        public RectTransform GameOverRectTransform;
+        public RectTransform GameStateRectTransform;
+        public Text GameStateText;
 
         public AudioSource MainTheme;
         public AudioSource DeathTheme;
@@ -57,12 +58,13 @@ namespace Assets
             CirclesView.Score = _score;
             ScoreView.Score = _score;
 
-            RighButtonPressed.Action = () => MoveGlider(Direction.Right);
-            LeftButtonPressed.Action = () => MoveGlider(Direction.Left);
+            RighAreaPressed.Action = () => MoveGlider(Direction.Right);
+            LeftAreaPressed.Action = () => MoveGlider(Direction.Left);
 
             PlayButton.onClick.AddListener(StartGame);
 
             _collisions.CollectSound = CollectSound;
+            GameStateText.text = "New Game";
         }
 
         void Update()
@@ -93,17 +95,18 @@ namespace Assets
             if (_gameIsRunning)
             {
                 _deathSound = true;
-
-                GameOverRectTransform.DOLocalMove(Vector3.up * 2000, 0.5f);
+                GameStateText.text = "Game Over";
+                GameStateRectTransform.DOLocalMove(Vector3.up * 2000, 0.5f);
                 PlayButton.transform.DOLocalMove(Vector3.down * 2000, 0.5f);
                 PanelImage.DOFade(0, 0.2f);
             }
             else
             {
-                GameOverRectTransform.DOLocalMove(Vector3.up * 200, 0.5f);
+                GameStateRectTransform.DOLocalMove(Vector3.up * 200, 0.5f);
                 PlayButton.transform.DOLocalMove(Vector3.zero, 0.2f);
                 PanelImage.DOFade(0.8f, 0.2f);
                 MainTheme.Stop();
+                
 
                 if (_deathSound)
                 {
@@ -113,11 +116,6 @@ namespace Assets
                 }
                 
             }
-
-
-            
-
-
         }
 
         private void StartGame()
@@ -132,13 +130,6 @@ namespace Assets
                 StartGameSound.Play();
             }
             
-        }
-
-        private IEnumerator GameOver()
-        {
-            PlayButton.transform.DOLocalMove(Vector3.zero, 0.2f);
-            yield return new WaitForSeconds(0.2f);
-
         }
 
         private void SetColors()
