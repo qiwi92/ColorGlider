@@ -4506,7 +4506,7 @@ ParticleSystemRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
   - {fileID: 2100000, guid: 224da06affff5484ebfca0d9eca812b1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -4605,7 +4605,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 63883524
+  randomSeed: -647663770
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -5373,7 +5373,7 @@ ParticleSystem:
         m_RotationOrder: 4
     separateAxes: 0
   RotationModule:
-    enabled: 1
+    enabled: 0
     x:
       serializedVersion: 2
       minMaxState: 3
@@ -8360,7 +8360,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -920671664
+  randomSeed: 524820290
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -12486,7 +12486,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -12541,7 +12541,7 @@ AudioSource:
   m_PlayOnAwake: 0
   m_Volume: 0.489
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
