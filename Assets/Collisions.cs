@@ -1,4 +1,6 @@
-﻿namespace Assets
+﻿using UnityEngine;
+
+namespace Assets
 {
     public class Collisions
     {
@@ -7,6 +9,7 @@
         public Glider Glider;
         private int _collisionCounter;
         public bool SwitchColor;
+        public AudioSource CollectSound;
 
         public Collisions()
         {
@@ -42,6 +45,7 @@
                     else
                     {
                         _collisionCounter += 1;
+                        CollectSound.Play();
 
                         if (_collisionCounter > 2)
                         {

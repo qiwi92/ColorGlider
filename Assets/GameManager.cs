@@ -25,12 +25,21 @@ namespace Assets
         public Image PanelImage;
         public RectTransform GameOverRectTransform;
 
+        public AudioSource MainTheme;
+        public AudioSource DeathTheme;
+        public AudioSource CollectSound;
+        public AudioSource DeathSound;
+        public AudioSource StartGameSound;
+
+
 
         private bool _gameIsRunning;
 
+        private bool _deathSound = true;
+
         void Start ()
         {
-            _gameIsRunning = true;
+            _gameIsRunning = false;
             CirclesView.ColorPalette = ColorPalette;
             CirclesView.SetUp();
             
@@ -52,6 +61,8 @@ namespace Assets
             LeftButtonPressed.Action = () => MoveGlider(Direction.Left);
 
             PlayButton.onClick.AddListener(StartGame);
+
+            _collisions.CollectSound = CollectSound;
         }
 
         void Update()
@@ -77,8 +88,12 @@ namespace Assets
                 Glider.ResetPositionSmooth();
             }
 
+
+            
             if (_gameIsRunning)
             {
+                _deathSound = true;
+
                 GameOverRectTransform.DOLocalMove(Vector3.up * 2000, 0.5f);
                 PlayButton.transform.DOLocalMove(Vector3.down * 2000, 0.5f);
                 PanelImage.DOFade(0, 0.2f);
@@ -88,6 +103,15 @@ namespace Assets
                 GameOverRectTransform.DOLocalMove(Vector3.up * 200, 0.5f);
                 PlayButton.transform.DOLocalMove(Vector3.zero, 0.2f);
                 PanelImage.DOFade(0.8f, 0.2f);
+                MainTheme.Stop();
+
+                if (_deathSound)
+                {
+                    DeathSound.Play();
+                    DeathTheme.Play();
+                    _deathSound = false;
+                }
+                
             }
 
 
@@ -103,6 +127,9 @@ namespace Assets
                 _gameIsRunning = true;
                 Glider.IsAlive = true;
                 _score = 0;
+                MainTheme.Play();
+                DeathTheme.Stop();
+                StartGameSound.Play();
             }
             
         }
