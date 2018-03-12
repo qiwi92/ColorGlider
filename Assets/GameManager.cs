@@ -22,6 +22,8 @@ namespace Assets
 
         public RectTransform LeftAreaTransform;
         public RectTransform RightAreaTransform;
+        public Image RightAreaImage;
+        public Image LeftAreaImage;
 
         public RectTransform MainCanvasTransform;
 
@@ -156,6 +158,9 @@ namespace Assets
             emitParams.position = Vector3.up*4.2f;
             emitParams.applyShapeToPosition = true;
             ScoreView.SetColor(color);
+
+            LeftAreaImage.color = color;
+            RightAreaImage.color = color;
 
             foreach (var scoreCircle in ScoreView.IndicatorImages)
             {
