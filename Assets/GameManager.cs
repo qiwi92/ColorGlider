@@ -16,10 +16,14 @@ namespace Assets
 
 
         public float GliderMoveSpeed;
-        public float MaxGliderRange;
 
         public AreaPressed LeftAreaPressed;
         public AreaPressed RighAreaPressed;
+
+        public RectTransform LeftAreaTransform;
+        public RectTransform RightAreaTransform;
+
+        public RectTransform MainCanvasTransform;
 
         public Button PlayButton;
         public Image PanelImage;
@@ -32,6 +36,8 @@ namespace Assets
         public AudioSource DeathSound;
         public AudioSource StartGameSound;
 
+        private float _screenWidth;
+
 
 
         private bool _gameIsRunning;
@@ -42,7 +48,11 @@ namespace Assets
         {
             _gameIsRunning = false;
             CirclesView.ColorPalette = ColorPalette;
-            CirclesView.SetUp();
+
+            //float height = Camera.main.orthographicSize;
+            _screenWidth = Camera.main.orthographicSize * Camera.main.aspect;
+
+            CirclesView.SetUp(_screenWidth);
 
             _collisions = new Collisions();
             _collisions.Circles = CirclesView.Circles;
@@ -59,7 +69,7 @@ namespace Assets
             RighAreaPressed.Action = () => MoveGlider(Direction.Right);
             LeftAreaPressed.Action = () => MoveGlider(Direction.Left);
 
-            PlayButton.onClick.AddListener(StartGame);
+            //PlayButton.onClick.AddListener(StartGame);
 
             _collisions.CollectSound = CollectSound;
             GameStateText.text = "New Game";
@@ -116,11 +126,9 @@ namespace Assets
                     _deathSound = false;
                 }
 
+                TwoFingersConfirmation();
+
             }
-
-
-
-       
         }
 
         private void StartGame()
@@ -134,6 +142,7 @@ namespace Assets
                 DeathTheme.Stop();
                 StartGameSound.Play();
                 SetColors();
+                MoveStartPanels();
             }
             
         }
@@ -157,7 +166,10 @@ namespace Assets
 
         private void MoveGlider(Direction direction)
         {
-            Glider.Move(GliderMoveSpeed, MaxGliderRange,direction);
+            if (_gameIsRunning)
+            {
+                Glider.Move(GliderMoveSpeed, _screenWidth, direction);
+            }        
         }
 
         private void SwitchColors()
@@ -181,5 +193,47 @@ namespace Assets
                 _collisions.SwitchColor = false;
             }
         }
+
+
+        private void TwoFingersConfirmation()
+        {
+            var canvasWidth = MainCanvasTransform.sizeDelta.x;
+
+            if (LeftAreaPressed.IsPressed())
+            {
+                LeftAreaTransform.transform.DOLocalMoveX(-canvasWidth*3.0f/4.0f, 0.4f);
+            }
+            else
+            {
+                LeftAreaTransform.transform.DOLocalMoveX(-canvasWidth/4, 0.4f);
+            }
+            
+            if (RighAreaPressed.IsPressed())
+            {
+                RightAreaTransform.transform.DOLocalMoveX(canvasWidth * 3.0f / 4.0f, 0.4f);
+            }
+            else
+            {
+                RightAreaTransform.transform.DOLocalMoveX(canvasWidth / 4, 0.4f);
+            }
+
+            if (LeftAreaPressed.IsPressed() && RighAreaPressed.IsPressed())
+            {
+                StartGame();
+            }
+
+            if (Input.GetKeyDown("space"))
+            {
+                StartGame();
+            }
+        }
+
+        private void MoveStartPanels()
+        {
+            var canvasWidth = MainCanvasTransform.sizeDelta.x;
+            LeftAreaTransform.transform.DOLocalMoveX(-canvasWidth * 3.0f / 4.0f, 0.4f);
+            RightAreaTransform.transform.DOLocalMoveX(canvasWidth * 3.0f / 4.0f, 0.4f);
+        }
+      
     }
 }

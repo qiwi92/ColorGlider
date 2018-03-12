@@ -7,11 +7,11 @@ namespace Assets
     public class AreaPressed : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         public Action Action;
-        private bool _ispressed = false;
+        private bool _isPressed = false;
 
         void Update()
         {
-            if (_ispressed)
+            if (_isPressed)
             {
                 Action();
             }             
@@ -19,12 +19,17 @@ namespace Assets
         
         public void OnPointerDown(PointerEventData eventData)
         {
-            _ispressed = true;
+            _isPressed = true;
         }
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            _ispressed = false;
+            _isPressed = false;
+        }
+
+        public bool IsPressed()
+        {
+            return _isPressed;
         }
 
     }

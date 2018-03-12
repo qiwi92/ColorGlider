@@ -7,7 +7,7 @@ namespace Assets
     {
         [HideInInspector] public ColorPalette ColorPalette;
 
-        [Range(1, 10)] public float Width;
+        private float _width;
         
         public float Height;
 
@@ -26,8 +26,12 @@ namespace Assets
         private int _collisionCounter = 0;
         private int _colorCounter = 0;
 
-        public void SetUp()
+       
+
+
+        public void SetUp(float width)
         {
+            _width = width;
             _emitParams  = new ParticleSystem.EmitParams();
 
             _emitParams.applyShapeToPosition = true;
@@ -36,7 +40,7 @@ namespace Assets
 
             for (int i = 0; i < CircleAmount; i++)
             {
-                var randomX = Random.Range(-Width, Width);
+                var randomX = Random.Range(-_width, _width);
                 var randomY = Random.Range(0, 2);
 
                 var randomPos = new Vector3(randomX, Height + randomY, 0);
@@ -50,10 +54,6 @@ namespace Assets
                 Circles[i] = newCircle;
             }
         }
-	
-
-  
-
 
         public void Move()
         {
@@ -80,7 +80,6 @@ namespace Assets
             }
         }
 
-
         public void Explode()
         {
             foreach (var circle in Circles)
@@ -95,9 +94,6 @@ namespace Assets
             }
         }
 
-
-
-
         public void ResetAllPositions()
         {
             foreach (var circle in Circles)
@@ -106,10 +102,9 @@ namespace Assets
             }
         }
 
-
         private void ResetCircle(Circle circle)
         {
-            var randomX = Random.Range(-Width, Width);
+            var randomX = Random.Range(-_width, _width);
             var randomY = Random.Range(0, Height);
 
             circle.GameObject.transform.position = new Vector3(randomX, Height + randomY, 0);
