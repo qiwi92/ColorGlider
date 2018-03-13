@@ -8,7 +8,7 @@ namespace Assets
     {
         public GameObject GameObject;
         [Range(0.1f,1)] public float CollisionDistance;
-        [Range(1, 10)] public float Height;
+        private readonly float _height = 2.80f;
         [HideInInspector] public int Id;
         [HideInInspector] public bool IsAlive;
         public SpriteRenderer SpriteRenderer;
@@ -17,12 +17,12 @@ namespace Assets
 
         public void ResetPositionSmooth()
         {
-            this.transform.DOMove(Vector3.down * Height, 0.7f);
+            this.transform.DOMove(Vector3.down * _height, 0.7f);
         }
 
         public void ResetPosition()
         {
-            this.transform.position = Vector3.down * Height;
+            this.transform.position = Vector3.down * _height;
         }
 
         public void SetColor(Color color)

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.VR.WSA.Persistence;
 using Random = UnityEngine.Random;
 
 namespace Assets
@@ -43,6 +45,9 @@ namespace Assets
         public Image UnlockProgressImageLeft;
         public Image UnlockProgressFill;
         public Image UnlockProgressFillTriangle;
+        public Image RightTutorialArrow;
+        public Image LeftTutorialArrow;
+        public Text TutorialText;
 
         public Transform TutoralTexTransform;
 
@@ -57,6 +62,7 @@ namespace Assets
         {
             LoadValues();
             HighScore.text = "Highscore: " + _highScore;
+            TutorialText.text = Phrases.GetTutorialPhrase();
             _state = GameState.Init;
             CirclesView.ColorPalette = ColorPalette;
 
@@ -126,9 +132,6 @@ namespace Assets
             if (TwoFingersConfirmation())
             {
                 DeathTheme.Stop();
-                CirclesView.SetSpeed(_score);
-                CirclesView.ResetAllPositions();
-
                 _state = GameState.Starting;
             }
         }
@@ -139,6 +142,7 @@ namespace Assets
 
             ScoreView.UpdateHUD(_score);
             CirclesView.SetSpeed(_score);
+            CirclesView.ResetAllPositions();
             
             Glider.IsAlive = true;
             
@@ -160,7 +164,9 @@ namespace Assets
             _collisions.CheckCollision();
 
             var curentScore = _collisions.NumberOfCollisions;
-            
+
+            MoveWithArrows();
+
             if (curentScore != _score && curentScore != 0)
             {
                 _score = _collisions.NumberOfCollisions;
@@ -180,7 +186,6 @@ namespace Assets
         private void HandleDyingState()
         {
             CirclesView.Explode();
-            CirclesView.ResetAllPositions();
             Glider.ResetPositionSmooth();
 
             GameStateRectTransform.DOLocalMove(Vector3.up * 200, 0.5f);
@@ -197,8 +202,15 @@ namespace Assets
             {
                 _highScore = _score;
                 SaveValues();
+
+                TutorialText.text = Phrases.GetHighScorePhrase();
+            }
+            else
+            {
+                TutorialText.text = Phrases.GetRandomPhrase();
             }
 
+            
             HighScore.text = "Best: " + _highScore;
 
             _state = GameState.Dead;
@@ -268,10 +280,11 @@ namespace Assets
             var canvasWidth = MainCanvasTransform.sizeDelta.x;
             var counter = 0;
 
-            if (LeftAreaPressed.IsPressed() || Input.GetKey(KeyCode.O))
+            if (LeftAreaPressed.IsPressed() || Input.GetKey(KeyCode.LeftArrow))
             {
                 LeftAreaTransform.transform.DOLocalMoveX(-canvasWidth*3.0f/4.0f, 0.4f);
                 UnlockProgressImageLeft.DOFillAmount(0.5f, 0.5f).SetEase(Ease.OutExpo);
+                LeftTutorialArrow.DOFade(0, 0.4f).SetEase(Ease.OutExpo);
                 counter++;
             }
 
@@ -279,42 +292,50 @@ namespace Assets
             {
                 LeftAreaTransform.transform.DOLocalMoveX(-canvasWidth/4, 0.4f);
                 UnlockProgressImageLeft.DOFillAmount(0, 0.5f).SetEase(Ease.OutExpo);
+                LeftTutorialArrow.DOFade(1, 0.4f).SetEase(Ease.OutExpo);
             }
             
-            if (RighAreaPressed.IsPressed())
+            if (RighAreaPressed.IsPressed() || Input.GetKey(KeyCode.RightArrow))
             {
                 RightAreaTransform.transform.DOLocalMoveX(canvasWidth * 3.0f / 4.0f, 0.4f);
                 UnlockProgressImageRight.DOFillAmount(0.5f, 0.5f).SetEase(Ease.OutExpo);
+                RightTutorialArrow.DOFade(0, 0.4f).SetEase(Ease.OutExpo);
                 counter++;
             }
             else
             {
                 RightAreaTransform.transform.DOLocalMoveX(canvasWidth / 4, 0.4f);
                 UnlockProgressImageRight.DOFillAmount(0, 0.5f).SetEase(Ease.OutExpo);
+                RightTutorialArrow.DOFade(1, 0.4f).SetEase(Ease.OutExpo);
             }
 
             if (counter == 0)
             {
+                GameStateText.text = "Game Over";
+                HighScore.DOFade(1, 0.4f);
                 UnlockProgressFill.DOFade(0, 0.4f);
                 UnlockProgressFillTriangle.DOFade(0, 0.4f);
+                TutorialText.DOFade(1, 0.2f);
             }
             else if (counter == 1)
             {
+                GameStateText.text = "New Game";
+                HighScore.DOFade(0, 0.4f);
                 UnlockProgressFill.DOColor(Color.white, 0.4f);
                 UnlockProgressFillTriangle.DOFade(1, 0.4f);
-
+                TutorialText.DOFade(1, 0.2f);
             }
-            else
+            else if (counter == 2)
             {
+                GameStateText.text = "Start";
+                HighScore.DOFade(0, 0.4f);
                 UnlockProgressFill.DOColor(_color, 0.4f);
                 UnlockProgressFillTriangle.DOFade(1, 0.4f);
-            }
+                TutorialText.DOFade(0, 0.2f);
 
-            if ((LeftAreaPressed.IsPressed() || Input.GetKey(KeyCode.O)) && RighAreaPressed.IsPressed())
-            {
                 _currentPressedTime += Time.deltaTime;
             }
-            else
+            if (counter != 2)
             {
                 _currentPressedTime = 0f;
             }
@@ -322,11 +343,6 @@ namespace Assets
             if (_currentPressedTime > 0.35f)
             {
                 _currentPressedTime = 0f;
-                return true;
-            }
-
-            if (Input.GetKeyDown("space"))
-            {
                 return true;
             }
 
@@ -350,5 +366,19 @@ namespace Assets
         {
             PlayerPrefs.SetInt("HighScore",_highScore);
         }
+
+        private void MoveWithArrows()
+        {
+            if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                MoveGlider(Direction.Left);
+            }
+            if (Input.GetKey(KeyCode.RightArrow))
+            {
+                MoveGlider(Direction.Right);
+            }
+        }
+
+        
     }
 }

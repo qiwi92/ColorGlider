@@ -90,7 +90,7 @@ namespace Assets
                 }
             }
         }
-
+         
         public void ResetAllPositions()
         {
             foreach (var circle in Circles)
@@ -102,7 +102,7 @@ namespace Assets
         private void ResetCircle(Circle circle)
         {
             var randomX = Random.Range(-_width, _width);
-            var randomY = Random.Range(0, Height);
+            var randomY = Random.Range(0, 2*Height);
 
             circle.transform.position = new Vector3(randomX, Height + randomY, 0);
             circle.Speed = _speed;
