@@ -50,6 +50,7 @@ namespace Assets
 
         private GameState _state;
         private int _highScore;
+        private float _currentPressedTime;
 
         void Awake ()
         {
@@ -309,8 +310,18 @@ namespace Assets
 
             if (LeftAreaPressed.IsPressed() && RighAreaPressed.IsPressed())
             {
+                _currentPressedTime += Time.deltaTime;
                 UnlockProgressFill.DOFade(0, 0.4f);
                 UnlockProgressFillTriangle.DOFade(0, 0.4f);
+            }
+            else
+            {
+                _currentPressedTime = 0f;
+            }
+
+            if (_currentPressedTime > 0.4f)
+            {
+                _currentPressedTime = 0f;
                 return true;
             }
 
