@@ -465,7 +465,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ColorPalette: {fileID: 0}
   Height: 6
-  Score: 0
   CirclePrefab: {fileID: 114570418036775226, guid: f7aedca1ea0ff364aa388cf67cf5af6d,
     type: 2}
   CircleAmount: 9
@@ -4942,7 +4941,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -647663770
+  randomSeed: -266187930
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -8199,7 +8198,6 @@ MonoBehaviour:
   Text: {fileID: 995750212}
   ScoreImage: {fileID: 698169369}
   ScoreImageHang: {fileID: 1718602694}
-  Score: 0
   IndicatorImages:
   - {fileID: 708107776}
   - {fileID: 403813377}
@@ -8243,9 +8241,9 @@ AudioSource:
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
+  BypassEffects: 1
+  BypassListenerEffects: 1
+  BypassReverbZones: 1
   rolloffCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -8287,7 +8285,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -12378,9 +12376,9 @@ AudioSource:
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
+  BypassEffects: 1
+  BypassListenerEffects: 1
+  BypassReverbZones: 1
   rolloffCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -12807,7 +12805,6 @@ MonoBehaviour:
   RightAreaImage: {fileID: 1991002635}
   LeftAreaImage: {fileID: 310400212}
   MainCanvasTransform: {fileID: 156962633}
-  PlayButton: {fileID: 2001666350}
   PanelImage: {fileID: 681416218}
   GameStateRectTransform: {fileID: 1189900314}
   GameStateText: {fileID: 1189900315}
@@ -12869,7 +12866,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 57d040dce32ba6d469e49d6919fe73d4, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 38d488534cbaca04981b443f362515a0, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.693
   m_Pitch: 1
@@ -12883,9 +12880,9 @@ AudioSource:
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
+  BypassEffects: 1
+  BypassListenerEffects: 1
+  BypassReverbZones: 1
   rolloffCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -13060,9 +13057,9 @@ AudioSource:
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
+  BypassEffects: 1
+  BypassListenerEffects: 1
+  BypassReverbZones: 1
   rolloffCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -13215,9 +13212,9 @@ AudioSource:
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
+  BypassEffects: 1
+  BypassListenerEffects: 1
+  BypassReverbZones: 1
   rolloffCustomCurve:
     serializedVersion: 2
     m_Curve:

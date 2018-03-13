@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 4003615232494364}
   - component: {fileID: 212951054379606874}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -85,7 +85,6 @@ MonoBehaviour:
   Id: 0
   Alive: 0
   Speed: 0
-  GameObject: {fileID: 1374601753207050}
   OuterCircleSpriteRenderer: {fileID: 212780319485434844}
   FillSpriteRenderer: {fileID: 212951054379606874}
 --- !u!212 &212780319485434844

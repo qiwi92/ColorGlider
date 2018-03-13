@@ -19,11 +19,11 @@ namespace Assets
 
         public void CheckCollision()
         {
-            var gliderPos = Glider.GameObject.transform.position;
+            var gliderPos = Glider.transform.position;
 
             foreach (var circle in Circles)
             {
-                var circlePos = circle.GameObject.transform.position;
+                var circlePos = circle.transform.position;
                 var distanceSquared = (circlePos.x - gliderPos.x)* (circlePos.x - gliderPos.x) + (circlePos.y - gliderPos.y) * (circlePos.y - gliderPos.y);
 
                 circle.SetFill(Glider.Id);

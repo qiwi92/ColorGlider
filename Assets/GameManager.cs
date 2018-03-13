@@ -1,7 +1,8 @@
-﻿using System.Collections;
+﻿using System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 namespace Assets
 {
@@ -27,7 +28,6 @@ namespace Assets
 
         public RectTransform MainCanvasTransform;
 
-        public Button PlayButton;
         public Image PanelImage;
         public RectTransform GameStateRectTransform;
         public Text GameStateText;
@@ -40,18 +40,13 @@ namespace Assets
 
         private float _screenWidth;
 
+        private GameState _state;
 
-
-        private bool _gameIsRunning;
-
-        private bool _deathSound = true;
-
-        void Start ()
+        void Awake ()
         {
-            _gameIsRunning = false;
+            _state = GameState.Init;
             CirclesView.ColorPalette = ColorPalette;
 
-            //float height = Camera.main.orthographicSize;
             _screenWidth = Camera.main.orthographicSize * Camera.main.aspect;
 
             CirclesView.SetUp(_screenWidth);
@@ -59,94 +54,140 @@ namespace Assets
             _collisions = new Collisions();
             _collisions.Circles = CirclesView.Circles;
             _collisions.Glider = Glider;
-
-            Glider.IsAlive = true;
-            Glider.ResetPosition();
-            SetColors();
-
-            _score = 0;
-            CirclesView.Score = _score;
-            ScoreView.Score = _score;
-
+               
             RighAreaPressed.Action = () => MoveGlider(Direction.Right);
             LeftAreaPressed.Action = () => MoveGlider(Direction.Left);
 
-            //PlayButton.onClick.AddListener(StartGame);
-
             _collisions.CollectSound = CollectSound;
-            GameStateText.text = "New Game";
+        
+            Setup();
         }
 
-
-
-        void Update()
+        private void Setup()
         {
+            _score = 0;
 
-            _collisions.CheckCollision();
+            GameStateText.text = "New Game";
 
-            if (Glider.IsAlive && _gameIsRunning)
+            Glider.IsAlive = false;
+            Glider.ResetPosition();
+            SetColors();
+            DeathTheme.Play();
+        }
+
+        private enum GameState
+        {
+            Init,
+            Starting,
+            Playing,
+            Dying,
+            Dead
+        }
+
+        private void Update()
+        {
+            switch (_state)
             {
-                _score = _collisions.NumberOfCollisions;
-                ScoreView.Score = _score;
-                CirclesView.Score = _score;
-                CirclesView.Move();
-                SwitchColors();
+                case GameState.Init:
+                    HandleInitState();
+                    break;
+                case GameState.Starting:
+                    HandleStartingState();
+                    break;
+                case GameState.Playing:
+                    HandlePlayingState();
+                    break;
+                case GameState.Dying:
+                    HandleDyingState();
+                    break;
+                case GameState.Dead:
+                    HandleDeadState();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
+        }
 
-            if (!Glider.IsAlive && _gameIsRunning)
+        private void HandleInitState()
+        {
+            if (TwoFingersConfirmation())
             {
-                CirclesView.Explode();
+                DeathTheme.Stop();
+                CirclesView.SetSpeed(_score);
                 CirclesView.ResetAllPositions();
 
-                _gameIsRunning = false;
-
-                Glider.ResetPositionSmooth();
-            }
-
-
-
-            if (_gameIsRunning)
-            {
-                _deathSound = true;
-                GameStateText.text = "Game Over";
-                GameStateRectTransform.DOLocalMove(Vector3.up * 2000, 0.5f);
-                PlayButton.transform.DOLocalMove(Vector3.down * 2000, 0.5f);
-                PanelImage.DOFade(0, 0.2f);
-            }
-            else
-            {
-                GameStateRectTransform.DOLocalMove(Vector3.up * 200, 0.5f);
-                PlayButton.transform.DOLocalMove(Vector3.zero, 0.2f);
-                PanelImage.DOFade(0.8f, 0.2f);
-                MainTheme.Stop();
-
-
-                if (_deathSound)
-                {
-                    DeathSound.Play();
-                    DeathTheme.Play();
-                    _deathSound = false;
-                }
-
-                TwoFingersConfirmation();
-
+                _state = GameState.Starting;
             }
         }
 
-        private void StartGame()
+        private void HandleStartingState()
         {
-            if (!_gameIsRunning)
-            {
-                _gameIsRunning = true;
-                Glider.IsAlive = true;
-                _score = 0;
-                MainTheme.Play();
-                DeathTheme.Stop();
-                StartGameSound.Play();
-                SetColors();
-                MoveStartPanels();
-            }
+            _score = 0;
+
+            CirclesView.SetSpeed(_score);
+            ScoreView.UpdateHUD(_score);
+
+            Glider.IsAlive = true;
             
+            MainTheme.Play();
+            
+            StartGameSound.Play();
+            SetColors();
+            MoveStartPanels();
+
+            GameStateRectTransform.DOLocalMove(Vector3.up * 2000, 0.5f);
+            PanelImage.DOFade(0, 0.2f);
+            
+            _state = GameState.Playing;
+        }
+
+        private void HandlePlayingState()
+        {
+            _collisions.CheckCollision();
+
+            var curentScore = _collisions.NumberOfCollisions;
+            
+            if (curentScore != _score)
+            {
+                _score = _collisions.NumberOfCollisions;
+                ScoreView.UpdateHUD(_score);
+                CirclesView.SetSpeed(_score);
+            }
+
+            CirclesView.Move();
+            SwitchColors();
+
+            if (!Glider.IsAlive)
+            {
+                _state = GameState.Dying;
+            }
+        }
+
+        private void HandleDyingState()
+        {
+            CirclesView.Explode();
+            CirclesView.ResetAllPositions();
+            Glider.ResetPositionSmooth();
+
+            GameStateRectTransform.DOLocalMove(Vector3.up * 200, 0.5f);
+            PanelImage.DOFade(0.8f, 0.2f);
+
+            GameStateText.text = "Game Over";
+
+            MainTheme.Stop();
+            DeathSound.Play();
+            DeathTheme.Play();
+
+            _state = GameState.Dead;
+        }
+
+        private void HandleDeadState()
+        {
+            if (TwoFingersConfirmation())
+            {
+                DeathTheme.Stop();
+                _state = GameState.Starting;
+            }         
         }
 
         private void SetColors()
@@ -171,10 +212,10 @@ namespace Assets
 
         private void MoveGlider(Direction direction)
         {
-            if (_gameIsRunning)
+            if (_state == GameState.Playing)
             {
                 Glider.Move(GliderMoveSpeed, _screenWidth, direction);
-            }        
+            }  
         }
 
         private void SwitchColors()
@@ -199,8 +240,7 @@ namespace Assets
             }
         }
 
-
-        private void TwoFingersConfirmation()
+        private bool TwoFingersConfirmation()
         {
             var canvasWidth = MainCanvasTransform.sizeDelta.x;
 
@@ -224,13 +264,15 @@ namespace Assets
 
             if (LeftAreaPressed.IsPressed() && RighAreaPressed.IsPressed())
             {
-                StartGame();
+                return true;
             }
 
             if (Input.GetKeyDown("space"))
             {
-                StartGame();
+                return true;
             }
+
+            return false;
         }
 
         private void MoveStartPanels()

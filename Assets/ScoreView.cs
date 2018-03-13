@@ -10,16 +10,17 @@ namespace Assets
         public Text Text;
         public Image ScoreImage;
         public Image ScoreImageHang;
-        public int Score;
+
+
 
         public ScoreCircleView[] IndicatorImages;
         
 
-        void Update ()
+        public void UpdateHUD (int score)
         {
-            Text.text = Score.ToString("0");
+            Text.text = score.ToString("0");
 
-            var indicatorIndex = Score % 3;
+            var indicatorIndex = score % 3;
             for (int i = 0; i < indicatorIndex; i++)
             {
                 IndicatorImages[i].Fill();

@@ -9,7 +9,6 @@ namespace Assets
         [HideInInspector] public bool Alive;
         [HideInInspector] public float Speed;
         
-        public GameObject GameObject;
         public SpriteRenderer OuterCircleSpriteRenderer;
         public SpriteRenderer FillSpriteRenderer;
 

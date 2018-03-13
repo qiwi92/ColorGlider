@@ -10,9 +10,6 @@ namespace Assets
         private float _width;
         
         public float Height;
-
-        [HideInInspector] public int Score;
-
         private float _speed;
 
         public Circle CirclePrefab;
@@ -46,7 +43,7 @@ namespace Assets
                 var randomPos = new Vector3(randomX, Height + randomY, 0);
                 var newCircle = Instantiate(CirclePrefab, randomPos, Quaternion.identity);
                 newCircle.Alive = true;
-                newCircle.Speed = SetSpeed();
+                newCircle.Speed = _speed;
 
                 newCircle.Id = (i + 1) % 3;
                 newCircle.SetColor(ColorPalette.Colors[newCircle.Id]);
@@ -59,14 +56,14 @@ namespace Assets
         {
             foreach (var circle in Circles)
             {
-                if (circle.GameObject.transform.position.y < -Height)
+                if (circle.transform.position.y < -Height)
                 {
                     ResetCircle(circle);
                 }
  
                 if (!circle.Alive)
                 {
-                    _emitParams.position = circle.GameObject.transform.position;
+                    _emitParams.position = circle.transform.position;
                     ParticleSystem.startColor = ColorPalette.Colors[circle.Id];
                     
                     ParticleSystem.Emit(_emitParams,10);
@@ -76,7 +73,7 @@ namespace Assets
                     
                 }
 
-                circle.GameObject.transform.position += circle.Speed * Time.deltaTime * Vector3.down;
+                circle.transform.position += circle.Speed * Time.deltaTime * Vector3.down;
             }
         }
 
@@ -86,7 +83,7 @@ namespace Assets
             {
                 if (!circle.Alive)
                 {
-                    _emitParams.position = circle.GameObject.transform.position;
+                    _emitParams.position = circle.transform.position;
                     ParticleSystem.startColor = ColorPalette.Colors[circle.Id];
 
                     ParticleSystem.Emit(_emitParams, 10);
@@ -107,13 +104,13 @@ namespace Assets
             var randomX = Random.Range(-_width, _width);
             var randomY = Random.Range(0, Height);
 
-            circle.GameObject.transform.position = new Vector3(randomX, Height + randomY, 0);
-            circle.Speed = SetSpeed();
+            circle.transform.position = new Vector3(randomX, Height + randomY, 0);
+            circle.Speed = _speed;
         }
 
-        private float SetSpeed()
+        public float SetSpeed(int score)
         {
-            var baseSpeed = 3 + 0.1f * Score;
+            var baseSpeed = 3 + 0.1f * score;
             return _speed = Random.Range(baseSpeed, baseSpeed * 1.3f);
         }
     }
