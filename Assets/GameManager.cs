@@ -51,6 +51,7 @@ namespace Assets
         private GameState _state;
         private int _highScore;
         private float _currentPressedTime;
+        private Color _color;
 
         void Awake ()
         {
@@ -214,20 +215,20 @@ namespace Assets
 
         private void SetColors()
         {
-            var color = ColorPalette.Colors[Glider.Id];
-            Glider.SetColor(color);
+            _color = ColorPalette.Colors[Glider.Id];
+            Glider.SetColor(_color);
             var emitParams = new ParticleSystem.EmitParams();
 
             emitParams.position = Vector3.up*4.2f;
             emitParams.applyShapeToPosition = true;
-            ScoreView.SetColor(color);
+            ScoreView.SetColor(_color);
 
-            LeftAreaImage.color = color;
-            RightAreaImage.color = color;
+            LeftAreaImage.color = _color;
+            RightAreaImage.color = _color;
 
             foreach (var scoreCircle in ScoreView.IndicatorImages)
             {
-                scoreCircle.SetColor(color);
+                scoreCircle.SetColor(_color);
                 StartCoroutine(scoreCircle.Empty());
             }
         }
@@ -267,29 +268,29 @@ namespace Assets
             var canvasWidth = MainCanvasTransform.sizeDelta.x;
             var counter = 0;
 
-            if (LeftAreaPressed.IsPressed())
+            if (LeftAreaPressed.IsPressed() || Input.GetKey(KeyCode.O))
             {
                 LeftAreaTransform.transform.DOLocalMoveX(-canvasWidth*3.0f/4.0f, 0.4f);
-                UnlockProgressImageLeft.DOFillAmount(0.5f, 0.5f);
+                UnlockProgressImageLeft.DOFillAmount(0.5f, 0.5f).SetEase(Ease.OutExpo);
                 counter++;
             }
 
             else
             {
                 LeftAreaTransform.transform.DOLocalMoveX(-canvasWidth/4, 0.4f);
-                UnlockProgressImageLeft.DOFillAmount(0, 0.5f);
+                UnlockProgressImageLeft.DOFillAmount(0, 0.5f).SetEase(Ease.OutExpo);
             }
             
             if (RighAreaPressed.IsPressed())
             {
                 RightAreaTransform.transform.DOLocalMoveX(canvasWidth * 3.0f / 4.0f, 0.4f);
-                UnlockProgressImageRight.DOFillAmount(0.5f, 0.5f);
+                UnlockProgressImageRight.DOFillAmount(0.5f, 0.5f).SetEase(Ease.OutExpo);
                 counter++;
             }
             else
             {
                 RightAreaTransform.transform.DOLocalMoveX(canvasWidth / 4, 0.4f);
-                UnlockProgressImageRight.DOFillAmount(0, 0.5f);
+                UnlockProgressImageRight.DOFillAmount(0, 0.5f).SetEase(Ease.OutExpo);
             }
 
             if (counter == 0)
@@ -299,27 +300,26 @@ namespace Assets
             }
             else if (counter == 1)
             {
-                UnlockProgressFill.DOFade(0.5f, 0.4f);
+                UnlockProgressFill.DOColor(Color.white, 0.4f);
                 UnlockProgressFillTriangle.DOFade(1, 0.4f);
+
             }
             else
             {
-                UnlockProgressFill.DOFade(1, 0.4f);
-                UnlockProgressFillTriangle.DOFade(0, 0.4f);
+                UnlockProgressFill.DOColor(_color, 0.4f);
+                UnlockProgressFillTriangle.DOFade(1, 0.4f);
             }
 
-            if (LeftAreaPressed.IsPressed() && RighAreaPressed.IsPressed())
+            if ((LeftAreaPressed.IsPressed() || Input.GetKey(KeyCode.O)) && RighAreaPressed.IsPressed())
             {
                 _currentPressedTime += Time.deltaTime;
-                UnlockProgressFill.DOFade(0, 0.4f);
-                UnlockProgressFillTriangle.DOFade(0, 0.4f);
             }
             else
             {
                 _currentPressedTime = 0f;
             }
 
-            if (_currentPressedTime > 0.4f)
+            if (_currentPressedTime > 0.35f)
             {
                 _currentPressedTime = 0f;
                 return true;
