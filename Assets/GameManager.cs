@@ -31,6 +31,7 @@ namespace Assets
         public Image PanelImage;
         public RectTransform GameStateRectTransform;
         public Text GameStateText;
+        public Text HighScore;
 
         public AudioSource MainTheme;
         public AudioSource DeathTheme;
@@ -38,12 +39,22 @@ namespace Assets
         public AudioSource DeathSound;
         public AudioSource StartGameSound;
 
+        public Image UnlockProgressImageRight;
+        public Image UnlockProgressImageLeft;
+        public Image UnlockProgressFill;
+        public Image UnlockProgressFillTriangle;
+
+        public Transform TutoralTexTransform;
+
         private float _screenWidth;
 
         private GameState _state;
+        private int _highScore;
 
         void Awake ()
         {
+            LoadValues();
+            HighScore.text = "Highscore: " + _highScore;
             _state = GameState.Init;
             CirclesView.ColorPalette = ColorPalette;
 
@@ -124,9 +135,9 @@ namespace Assets
         {
             _score = 0;
 
-            CirclesView.SetSpeed(_score);
             ScoreView.UpdateHUD(_score);
-
+            CirclesView.SetSpeed(_score);
+            
             Glider.IsAlive = true;
             
             MainTheme.Play();
@@ -136,6 +147,7 @@ namespace Assets
             MoveStartPanels();
 
             GameStateRectTransform.DOLocalMove(Vector3.up * 2000, 0.5f);
+            TutoralTexTransform.DOLocalMove(Vector3.down * 2000, 0.5f);
             PanelImage.DOFade(0, 0.2f);
             
             _state = GameState.Playing;
@@ -147,7 +159,7 @@ namespace Assets
 
             var curentScore = _collisions.NumberOfCollisions;
             
-            if (curentScore != _score)
+            if (curentScore != _score && curentScore != 0)
             {
                 _score = _collisions.NumberOfCollisions;
                 ScoreView.UpdateHUD(_score);
@@ -170,6 +182,7 @@ namespace Assets
             Glider.ResetPositionSmooth();
 
             GameStateRectTransform.DOLocalMove(Vector3.up * 200, 0.5f);
+            TutoralTexTransform.DOLocalMove(Vector3.down * 550, 0.5f);
             PanelImage.DOFade(0.8f, 0.2f);
 
             GameStateText.text = "Game Over";
@@ -177,6 +190,14 @@ namespace Assets
             MainTheme.Stop();
             DeathSound.Play();
             DeathTheme.Play();
+
+            if (_score > _highScore)
+            {
+                _highScore = _score;
+                SaveValues();
+            }
+
+            HighScore.text = "Best: " + _highScore;
 
             _state = GameState.Dead;
         }
@@ -243,27 +264,53 @@ namespace Assets
         private bool TwoFingersConfirmation()
         {
             var canvasWidth = MainCanvasTransform.sizeDelta.x;
+            var counter = 0;
 
             if (LeftAreaPressed.IsPressed())
             {
                 LeftAreaTransform.transform.DOLocalMoveX(-canvasWidth*3.0f/4.0f, 0.4f);
+                UnlockProgressImageLeft.DOFillAmount(0.5f, 0.5f);
+                counter++;
             }
+
             else
             {
                 LeftAreaTransform.transform.DOLocalMoveX(-canvasWidth/4, 0.4f);
+                UnlockProgressImageLeft.DOFillAmount(0, 0.5f);
             }
             
             if (RighAreaPressed.IsPressed())
             {
                 RightAreaTransform.transform.DOLocalMoveX(canvasWidth * 3.0f / 4.0f, 0.4f);
+                UnlockProgressImageRight.DOFillAmount(0.5f, 0.5f);
+                counter++;
             }
             else
             {
                 RightAreaTransform.transform.DOLocalMoveX(canvasWidth / 4, 0.4f);
+                UnlockProgressImageRight.DOFillAmount(0, 0.5f);
+            }
+
+            if (counter == 0)
+            {
+                UnlockProgressFill.DOFade(0, 0.4f);
+                UnlockProgressFillTriangle.DOFade(0, 0.4f);
+            }
+            else if (counter == 1)
+            {
+                UnlockProgressFill.DOFade(0.5f, 0.4f);
+                UnlockProgressFillTriangle.DOFade(1, 0.4f);
+            }
+            else
+            {
+                UnlockProgressFill.DOFade(1, 0.4f);
+                UnlockProgressFillTriangle.DOFade(0, 0.4f);
             }
 
             if (LeftAreaPressed.IsPressed() && RighAreaPressed.IsPressed())
             {
+                UnlockProgressFill.DOFade(0, 0.4f);
+                UnlockProgressFillTriangle.DOFade(0, 0.4f);
                 return true;
             }
 
@@ -281,6 +328,16 @@ namespace Assets
             LeftAreaTransform.transform.DOLocalMoveX(-canvasWidth * 3.0f / 4.0f, 0.4f);
             RightAreaTransform.transform.DOLocalMoveX(canvasWidth * 3.0f / 4.0f, 0.4f);
         }
-      
+
+
+        private void LoadValues()
+        {
+            _highScore = PlayerPrefs.GetInt("HighScore");
+        }
+
+        private void SaveValues()
+        {
+            PlayerPrefs.SetInt("HighScore",_highScore);
+        }
     }
 }
