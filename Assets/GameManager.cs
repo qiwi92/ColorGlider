@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.VR.WSA.Persistence;
 using Random = UnityEngine.Random;
 
 namespace Assets
@@ -40,6 +38,8 @@ namespace Assets
         public AudioSource CollectSound;
         public AudioSource DeathSound;
         public AudioSource StartGameSound;
+
+        public AudioSource[] CollectSounds;
 
         public Image UnlockProgressImageRight;
         public Image UnlockProgressImageLeft;
@@ -169,6 +169,8 @@ namespace Assets
 
             if (curentScore != _score && curentScore != 0)
             {
+                var index = _score % 3;
+                CollectSounds[index].Play();
                 _score = _collisions.NumberOfCollisions;
                 ScoreView.UpdateHUD(_score);
                 CirclesView.SetSpeed(_score);

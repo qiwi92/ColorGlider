@@ -47,7 +47,7 @@ namespace Assets
                     else
                     {
                         _collisionCounter += 1;
-                        CollectSound.Play();
+                        //CollectSound.Play();
 
                         if (_collisionCounter > 2)
                         {
