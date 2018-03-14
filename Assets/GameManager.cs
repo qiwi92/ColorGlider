@@ -76,9 +76,7 @@ namespace Assets
                
             RighAreaPressed.Action = () => MoveGlider(Direction.Right);
             LeftAreaPressed.Action = () => MoveGlider(Direction.Left);
-
-            _collisions.CollectSound = CollectSound;
-        
+            
             Setup();
         }
 
@@ -170,6 +168,7 @@ namespace Assets
             if (curentScore != _score && curentScore != 0)
             {
                 var index = _score % 3;
+                Debug.Log("Index: " + index);
                 CollectSounds[index].Play();
                 _score = _collisions.NumberOfCollisions;
                 ScoreView.UpdateHUD(_score);
