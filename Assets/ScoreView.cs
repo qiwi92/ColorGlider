@@ -10,6 +10,7 @@ namespace Assets
         public Text Text;
         public Image ScoreImage;
         public Image ScoreImageHang;
+        public Image EnergyImage;
 
 
 
@@ -30,10 +31,25 @@ namespace Assets
         public void SetColor(Color color)
         {
             ScoreImage.DOColor(color, 0.2f);
+            EnergyImage.DOColor(color, 0.2f);
             var colorAlpha = color;
             colorAlpha.a = 0.2f;
             ScoreImageHang.DOColor(colorAlpha, 0.2f);
-        } 
+            
+        }
+
+        public void SetEnergy(float enegry)
+        {
+            if (enegry < 20)
+            {
+                EnergyImage.DOFade(0.6f, 0.2f);
+            }
+            else
+            {
+                EnergyImage.DOFade(1, 0.2f);
+            }
+            EnergyImage.DOFillAmount(enegry / 100, 0.2f);
+        }
 
 
     }

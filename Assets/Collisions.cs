@@ -28,7 +28,7 @@ namespace Assets
 
                 circle.SetFill();
 
-                if (distanceSquared < Glider.CollisionDistance)
+                if (distanceSquared < Glider.CollisionDistance && Glider.HasHitBox)
                 {
                     circle.Alive = false;
                     NormalCollections += 1;

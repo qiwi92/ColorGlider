@@ -11,7 +11,11 @@ namespace Assets
         private readonly float _height = 2.80f;
         [HideInInspector] public int Id;
         [HideInInspector] public bool IsAlive;
-        public SpriteRenderer SpriteRenderer;
+        [HideInInspector] public float Energy = 100;
+        public bool HasHitBox;
+        public HitBoxState HitBox;
+        public SpriteRenderer GliderSpriteFilled;
+        public SpriteRenderer GliderSpriteOutline;
         public ParticleSystem EngineParticleSystem;
         public ParticleSystem EngineDustParticleSystem;
 
@@ -27,10 +31,70 @@ namespace Assets
 
         public void SetColor(Color color)
         {
-            SpriteRenderer.color = color;
+            GliderSpriteFilled.DOColor(color, 0.4f);
+            GliderSpriteOutline.DOColor(color, 0.4f);
+
             EngineParticleSystem.startColor = color;
             EngineDustParticleSystem.startColor = color;
         }
+
+        public enum HitBoxState
+        {
+            BecommingUntargetable,
+            Untargetable,
+            BecommingTargetable,
+            Targetable,
+        }
+
+        public void HandleBecommingUntargetable()
+        {
+            HasHitBox = false;
+
+            GliderSpriteFilled.DOFade(0, 0.2f);
+            EngineParticleSystem.Stop();
+            EngineDustParticleSystem.Stop();
+            
+
+            HitBox = HitBoxState.Untargetable;
+        }
+
+        public void HandleUntargetable()
+        {
+            if (Energy > 0)
+            {
+                Energy -= 1;
+            }
+
+            if (HasHitBox || Energy < 0.5f)
+            {
+                HandleBecommingTargetable();
+            }
+        }
+
+        public void HandleBecommingTargetable()
+        {
+            HasHitBox = true;
+
+            GliderSpriteFilled.DOFade(1, 0.2f);
+            EngineParticleSystem.Play();
+            EngineDustParticleSystem.Play();
+
+            HitBox = HitBoxState.Targetable;
+        }
+
+        public void HandleTargetable()
+        {
+            if (Energy < 100)
+            {
+                Energy += 0.2f;
+            }
+
+            if (!HasHitBox)
+            {
+                HandleBecommingUntargetable();
+            }
+        }
+
 
         public void Move(float speed, float maxWidth, Direction direction)
         {

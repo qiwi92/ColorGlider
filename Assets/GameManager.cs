@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 
 namespace Assets
 {
+    
     public class GameManager : MonoBehaviour
     {
         public ColorPalette ColorPalette;
@@ -54,8 +55,8 @@ namespace Assets
         private Color _color;
 
         public Sounds Sounds;
+        private float _timer;
 
-        
 
         void Awake ()
         {
@@ -145,7 +146,9 @@ namespace Assets
             CirclesView.ResetAllPositions();
             
             Glider.IsAlive = true;
-            
+            Glider.Energy = 100;
+            ScoreView.SetEnergy(Glider.Energy);
+
             Sounds.PlayMainTheme(true);
             Sounds.PlaySartGameSfx();
 
@@ -178,6 +181,42 @@ namespace Assets
                 CirclesView.SetParameters(_numberOfCollisions);
             }
 
+            if (TwoFingerPressed() && Glider.Energy > 20)
+            {
+                ScoreView.SetEnergy(Glider.Energy);
+                _timer += Time.deltaTime;
+                if (_timer > 0.05f)
+                {
+                    Glider.HasHitBox = false;
+                    _timer = 0;
+                }
+                
+            }
+            else if(!TwoFingerPressed())
+            {
+                _timer = 0;
+                Glider.HasHitBox = true;
+            }
+
+            ScoreView.SetEnergy(Glider.Energy);
+
+
+            switch (Glider.HitBox)
+            {
+                case Glider.HitBoxState.BecommingUntargetable:
+                    Glider.HandleBecommingUntargetable();
+                    break;
+                case Glider.HitBoxState.Untargetable:
+                    Glider.HandleUntargetable();
+                    break;
+                case Glider.HitBoxState.BecommingTargetable:
+                    Glider.HandleBecommingTargetable();
+                    break;
+                case Glider.HitBoxState.Targetable:
+                    Glider.HandleTargetable();
+                    break;
+            }
+
             CirclesView.Move();
             SwitchColors();
 
@@ -185,6 +224,8 @@ namespace Assets
             {
                 _state = GameState.Dying;
             }
+
+
         }
 
         private void HandleDyingState()
@@ -214,9 +255,8 @@ namespace Assets
                 TutorialText.text = Phrases.GetRandomPhrase();
             }
 
-            
             HighScore.text = "Best: " + _highScore;
-
+            
             _state = GameState.Dead;
         }
 
@@ -348,6 +388,18 @@ namespace Assets
             if (_currentPressedTime > 0.35f)
             {
                 _currentPressedTime = 0f;
+                return true;
+            }
+
+            return false;
+        }
+
+
+        private bool TwoFingerPressed()
+        {
+            if ((LeftAreaPressed.IsPressed() || Input.GetKey(KeyCode.LeftArrow)) &&
+                (RighAreaPressed.IsPressed() || Input.GetKey(KeyCode.RightArrow)))
+            {
                 return true;
             }
 
