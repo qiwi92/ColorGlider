@@ -33,13 +33,7 @@ namespace Assets
         public Text GameStateText;
         public Text HighScore;
 
-        public AudioSource MainTheme;
-        public AudioSource DeathTheme;
-        public AudioSource CollectSound;
-        public AudioSource DeathSound;
-        public AudioSource StartGameSound;
-
-        public AudioSource[] CollectSounds;
+ 
 
         public Image UnlockProgressImageRight;
         public Image UnlockProgressImageLeft;
@@ -57,6 +51,8 @@ namespace Assets
         private int _highScore;
         private float _currentPressedTime;
         private Color _color;
+
+        public Sounds Sounds;
 
         void Awake ()
         {
@@ -89,7 +85,8 @@ namespace Assets
             Glider.IsAlive = false;
             Glider.ResetPosition();
             SetColors();
-            DeathTheme.Play();
+
+            Sounds.PlayDeathTheme(true);
         }
 
         private enum GameState
@@ -129,7 +126,7 @@ namespace Assets
         {
             if (TwoFingersConfirmation())
             {
-                DeathTheme.Stop();
+                Sounds.PlayDeathTheme(false);
                 _state = GameState.Starting;
             }
         }
@@ -144,9 +141,9 @@ namespace Assets
             
             Glider.IsAlive = true;
             
-            MainTheme.Play();
-            
-            StartGameSound.Play();
+            Sounds.PlayMainTheme(true);
+            Sounds.PlaySartGameSfx();
+
             SetColors();
             MoveStartPanels();
 
@@ -169,7 +166,7 @@ namespace Assets
             {
                 var index = _score % 3;
                 Debug.Log("Index: " + index);
-                CollectSounds[index].Play();
+                Sounds.PlayCollectSfx(index);
                 _score = _collisions.NumberOfCollisions;
                 ScoreView.UpdateHUD(_score);
                 CirclesView.SetSpeed(_score);
@@ -195,9 +192,9 @@ namespace Assets
 
             GameStateText.text = "Game Over";
 
-            MainTheme.Stop();
-            DeathSound.Play();
-            DeathTheme.Play();
+            Sounds.PlayMainTheme(false);
+            Sounds.PlayDeathSfx();
+            Sounds.PlayDeathTheme(true);
 
             if (_score > _highScore)
             {
@@ -221,7 +218,7 @@ namespace Assets
         {
             if (TwoFingersConfirmation())
             {
-                DeathTheme.Stop();
+                Sounds.PlayDeathTheme(false);
                 _state = GameState.Starting;
             }         
         }

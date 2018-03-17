@@ -8,6 +8,7 @@ namespace Assets
         [HideInInspector] public int Id;
         [HideInInspector] public bool Alive;
         [HideInInspector] public float Speed;
+        [HideInInspector] public bool IsFilled;
         
         public SpriteRenderer OuterCircleSpriteRenderer;
         public SpriteRenderer FillSpriteRenderer;
