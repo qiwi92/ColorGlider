@@ -11,21 +11,20 @@ namespace Assets
         public Image CircleImage;
         public Image FillImage;
 
+   
         public void SetColor(Color color)
         {
             CircleImage.DOColor(color, 0.2f);
         }
 
-        public void Fill(Color color)
+        public void Fill()
         {
-            FillImage.DOColor(color, 0.2f);
+            FillImage.DOFade(1, 0.2f);
         }
 
-        public IEnumerator Empty()
+        public void Empty()
         {
-            yield return new WaitForSeconds(0.2f);
-            FillImage.DOFade(0, 0.2f);
-            
+            FillImage.DOFade(0, 0.2f);     
         }
     }
 }

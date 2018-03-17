@@ -10,14 +10,14 @@ namespace Assets
         private static string[] _phrases = new[]
         {
             "Place your thumbs here",
-            "Please try again",
-            "Oh I'm sorry! is it hard?",
-            "Try harder! You can do it!",
-            "Yeah, it lagged, totally!",
-            "Close enogh! Next Time",
-            "Impossible, game = bugged!",
-            "No! this is impossible!",
-            "Nice one ... not really xD",
+            //"Please try again",
+            //"Oh I'm sorry! is it hard?",
+            //"Try harder! You can do it!",
+            //"Yeah, it lagged, totally!",
+            //"Close enogh! Next Time",
+            //"Impossible, game = bugged!",
+            //"No! this is impossible!",
+            //"Nice one ... not really xD",
             "Oh WOW!  Highscore!"
         };
 

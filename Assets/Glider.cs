@@ -93,7 +93,6 @@ namespace Assets
 
         private void HandleBecommingTargetable()
         {
-            GliderSpriteFilled.DOFade(1, 0.2f);
             EngineParticleSystem.Play();
             EngineDustParticleSystem.Play();
 

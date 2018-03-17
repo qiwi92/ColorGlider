@@ -10,56 +10,96 @@ namespace Assets
         public Text Text;
         public Image ScoreImage;
         public Image ScoreImageHang;
-        public Image EnergyImage;
+        public Image EnergyImageLeft;
+        public Image EnergyImageRight;
 
 
 
         public ScoreCircleView[] IndicatorImages;
         
 
-        public void UpdateHUD (int score, int numberOfCollision, Color color)
+        public void SetScore (int score)
         {
             Text.text = score.ToString("0");
+        }
 
-            var indicatorIndex = numberOfCollision % 3;
-
-            for (int i = 0; i < indicatorIndex; i++)
+        public void SetCounterDots(int index, Color color)
+        {
+            if (index < 2)
             {
-                IndicatorImages[i].Fill(color);
+                IndicatorImages[index].FillImage.DOColor(color, 0.2f);
             }
-
-            for (int i = indicatorIndex; i < 3; i++)
+            else if (index == 2)
             {
-                StartCoroutine(IndicatorImages[i].Empty());
+                IndicatorImages[index].FillImage.DOColor(color, 0.2f).OnComplete(() =>
+                {
+                    for (int i = 0; i < 3; i++)
+                    {
+                        IndicatorImages[i].FillImage.DOFade(0, 0.2f);
+                    }
+                });
+            }
+        }
+
+        public void SetCounterDotsColor( Color color)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if (IndicatorImages[i].FillImage.color.a > 0.9f)
+                {
+                    IndicatorImages[i].FillImage.DOColor(color, 0.2f);
+                }
+            }
+        }
+
+
+        public void EmptyDots()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                IndicatorImages[i].FillImage.DOFade(0, 0.2f);
             }
         }
 
         public void SetColor(Color color)
         {
-            ScoreImage.DOColor(color, 0.2f);
-            EnergyImage.DOColor(color, 0.2f);
+            ScoreImage.DOColor(color, 0.4f);
+            EnergyImageLeft.DOColor(color, 0.4f);
+            EnergyImageRight.DOColor(color, 0.4f);
+
             var colorAlpha = color;
             colorAlpha.a = 0.2f;
-            ScoreImageHang.DOColor(colorAlpha, 0.2f);
+
+            ScoreImageHang.DOColor(colorAlpha, 0.4f);
 
             for (int i = 0; i < 3; i++)
             {
                 IndicatorImages[i].SetColor(color);
             }
-
         }
 
         public void SetEnergy(float enegry)
         {
+
             if (enegry < 20)
             {
-                EnergyImage.DOFade(0.6f, 0.2f);
+                var colorAlpha = EnergyImageLeft.color;
+                colorAlpha.a = 0.5f;
+
+                EnergyImageLeft.color = colorAlpha;
+                EnergyImageRight.color = colorAlpha;
             }
             else
             {
-                EnergyImage.DOFade(1, 0.2f);
+                var colorAlpha = EnergyImageLeft.color;
+                colorAlpha.a = 1;
+
+                EnergyImageLeft.color = colorAlpha;
+                EnergyImageRight.color = colorAlpha;
             }
-            EnergyImage.DOFillAmount(enegry / 100, 0.2f);
+
+            EnergyImageLeft.fillAmount = enegry / 100;
+            EnergyImageRight.fillAmount = enegry / 100;
         }
 
 

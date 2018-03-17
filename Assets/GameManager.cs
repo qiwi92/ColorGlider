@@ -141,13 +141,15 @@ namespace Assets
             _numberOfCollisions = 0;
             _score = 0;
 
-            ScoreView.UpdateHUD(_score,_numberOfCollisions,_color);
+            
             CirclesView.SetParameters(_numberOfCollisions);
             CirclesView.ResetAllPositions();
             
             Glider.IsAlive = true;
             Glider.Energy = 100;
             ScoreView.SetEnergy(Glider.Energy);
+            ScoreView.SetScore(_score);
+            ScoreView.EmptyDots();
 
             Sounds.PlayMainTheme(true);
             Sounds.PlaySartGameSfx();
@@ -172,13 +174,17 @@ namespace Assets
 
             if (curentCollisions != _numberOfCollisions && curentCollisions != 0)
             {
+                _score = _collisions.Score;
                 var index = _numberOfCollisions % 3;
-                Debug.Log("Index: " + index);
+                Debug.Log(index + " score " + _score);
+
+                ScoreView.SetScore(_score);
+                CirclesView.SetParameters(_numberOfCollisions);
+
                 Sounds.PlayCollectSfx(index);
                 _numberOfCollisions = _collisions.NormalCollections;
-                _score = _collisions.Score;
-                ScoreView.UpdateHUD(_score,_numberOfCollisions,_color);
-                CirclesView.SetParameters(_numberOfCollisions);
+                
+                ScoreView.SetCounterDots(index,_color);
             }
 
 
@@ -291,8 +297,7 @@ namespace Assets
         {
             Glider.SetColorOutline(color);
             ScoreView.SetColor(color);
-            
-            ScoreView.UpdateHUD(_score,_numberOfCollisions,color);
+            ScoreView.SetCounterDotsColor(color);
 
             foreach (var circle in CirclesView.Circles)
             {
@@ -302,9 +307,11 @@ namespace Assets
 
         private void ChangeToColorUndo()
         {
-            Glider.SetColor(ColorPalette.Colors[Glider.Id]);
-            ScoreView.SetColor(ColorPalette.Colors[Glider.Id]);
-            ScoreView.UpdateHUD(_score, _numberOfCollisions, _color);
+            var oldColor = ColorPalette.Colors[Glider.Id];
+
+            Glider.SetColor(oldColor);
+            ScoreView.SetColor(oldColor);
+            ScoreView.SetCounterDotsColor(oldColor);
 
             foreach (var circle in CirclesView.Circles)
             {
