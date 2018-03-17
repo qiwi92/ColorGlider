@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Assets
 {
-    public class Glider : MonoBehaviour
+    public partial class Glider : MonoBehaviour
     {
         public GameObject GameObject;
         [Range(0.1f,1)] public float CollisionDistance;
@@ -12,8 +12,9 @@ namespace Assets
         [HideInInspector] public int Id;
         [HideInInspector] public bool IsAlive;
         [HideInInspector] public float Energy = 100;
-        public bool HasHitBox;
-        public HitBoxState HitBox;
+        [HideInInspector] public bool HasHitBox;
+        public HitBoxState CurrentHitBoxState;
+    
         public SpriteRenderer GliderSpriteFilled;
         public SpriteRenderer GliderSpriteOutline;
         public ParticleSystem EngineParticleSystem;
@@ -36,62 +37,82 @@ namespace Assets
 
             EngineParticleSystem.startColor = color;
             EngineDustParticleSystem.startColor = color;
+
         }
 
-        public enum HitBoxState
+        public void SetColorOutline(Color color)
         {
-            BecommingUntargetable,
-            Untargetable,
-            BecommingTargetable,
-            Targetable,
+            GliderSpriteOutline.DOColor(color, 0.4f);
         }
 
-        public void HandleBecommingUntargetable()
+
+        public void SetGliderStates(bool input)
+        {
+            switch (CurrentHitBoxState)
+            {
+                case Glider.HitBoxState.BecommingUntargetable:
+                    HandleBecommingUntargetable();
+                    break;
+                case Glider.HitBoxState.Untargetable:
+                    HandleUntargetable(input);
+                    break;
+                case Glider.HitBoxState.BecommingTargetable:
+                    HandleBecommingTargetable();
+                    break;
+                case Glider.HitBoxState.Targetable:
+                    HandleTargetable(input);
+                    break;
+            }
+        }
+
+        private void HandleBecommingUntargetable()
+        {
+            GliderSpriteFilled.DOFade(0, 0.2f);
+
+            EngineParticleSystem.Stop();
+            EngineDustParticleSystem.Stop();
+
+
+            CurrentHitBoxState = HitBoxState.Untargetable;
+        }
+
+        private void HandleUntargetable(bool input)
         {
             HasHitBox = false;
 
-            GliderSpriteFilled.DOFade(0, 0.2f);
-            EngineParticleSystem.Stop();
-            EngineDustParticleSystem.Stop();
-            
-
-            HitBox = HitBoxState.Untargetable;
-        }
-
-        public void HandleUntargetable()
-        {
             if (Energy > 0)
             {
                 Energy -= 1;
             }
 
-            if (HasHitBox || Energy < 0.5f)
+            if (!input || Energy < 0.5f)
             {
-                HandleBecommingTargetable();
+                CurrentHitBoxState = HitBoxState.BecommingTargetable;
             }
         }
 
-        public void HandleBecommingTargetable()
+        private void HandleBecommingTargetable()
         {
-            HasHitBox = true;
-
             GliderSpriteFilled.DOFade(1, 0.2f);
             EngineParticleSystem.Play();
             EngineDustParticleSystem.Play();
 
-            HitBox = HitBoxState.Targetable;
+            CurrentHitBoxState = HitBoxState.Targetable;
+            
         }
 
-        public void HandleTargetable()
+        private void HandleTargetable(bool input)
         {
+            HasHitBox = true;
+
             if (Energy < 100)
             {
                 Energy += 0.2f;
             }
-
-            if (!HasHitBox)
+       
+            if (input && Energy > 20)
             {
-                HandleBecommingUntargetable();
+                CurrentHitBoxState = HitBoxState.BecommingUntargetable;
             }
         }
 

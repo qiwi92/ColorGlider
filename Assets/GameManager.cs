@@ -55,7 +55,7 @@ namespace Assets
         private Color _color;
 
         public Sounds Sounds;
-        private float _timer;
+        private Color _currentColor;
 
 
         void Awake ()
@@ -141,7 +141,7 @@ namespace Assets
             _numberOfCollisions = 0;
             _score = 0;
 
-            ScoreView.UpdateHUD(_score,_numberOfCollisions);
+            ScoreView.UpdateHUD(_score,_numberOfCollisions,_color);
             CirclesView.SetParameters(_numberOfCollisions);
             CirclesView.ResetAllPositions();
             
@@ -177,45 +177,24 @@ namespace Assets
                 Sounds.PlayCollectSfx(index);
                 _numberOfCollisions = _collisions.NormalCollections;
                 _score = _collisions.Score;
-                ScoreView.UpdateHUD(_score,_numberOfCollisions);
+                ScoreView.UpdateHUD(_score,_numberOfCollisions,_color);
                 CirclesView.SetParameters(_numberOfCollisions);
             }
 
-            if (TwoFingerPressed() && Glider.Energy > 20)
+
+
+            Glider.SetGliderStates(TwoFingerPressed());
+
+            if (Glider.CurrentHitBoxState == Glider.HitBoxState.BecommingUntargetable)
             {
-                ScoreView.SetEnergy(Glider.Energy);
-                _timer += Time.deltaTime;
-                if (_timer > 0.05f)
-                {
-                    Glider.HasHitBox = false;
-                    _timer = 0;
-                }
-                
+                ChangeToColor(ColorPalette.Untargetable);
             }
-            else if(!TwoFingerPressed())
+            else if(Glider.CurrentHitBoxState == Glider.HitBoxState.BecommingTargetable)
             {
-                _timer = 0;
-                Glider.HasHitBox = true;
+                ChangeToColorUndo();
             }
 
             ScoreView.SetEnergy(Glider.Energy);
-
-
-            switch (Glider.HitBox)
-            {
-                case Glider.HitBoxState.BecommingUntargetable:
-                    Glider.HandleBecommingUntargetable();
-                    break;
-                case Glider.HitBoxState.Untargetable:
-                    Glider.HandleUntargetable();
-                    break;
-                case Glider.HitBoxState.BecommingTargetable:
-                    Glider.HandleBecommingTargetable();
-                    break;
-                case Glider.HitBoxState.Targetable:
-                    Glider.HandleTargetable();
-                    break;
-            }
 
             CirclesView.Move();
             SwitchColors();
@@ -273,20 +252,10 @@ namespace Assets
         {
             _color = ColorPalette.Colors[Glider.Id];
             Glider.SetColor(_color);
-            var emitParams = new ParticleSystem.EmitParams();
-
-            emitParams.position = Vector3.up*4.2f;
-            emitParams.applyShapeToPosition = true;
             ScoreView.SetColor(_color);
 
             LeftAreaImage.color = _color;
             RightAreaImage.color = _color;
-
-            foreach (var scoreCircle in ScoreView.IndicatorImages)
-            {
-                scoreCircle.SetColor(_color);
-                StartCoroutine(scoreCircle.Empty());
-            }
         }
 
         private void MoveGlider(Direction direction)
@@ -314,10 +283,36 @@ namespace Assets
 
                 SetColors();
 
-
                 _collisions.SwitchColor = false;
             }
         }
+
+        private void ChangeToColor(Color color)
+        {
+            Glider.SetColorOutline(color);
+            ScoreView.SetColor(color);
+            
+            ScoreView.UpdateHUD(_score,_numberOfCollisions,color);
+
+            foreach (var circle in CirclesView.Circles)
+            {
+                circle.SetColor(color);
+            }
+        }
+
+        private void ChangeToColorUndo()
+        {
+            Glider.SetColor(ColorPalette.Colors[Glider.Id]);
+            ScoreView.SetColor(ColorPalette.Colors[Glider.Id]);
+            ScoreView.UpdateHUD(_score, _numberOfCollisions, _color);
+
+            foreach (var circle in CirclesView.Circles)
+            {
+                circle.SetColor(ColorPalette.Colors[circle.Id]);
+            }
+        }
+
+        
 
         private bool TwoFingersConfirmation()
         {

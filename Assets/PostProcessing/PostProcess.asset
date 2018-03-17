@@ -281,26 +281,26 @@ MonoBehaviour:
       lut: {fileID: 0}
       contribution: 1
   chromaticAberration:
-    m_Enabled: 0
+    m_Enabled: 1
     m_Settings:
       spectralTexture: {fileID: 0}
-      intensity: 0.351
+      intensity: 0.239
   grain:
     m_Enabled: 0
     m_Settings:
       colored: 0
-      intensity: 1
-      size: 3
-      luminanceContribution: 0
+      intensity: 0.196
+      size: 2.16
+      luminanceContribution: 0.513
   vignette:
     m_Enabled: 0
     m_Settings:
       mode: 0
       color: {r: 0, g: 0, b: 0, a: 1}
       center: {x: 0.5, y: 0.5}
-      intensity: 0.45
-      smoothness: 0.2
-      roundness: 1
+      intensity: 0.388
+      smoothness: 0.609
+      roundness: 0.946
       mask: {fileID: 0}
       opacity: 1
       rounded: 0

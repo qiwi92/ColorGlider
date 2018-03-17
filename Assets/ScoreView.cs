@@ -17,14 +17,20 @@ namespace Assets
         public ScoreCircleView[] IndicatorImages;
         
 
-        public void UpdateHUD (int score, int numberOfCollision)
+        public void UpdateHUD (int score, int numberOfCollision, Color color)
         {
             Text.text = score.ToString("0");
 
             var indicatorIndex = numberOfCollision % 3;
+
             for (int i = 0; i < indicatorIndex; i++)
             {
-                IndicatorImages[i].Fill();
+                IndicatorImages[i].Fill(color);
+            }
+
+            for (int i = indicatorIndex; i < 3; i++)
+            {
+                StartCoroutine(IndicatorImages[i].Empty());
             }
         }
 
@@ -35,7 +41,12 @@ namespace Assets
             var colorAlpha = color;
             colorAlpha.a = 0.2f;
             ScoreImageHang.DOColor(colorAlpha, 0.2f);
-            
+
+            for (int i = 0; i < 3; i++)
+            {
+                IndicatorImages[i].SetColor(color);
+            }
+
         }
 
         public void SetEnergy(float enegry)
@@ -52,5 +63,6 @@ namespace Assets
         }
 
 
+      
     }
 }

@@ -14,12 +14,11 @@ namespace Assets
         public void SetColor(Color color)
         {
             CircleImage.DOColor(color, 0.2f);
-            FillImage.DOColor(color, 0.2f);
         }
 
-        public void Fill()
+        public void Fill(Color color)
         {
-            FillImage.DOFade(1, 0.2f);
+            FillImage.DOColor(color, 0.2f);
         }
 
         public IEnumerator Empty()
