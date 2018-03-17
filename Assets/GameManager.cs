@@ -13,6 +13,7 @@ namespace Assets
         public Glider Glider;
         private Collisions _collisions;
         public ScoreView ScoreView;
+        private int _numberOfCollisions;
         private int _score;
 
 
@@ -54,6 +55,8 @@ namespace Assets
 
         public Sounds Sounds;
 
+        
+
         void Awake ()
         {
             LoadValues();
@@ -78,6 +81,7 @@ namespace Assets
 
         private void Setup()
         {
+            _numberOfCollisions = 0;
             _score = 0;
 
             GameStateText.text = "New Game";
@@ -133,10 +137,11 @@ namespace Assets
 
         private void HandleStartingState()
         {
+            _numberOfCollisions = 0;
             _score = 0;
 
-            ScoreView.UpdateHUD(_score);
-            CirclesView.SetSpeed(_score);
+            ScoreView.UpdateHUD(_score,_numberOfCollisions);
+            CirclesView.SetParameters(_numberOfCollisions);
             CirclesView.ResetAllPositions();
             
             Glider.IsAlive = true;
@@ -158,18 +163,19 @@ namespace Assets
         {
             _collisions.CheckCollision();
 
-            var curentScore = _collisions.NumberOfCollisions;
+            var curentCollisions = _collisions.NormalCollections;
 
             MoveWithArrows();
 
-            if (curentScore != _score && curentScore != 0)
+            if (curentCollisions != _numberOfCollisions && curentCollisions != 0)
             {
-                var index = _score % 3;
+                var index = _numberOfCollisions % 3;
                 Debug.Log("Index: " + index);
                 Sounds.PlayCollectSfx(index);
-                _score = _collisions.NumberOfCollisions;
-                ScoreView.UpdateHUD(_score);
-                CirclesView.SetSpeed(_score);
+                _numberOfCollisions = _collisions.NormalCollections;
+                _score = _collisions.Score;
+                ScoreView.UpdateHUD(_score,_numberOfCollisions);
+                CirclesView.SetParameters(_numberOfCollisions);
             }
 
             CirclesView.Move();
@@ -314,6 +320,7 @@ namespace Assets
                 UnlockProgressFill.DOFade(0, 0.4f);
                 UnlockProgressFillTriangle.DOFade(0, 0.4f);
                 TutorialText.DOFade(1, 0.2f);
+
             }
             else if (counter == 1)
             {
@@ -376,7 +383,5 @@ namespace Assets
                 MoveGlider(Direction.Right);
             }
         }
-
-        
     }
 }

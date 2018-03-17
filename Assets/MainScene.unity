@@ -155,9 +155,9 @@ MonoBehaviour:
   Death: {fileID: 8300000, guid: 39a590aa114a78846b632c15d1f68f3f, type: 3}
   StartGame: {fileID: 8300000, guid: e22cd4a36ad8f13409c965a2eb9f4d1f, type: 3}
   Collect:
-  - {fileID: 8300000, guid: 2cbdc23bb009ce74b829a37b412b2074, type: 3}
-  - {fileID: 8300000, guid: c35f65de461bc9847922cc01e21d2f25, type: 3}
-  - {fileID: 8300000, guid: acad35c39fc4d7347beb7236f3b8e265, type: 3}
+  - {fileID: 8300000, guid: 091cf924a5a31234488f88071521328b, type: 3}
+  - {fileID: 8300000, guid: f4c3112e192482541a61ad57fd8a2198, type: 3}
+  - {fileID: 8300000, guid: 85d8bf1d6cf30e84086001db7361b37a, type: 3}
   Music: {fileID: 1054560020}
   Sfx: {fileID: 209604339}
 --- !u!1 &75056613

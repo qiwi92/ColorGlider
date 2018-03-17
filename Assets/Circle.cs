@@ -8,7 +8,7 @@ namespace Assets
         [HideInInspector] public int Id;
         [HideInInspector] public bool Alive;
         [HideInInspector] public float Speed;
-        [HideInInspector] public bool IsFilled;
+        [HideInInspector] public int Value;
         
         public SpriteRenderer OuterCircleSpriteRenderer;
         public SpriteRenderer FillSpriteRenderer;
@@ -19,9 +19,9 @@ namespace Assets
             FillSpriteRenderer.color = color;
         }
 
-        public void SetFill(int id)
+        public void SetFill()
         {
-            if (id == Id)
+            if (Value >= 2)
             {
                 FillSpriteRenderer.DOFade(1, 0.4f);
             }
@@ -29,6 +29,19 @@ namespace Assets
             {
                 FillSpriteRenderer.DOFade(0, 0.6f);
             }
+        }
+
+        public void SetValue(int score)
+        {
+            if (score <= 9)
+            {
+                Value = 1;
+            }
+            else
+            {
+                var randomValue = Random.Range(1, 3);
+                Value = randomValue;
+            }         
         }
     }
 }

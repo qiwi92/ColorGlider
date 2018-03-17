@@ -16,11 +16,11 @@ namespace Assets
         public ScoreCircleView[] IndicatorImages;
         
 
-        public void UpdateHUD (int score)
+        public void UpdateHUD (int score, int numberOfCollision)
         {
             Text.text = score.ToString("0");
 
-            var indicatorIndex = score % 3;
+            var indicatorIndex = numberOfCollision % 3;
             for (int i = 0; i < indicatorIndex; i++)
             {
                 IndicatorImages[i].Fill();

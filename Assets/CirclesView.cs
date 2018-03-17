@@ -23,11 +23,12 @@ namespace Assets
         private int _collisionCounter = 0;
         private int _colorCounter = 0;
 
-       
+        private int _score;
 
 
         public void SetUp(float width)
         {
+            _score = 0;
             _width = width;
             _emitParams  = new ParticleSystem.EmitParams();
 
@@ -104,12 +105,17 @@ namespace Assets
             var randomX = Random.Range(-_width, _width);
             var randomY = Random.Range(0, 2*Height);
 
+            
+
             circle.transform.position = new Vector3(randomX, Height + randomY, 0);
             circle.Speed = _speed;
+            circle.SetValue(_score);
+
         }
 
-        public float SetSpeed(int score)
+        public float SetParameters(int score)
         {
+            _score = score;
             var baseSpeed = 3 + 0.1f * score;
             return _speed = Random.Range(baseSpeed, baseSpeed * 1.3f);
         }

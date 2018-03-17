@@ -5,6 +5,6 @@ namespace Assets
 {
     public class ColorPalette : MonoBehaviour
     {
-        public List<Color> Colors;
+        public Color[] Colors;
     }
 }
