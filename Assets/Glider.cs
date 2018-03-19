@@ -80,10 +80,7 @@ namespace Assets
         {
             HasHitBox = false;
 
-            if (Energy > 0)
-            {
-                Energy -= 1;
-            }
+            DepleteEnergy(1);
 
             if (!input || Energy < 0.5f)
             {
@@ -112,6 +109,14 @@ namespace Assets
             if (input && Energy > 20)
             {
                 CurrentHitBoxState = HitBoxState.BecommingUntargetable;
+            }
+        }
+
+        public void DepleteEnergy(int amount)
+        {
+            if (Energy > 0)
+            {
+                Energy -= amount;
             }
         }
 
