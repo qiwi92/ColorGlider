@@ -11,7 +11,6 @@ namespace Assets
         private readonly float _height = 2.80f;
         [HideInInspector] public int Id;
         [HideInInspector] public bool IsAlive;
-        [HideInInspector] public float Energy = 100;
         [HideInInspector] public bool HasHitBox;
         public HitBoxState CurrentHitBoxState;
     
@@ -46,24 +45,24 @@ namespace Assets
         }
 
 
-        public void SetGliderStates(bool input)
-        {
-            switch (CurrentHitBoxState)
-            {
-                case Glider.HitBoxState.BecommingUntargetable:
-                    HandleBecommingUntargetable();
-                    break;
-                case Glider.HitBoxState.Untargetable:
-                    HandleUntargetable(input);
-                    break;
-                case Glider.HitBoxState.BecommingTargetable:
-                    HandleBecommingTargetable();
-                    break;
-                case Glider.HitBoxState.Targetable:
-                    HandleTargetable(input);
-                    break;
-            }
-        }
+        //public void SetGliderStates(bool input)
+        //{
+        //    switch (CurrentHitBoxState)
+        //    {
+        //        case Glider.HitBoxState.BecommingUntargetable:
+        //            HandleBecommingUntargetable();
+        //            break;
+        //        case Glider.HitBoxState.Untargetable:
+        //            HandleUntargetable(input);
+        //            break;
+        //        case Glider.HitBoxState.BecommingTargetable:
+        //            HandleBecommingTargetable();
+        //            break;
+        //        case Glider.HitBoxState.Targetable:
+        //            HandleTargetable(input);
+        //            break;
+        //    }
+        //}
 
         private void HandleBecommingUntargetable()
         {
@@ -80,9 +79,7 @@ namespace Assets
         {
             HasHitBox = false;
 
-            DepleteEnergy(1);
-
-            if (!input || Energy < 0.5f)
+            if (!input)
             {
                 CurrentHitBoxState = HitBoxState.BecommingTargetable;
             }
@@ -101,22 +98,9 @@ namespace Assets
         {
             HasHitBox = true;
 
-            if (Energy < 100)
-            {
-                Energy += 0.2f;
-            }
-       
-            if (input && Energy > 20)
+            if (input)
             {
                 CurrentHitBoxState = HitBoxState.BecommingUntargetable;
-            }
-        }
-
-        public void DepleteEnergy(int amount)
-        {
-            if (Energy > 0)
-            {
-                Energy -= amount;
             }
         }
 

@@ -10,8 +10,7 @@ namespace Assets
         public Text Text;
         public Image ScoreImage;
         public Image ScoreImageHang;
-        public Image EnergyImageLeft;
-        public Image EnergyImageRight;
+
 
 
 
@@ -64,8 +63,6 @@ namespace Assets
         public void SetColor(Color color)
         {
             ScoreImage.DOColor(color, 0.4f);
-            EnergyImageLeft.DOColor(color, 0.4f);
-            EnergyImageRight.DOColor(color, 0.4f);
 
             var colorAlpha = color;
             colorAlpha.a = 0.2f;
@@ -78,29 +75,6 @@ namespace Assets
             }
         }
 
-        public void SetEnergy(float enegry)
-        {
-
-            if (enegry < 20)
-            {
-                var colorAlpha = EnergyImageLeft.color;
-                colorAlpha.a = 0.5f;
-
-                EnergyImageLeft.color = colorAlpha;
-                EnergyImageRight.color = colorAlpha;
-            }
-            else
-            {
-                var colorAlpha = EnergyImageLeft.color;
-                colorAlpha.a = 1;
-
-                EnergyImageLeft.color = colorAlpha;
-                EnergyImageRight.color = colorAlpha;
-            }
-
-            EnergyImageLeft.fillAmount = enegry / 100;
-            EnergyImageRight.fillAmount = enegry / 100;
-        }
 
 
       

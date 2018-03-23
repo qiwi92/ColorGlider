@@ -20,9 +20,6 @@ namespace Assets
 
         [HideInInspector] public Circle[] Circles;
 
-        private int _collisionCounter = 0;
-        private int _colorCounter = 0;
-
         private int _score;
 
 

@@ -74,8 +74,6 @@ namespace Assets
 
         private void HandleDraining()
         {
-            Glider.DepleteEnergy(1);
-
             if (Glider.HasHitBox)
             {
                 CurrentState = State.TransitionToNormal;

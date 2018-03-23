@@ -12,7 +12,6 @@ namespace Assets
         public ColorPalette ColorPalette;
         public CirclesView CirclesView;
         public Glider Glider;
-        public Pusher Pusher;
         private Collisions _collisions;
         public ScoreView ScoreView;
         private int _numberOfCollisions;
@@ -66,8 +65,7 @@ namespace Assets
             TutorialText.text = Phrases.GetTutorialPhrase();
             _state = GameState.Init;
             CirclesView.ColorPalette = ColorPalette;
-            Pusher.ColorPalette = ColorPalette;
-            Pusher.Glider = Glider;
+
 
             _screenWidth = Camera.main.orthographicSize * Camera.main.aspect;
 
@@ -76,7 +74,7 @@ namespace Assets
             _collisions = new Collisions();
             _collisions.Circles = CirclesView.Circles;
             _collisions.Glider = Glider;
-            _collisions.Pusher = Pusher;
+
             
 
             RighAreaPressed.Action = () => MoveGlider(Direction.Right);
@@ -151,8 +149,7 @@ namespace Assets
             CirclesView.ResetAllPositions();
             
             Glider.IsAlive = true;
-            Glider.Energy = 100;
-            ScoreView.SetEnergy(Glider.Energy);
+            Glider.HasHitBox = true;
             ScoreView.SetScore(_score);
             ScoreView.EmptyDots();
 
@@ -166,8 +163,6 @@ namespace Assets
             TutoralTexTransform.DOLocalMove(Vector3.down * 2000, 0.5f);
             PanelImage.DOFade(0, 0.2f);
 
-            
-            
             _state = GameState.Playing;
         }
 
@@ -184,11 +179,6 @@ namespace Assets
                 _score = _collisions.Score;
                 var index = _numberOfCollisions % 3;
 
-                if (_numberOfCollisions % 5 == 4)
-                {
-                    Pusher.Activate(true);
-                }
-
                 ScoreView.SetScore(_score);
                 CirclesView.SetParameters(_numberOfCollisions);
 
@@ -198,20 +188,6 @@ namespace Assets
                 ScoreView.SetCounterDots(index,_color);
             }
 
-
-
-            Glider.SetGliderStates(TwoFingerPressed());
-
-            if (Glider.CurrentHitBoxState == Glider.HitBoxState.BecommingUntargetable)
-            {
-                ChangeToColor(ColorPalette.Untargetable);
-            }
-            else if(Glider.CurrentHitBoxState == Glider.HitBoxState.BecommingTargetable)
-            {
-                ChangeToColorUndo();
-            }
-
-            ScoreView.SetEnergy(Glider.Energy);
 
             CirclesView.Move();
             SwitchColors();
@@ -252,8 +228,6 @@ namespace Assets
             }
 
             HighScore.text = "Best: " + _highScore;
-
-            Pusher.Activate(false);
 
             _state = GameState.Dead;
         }

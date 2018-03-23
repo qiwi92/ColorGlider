@@ -8,7 +8,6 @@ namespace Assets
         public int Score = 0;
         public Circle[] Circles;
         public Glider Glider;
-        public Pusher Pusher;
         private int _collisionCounter;
         public bool SwitchColor;
 
@@ -61,18 +60,6 @@ namespace Assets
                     }           
                 }
             }
-
-            if (Glider.HasHitBox)
-            {
-                if (Glider.Id == Pusher.Id)
-                {
-                    if ((Pusher.transform.position.y < -1) && (Pusher.transform.position.y > -4))
-                    {
-                        Glider.transform.position += Vector3.left * Pusher.Direction * Time.deltaTime;
-                    }
-                }
-            }
-
         }
     }
 }
