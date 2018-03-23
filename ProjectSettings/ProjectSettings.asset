@@ -217,7 +217,7 @@ PlayerSettings:
   AndroidTargetDevice: 3
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: C:/Users/Josh/Desktop/GolorGlider/ColorGlider/user.keystore
+  AndroidKeystoreName: C:/Users/Josh/Desktop/GolorGlider/ColorGlider/glowglider.keystore
   AndroidKeyaliasName: qiwi92
   AndroidTVCompatibility: 1
   AndroidIsGame: 1
