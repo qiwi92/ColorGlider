@@ -4,12 +4,13 @@ namespace Assets
 {
     public class Collisions
     {       
-        public Glider Glider;
+        private Glider _glider;
 
         private readonly List<ICollider> _collider;
 
-        public Collisions(Circle[] circles, Diamond[] diamonds, PowerUp[] powerUps)
+        public Collisions(Glider glider,Circle[] circles, Diamond[] diamonds, PowerUp[] powerUps)
         {
+            _glider = glider;
             _collider = new List<ICollider>();
 
             _collider.AddRange(circles);
@@ -19,7 +20,7 @@ namespace Assets
 
         public void CheckCollisions()
         {
-            var gliderPos = Glider.transform.position;
+            var gliderPos = _glider.transform.position;
 
             foreach (var collider in _collider)
             {
@@ -27,10 +28,9 @@ namespace Assets
 
                 var distanceSquared = (colliderPos.x - gliderPos.x) * (colliderPos.x - gliderPos.x) + (colliderPos.y - gliderPos.y) * (colliderPos.y - gliderPos.y);
 
-                if (distanceSquared < Glider.CollisionDistance)
+                if (distanceSquared < _glider.CollisionDistance)
                 {
-                    Glider.HandleCollision(collider);
-                    Glider.CollisionState = CollisionStates.JustCollided;
+                    _glider.HandleCollision(collider);  
                 }
             }
         }

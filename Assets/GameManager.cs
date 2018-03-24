@@ -12,6 +12,8 @@ namespace Assets
         public InputController InputController;
         public ColorPalette ColorPalette;
         public CirclesView CirclesView;
+        public DiamondsView DiamondsView;
+        public PowerupsView PowerupsView;
         public Glider Glider;
         private Collisions _collisions;
         public ScoreView ScoreView;
@@ -20,20 +22,9 @@ namespace Assets
 
         public float GliderMoveSpeed;
 
-        
-
-
-
-        public RectTransform MainCanvasTransform;
-
         public Image PanelImage;
         public RectTransform GameStateRectTransform;
         
-
- 
-
-        
-
         public Transform TutoralTexTransform;
 
         private float _screenWidth;
@@ -59,10 +50,21 @@ namespace Assets
 
             _screenWidth = Camera.main.orthographicSize * Camera.main.aspect;
 
-            CirclesView.SetUp(_screenWidth);
+            
+            
 
-            _collisions = new Collisions(CirclesView.Circles, new Diamond[0], new PowerUp[0] );
-            _collisions.Glider = Glider;
+            Glider.CirclesView = CirclesView;
+            Glider.DiamondsView = DiamondsView;
+            Glider.PowerupsView = PowerupsView;
+
+            CirclesView.SetUp(_screenWidth);
+            DiamondsView.ColorPalette = ColorPalette;
+            DiamondsView.SetUp(_screenWidth);
+            PowerupsView.ColorPalette = ColorPalette;
+            PowerupsView.SetUp(_screenWidth);
+
+            Glider.Setup();
+
             Glider.Id = 0;
 
             _color = ColorPalette.Colors[Glider.Id];
@@ -83,6 +85,7 @@ namespace Assets
             InputController.LeftAreaPressed.Action = () => MoveGlider(Direction.Left);
             InputController.SetColors(_color);
 
+            
             Glider.IsAlive = false;
             Glider.ResetPosition();
             SetColors();
@@ -134,11 +137,9 @@ namespace Assets
 
         private void HandleStartingState()
         {
-            _numberOfCollisions = 0;
-            Glider.Score = 0;
 
-            
-            CirclesView.SetSpeed(_numberOfCollisions);
+            Glider.Score = 0;        
+            CirclesView.SetSpeed(0);
             CirclesView.ResetAllPositions();
             
             Glider.IsAlive = true;
@@ -160,7 +161,7 @@ namespace Assets
 
         private void HandlePlayingState()
         {
-            _collisions.CheckCollisions();
+            Glider.Collisions.CheckCollisions();
 
             MoveWithArrows();
 
@@ -175,6 +176,8 @@ namespace Assets
             }
 
             CirclesView.Move();
+            DiamondsView.Move();
+            PowerupsView.Move();
 
             if (!Glider.IsAlive)
             {
@@ -186,7 +189,7 @@ namespace Assets
 
         private void HandleDyingState()
         {
-            CirclesView.Explode();
+            
             Glider.ResetPositionSmooth();
 
             GameStateRectTransform.DOLocalMove(Vector3.up * 200, 0.5f);

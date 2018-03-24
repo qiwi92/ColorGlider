@@ -5,7 +5,8 @@ namespace Assets
     public class Diamond : MonoBehaviour, ICollider
     {
         [HideInInspector] public int Value = 1;
-        private bool _isAlive;
+        [HideInInspector] public bool IsAlive;
+        [HideInInspector] public bool CanSapwn;
 
         public float GetSize()
         {
@@ -14,22 +15,12 @@ namespace Assets
 
         public ObjectType GetType()
         {
-            return ObjectType.PowerUp;
+            return ObjectType.Diamond;
         }
 
         public Vector3 GetPosition()
         {
             return this.transform.position;
-        }
-
-        public void SetState(bool isAlive)
-        {
-            _isAlive = isAlive;
-        }
-
-        public bool GetState()
-        {
-            return _isAlive;
         }
     }
 }

@@ -14,6 +14,10 @@ namespace Assets
 
         public CollisionStates CollisionState;
 
+        [HideInInspector] public DiamondsView DiamondsView;
+        [HideInInspector] public CirclesView CirclesView;
+        [HideInInspector] public PowerupsView PowerupsView;
+
         public GameObject GameObject;
         [Range(0.1f,1)] public float CollisionDistance;
         private readonly float _height = 2.80f;
@@ -25,9 +29,16 @@ namespace Assets
         public ParticleSystem EngineParticleSystem;
         public ParticleSystem EngineDustParticleSystem;
 
+        public Collisions Collisions;
+
         public Sounds Sounds;
 
         public ColorPalette ColorPalette;
+
+        public void Setup()
+        {
+            Collisions = new Collisions(this, CirclesView.Circles, DiamondsView.Diamonds, PowerupsView.PowerUps);
+        }
 
         public void ResetPositionSmooth()
         {
@@ -87,6 +98,8 @@ namespace Assets
 
         private void HandleCircleCollision(Circle cirle)
         {
+            CollisionState = CollisionStates.JustCollided;
+
             if (cirle.Id == Id)
             {
                 Index = _collectedCircles % 3;
@@ -104,17 +117,25 @@ namespace Assets
             {
                 _collectedCircles = 0;
                 IsAlive = false;
+                CirclesView.KillAll();
+                DiamondsView.KillAll();
             }
         }
 
         private void HandlePowerUpCollision(PowerUp powerUp)
         {
-            
+            PowerupsView.SetSpeed(Score);
+            powerUp.IsAlive = false;
         }
 
         private void HandleDiamondCollision(Diamond diamond)
         {
+            DiamondsView.SetSpeed(Score);
+
             Money += diamond.Value;
+
+            DiamondsView.SetNewValue(Money);
+            diamond.IsAlive = false;
         }
 
 

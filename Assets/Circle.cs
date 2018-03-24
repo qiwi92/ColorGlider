@@ -6,7 +6,7 @@ namespace Assets
     public class Circle : MonoBehaviour, ICollider
     {
         [HideInInspector] public int Id;
-        public bool Alive;
+        [HideInInspector] public bool Alive;
         [HideInInspector] public float Speed;
         [HideInInspector] public int Value;
 
@@ -21,15 +21,15 @@ namespace Assets
             FillSpriteRenderer.color = color;
         }
 
-        public void SetFill()
+        public void SetFill(Color color)
         {
             if (Value >= 2)
             {
-                FillSpriteRenderer.DOFade(1, 0.4f);
+                FillSpriteRenderer.color = color;
             }
             else
             {
-                FillSpriteRenderer.DOFade(0, 0.6f);
+                FillSpriteRenderer.color = new Color(0, 0, 0, 0);
             }
         }
 

@@ -7,5 +7,7 @@ namespace Assets
     {
         public Color[] Colors;
         public Color Untargetable;
+        public Color Diamond;
+        public Color PowerUp;
     }
 }

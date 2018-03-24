@@ -7,7 +7,5 @@ namespace Assets
         float GetSize();
         ObjectType GetType();
         Vector3 GetPosition();
-
-        void SetState(bool isAlive);
     }
 }

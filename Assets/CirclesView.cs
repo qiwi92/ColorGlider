@@ -97,6 +97,19 @@ namespace Assets
             }
         }
 
+        public void KillAll()
+        {
+            foreach (var circle in Circles)
+            {
+                circle.Alive = false;
+                _emitParams.position = circle.transform.position;
+                ParticleSystem.startColor = ColorPalette.Colors[circle.Id];
+
+                ParticleSystem.Emit(_emitParams, 10);
+                ResetCircle(circle);
+            }
+        }
+
         private void ResetCircle(Circle circle)
         {
             var randomX = Random.Range(-_width, _width);
@@ -104,6 +117,7 @@ namespace Assets
 
             circle.transform.position = new Vector3(randomX, Height + randomY, 0);
             circle.Speed = _speed;
+            circle.SetFill(ColorPalette.Colors[circle.Id]);
             circle.SetValue(_score);
         }
 

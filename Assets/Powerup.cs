@@ -4,7 +4,7 @@ namespace Assets
 {
     public class PowerUp : MonoBehaviour, ICollider
     {
-        private bool _isAlive;
+        [HideInInspector] public bool IsAlive;
 
         public float GetSize()
         {
@@ -19,16 +19,6 @@ namespace Assets
         public Vector3 GetPosition()
         {
             return this.transform.position;
-        }
-
-        public void SetState(bool isAlive)
-        {
-            _isAlive = isAlive;
-        }
-
-        public bool GetState()
-        {
-            return _isAlive;
         }
     }
 }
