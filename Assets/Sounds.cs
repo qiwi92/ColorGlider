@@ -8,7 +8,7 @@ namespace Assets
         public AudioClip DeathTheme;
         public AudioClip Death;
         public AudioClip StartGame;
-        public AudioClip[] Collect;
+        public AudioSource[] Collect;
 
         public AudioSource Music;
         public AudioSource Sfx;
@@ -41,8 +41,7 @@ namespace Assets
 
         public void PlayCollectSfx(int index)
         {
-            Sfx.clip = Collect[index];
-            Sfx.Play();
+            Collect[index].Play();
         }
 
         public void PlayDeathSfx()

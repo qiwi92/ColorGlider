@@ -3,7 +3,7 @@ using Random = UnityEngine.Random;
 
 namespace Assets
 {
-    public class CirclesView : MonoBehaviour
+    public class CirclesView : MonoBehaviour 
     {
         [HideInInspector] public ColorPalette ColorPalette;
 
@@ -102,15 +102,12 @@ namespace Assets
             var randomX = Random.Range(-_width, _width);
             var randomY = Random.Range(0, 2*Height);
 
-            
-
             circle.transform.position = new Vector3(randomX, Height + randomY, 0);
             circle.Speed = _speed;
             circle.SetValue(_score);
-
         }
 
-        public float SetParameters(int score)
+        public float SetSpeed(int score)
         {
             _score = score;
             var baseSpeed = 3 + 0.1f * score;

@@ -29,62 +29,62 @@ namespace Assets
             _isActive = false;
         }
 
-        void Update ()
-        {
-            if (_isActive)
-            {
-                if (transform.position.y < -ScreenHight)
-                {
-                    Activate(false);
-                }
+        //void Update ()
+        //{
+        //    if (_isActive)
+        //    {
+        //        if (transform.position.y < -ScreenHight)
+        //        {
+        //            Activate(false);
+        //        }
 
-                this.transform.position += Vector3.down * Speed * Time.deltaTime;
+        //        this.transform.position += Vector3.down * Speed * Time.deltaTime;
 
-                switch (CurrentState)
-                {
-                    case State.Normal:
-                        HandleNormal();
-                        break;
-                    case State.TransitionToDraining:
-                        HandleTransitionToDraining();
-                        break;
-                    case State.Draining:
-                        HandleDraining();
-                        break;
-                    case State.TransitionToNormal:
-                        TransitionToNormal();
-                        break;
-                }
-            }
-        }
+        //        switch (CurrentState)
+        //        {
+        //            case State.Normal:
+        //                HandleNormal();
+        //                break;
+        //            case State.TransitionToDraining:
+        //                HandleTransitionToDraining();
+        //                break;
+        //            case State.Draining:
+        //                HandleDraining();
+        //                break;
+        //            case State.TransitionToNormal:
+        //                TransitionToNormal();
+        //                break;
+        //        }
+        //    }
+        //}
 
-        private void HandleNormal()
-        {
-            if (!Glider.HasHitBox)
-            {
-                CurrentState = State.TransitionToDraining;
-            }
-        }
+        //private void HandleNormal()
+        //{
+        //    if (!Glider.HasHitBox)
+        //    {
+        //        CurrentState = State.TransitionToDraining;
+        //    }
+        //}
 
-        private void HandleTransitionToDraining()
-        {
-            SetColor(ColorPalette.Untargetable);
-            CurrentState = State.Draining;
-        }
+        //private void HandleTransitionToDraining()
+        //{
+        //    SetColor(ColorPalette.Untargetable);
+        //    CurrentState = State.Draining;
+        //}
 
-        private void HandleDraining()
-        {
-            if (Glider.HasHitBox)
-            {
-                CurrentState = State.TransitionToNormal;
-            }
-        }
+        //private void HandleDraining()
+        //{
+        //    if (Glider.HasHitBox)
+        //    {
+        //        CurrentState = State.TransitionToNormal;
+        //    }
+        //}
 
-        private void TransitionToNormal()
-        {
-            SetColor(ColorPalette.Colors[Id]);
-            CurrentState = State.Normal;
-        }
+        //private void TransitionToNormal()
+        //{
+        //    SetColor(ColorPalette.Colors[Id]);
+        //    CurrentState = State.Normal;
+        //}
 
         public void Activate(bool isActive)
         {

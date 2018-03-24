@@ -1,63 +1,36 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
 
 namespace Assets
 {
     public class Collisions
-    {
-        public int NormalCollections = 0;
-        public int Score = 0;
-        public Circle[] Circles;
+    {       
         public Glider Glider;
-        private int _collisionCounter;
-        public bool SwitchColor;
 
-        public Collisions()
+        private readonly List<ICollider> _collider;
+
+        public Collisions(Circle[] circles, Diamond[] diamonds, PowerUp[] powerUps)
         {
-            _collisionCounter = 0;
-            SwitchColor = false;
+            _collider = new List<ICollider>();
+
+            _collider.AddRange(circles);
+            _collider.AddRange(diamonds);
+            _collider.AddRange(powerUps);
         }
 
-        public void CheckCollision()
+        public void CheckCollisions()
         {
             var gliderPos = Glider.transform.position;
 
-            foreach (var circle in Circles)
+            foreach (var collider in _collider)
             {
-                var circlePos = circle.transform.position;
-                var distanceSquared = (circlePos.x - gliderPos.x)* (circlePos.x - gliderPos.x) + (circlePos.y - gliderPos.y) * (circlePos.y - gliderPos.y);
+                var colliderPos = collider.GetPosition();
 
-                circle.SetFill();
+                var distanceSquared = (colliderPos.x - gliderPos.x) * (colliderPos.x - gliderPos.x) + (colliderPos.y - gliderPos.y) * (colliderPos.y - gliderPos.y);
 
-                if (distanceSquared < Glider.CollisionDistance && Glider.HasHitBox)
+                if (distanceSquared < Glider.CollisionDistance)
                 {
-                    circle.Alive = false;
-                    NormalCollections += 1;
-
-                    Score += circle.Value;
-
-                    if (circle.Id != Glider.Id)
-                    {
-                        Glider.IsAlive = false;
-                        _collisionCounter = 0;
-                        NormalCollections = 0;
-                        Score = 0;
-
-
-                        foreach (var aliveCircle in Circles)
-                        {
-                            aliveCircle.Alive = false;              
-                        }
-                    }
-                    else
-                    {
-                        _collisionCounter += 1;
-
-                        if (_collisionCounter > 2)
-                        {
-                            SwitchColor = true;
-                            _collisionCounter = 0;
-                        }
-                    }           
+                    Glider.HandleCollision(collider);
+                    Glider.CollisionState = CollisionStates.JustCollided;
                 }
             }
         }

@@ -11,6 +11,7 @@ namespace Assets
         public Image ScoreImage;
         public Image ScoreImageHang;
 
+        private Color lastColor;
 
 
 
@@ -27,10 +28,11 @@ namespace Assets
             if (index < 2)
             {
                 IndicatorImages[index].FillImage.DOColor(color, 0.2f);
+                lastColor = color;
             }
             else if (index == 2)
             {
-                IndicatorImages[index].FillImage.DOColor(color, 0.2f).OnComplete(() =>
+                IndicatorImages[index].FillImage.DOColor(lastColor, 0.2f).OnComplete(() =>
                 {
                     for (int i = 0; i < 3; i++)
                     {

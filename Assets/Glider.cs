@@ -4,20 +4,30 @@ using UnityEngine;
 
 namespace Assets
 {
-    public partial class Glider : MonoBehaviour
+    public class Glider : MonoBehaviour
     {
+        public int Score;
+        public int Money;
+
+        private int _collectedCircles = 0;
+        public int Index;
+
+        public CollisionStates CollisionState;
+
         public GameObject GameObject;
         [Range(0.1f,1)] public float CollisionDistance;
         private readonly float _height = 2.80f;
         [HideInInspector] public int Id;
         [HideInInspector] public bool IsAlive;
-        [HideInInspector] public bool HasHitBox;
-        public HitBoxState CurrentHitBoxState;
     
         public SpriteRenderer GliderSpriteFilled;
         public SpriteRenderer GliderSpriteOutline;
         public ParticleSystem EngineParticleSystem;
         public ParticleSystem EngineDustParticleSystem;
+
+        public Sounds Sounds;
+
+        public ColorPalette ColorPalette;
 
         public void ResetPositionSmooth()
         {
@@ -29,81 +39,12 @@ namespace Assets
             this.transform.position = Vector3.down * _height;
         }
 
-        public void SetColor(Color color)
-        {
-            GliderSpriteFilled.DOColor(color, 0.4f);
-            GliderSpriteOutline.DOColor(color, 0.4f);
-
-            EngineParticleSystem.startColor = color;
-            EngineDustParticleSystem.startColor = color;
-
-        }
+        
 
         public void SetColorOutline(Color color)
         {
             GliderSpriteOutline.DOColor(color, 0.4f);
         }
-
-
-        //public void SetGliderStates(bool input)
-        //{
-        //    switch (CurrentHitBoxState)
-        //    {
-        //        case Glider.HitBoxState.BecommingUntargetable:
-        //            HandleBecommingUntargetable();
-        //            break;
-        //        case Glider.HitBoxState.Untargetable:
-        //            HandleUntargetable(input);
-        //            break;
-        //        case Glider.HitBoxState.BecommingTargetable:
-        //            HandleBecommingTargetable();
-        //            break;
-        //        case Glider.HitBoxState.Targetable:
-        //            HandleTargetable(input);
-        //            break;
-        //    }
-        //}
-
-        private void HandleBecommingUntargetable()
-        {
-            GliderSpriteFilled.DOFade(0, 0.2f);
-
-            EngineParticleSystem.Stop();
-            EngineDustParticleSystem.Stop();
-
-
-            CurrentHitBoxState = HitBoxState.Untargetable;
-        }
-
-        private void HandleUntargetable(bool input)
-        {
-            HasHitBox = false;
-
-            if (!input)
-            {
-                CurrentHitBoxState = HitBoxState.BecommingTargetable;
-            }
-        }
-
-        private void HandleBecommingTargetable()
-        {
-            EngineParticleSystem.Play();
-            EngineDustParticleSystem.Play();
-
-            CurrentHitBoxState = HitBoxState.Targetable;
-            
-        }
-
-        private void HandleTargetable(bool input)
-        {
-            HasHitBox = true;
-
-            if (input)
-            {
-                CurrentHitBoxState = HitBoxState.BecommingUntargetable;
-            }
-        }
-
 
         public void Move(float speed, float maxWidth, Direction direction)
         {
@@ -126,6 +67,88 @@ namespace Assets
             {
                 transform.position += speed * Vector3.right * ((float)direction) * Time.deltaTime;
             }                     
-        }           
+        }
+
+        public void HandleCollision(ICollider collider)
+        {
+            switch (collider.GetType())
+            {
+                case ObjectType.Circle:
+                    HandleCircleCollision(collider as Circle);
+                    break;
+                case ObjectType.PowerUp:
+                    HandlePowerUpCollision(collider as PowerUp);
+                    break;
+                case ObjectType.Diamond:
+                    HandleDiamondCollision(collider as Diamond);
+                    break;
+            }
+        }
+
+        private void HandleCircleCollision(Circle cirle)
+        {
+            if (cirle.Id == Id)
+            {
+                Index = _collectedCircles % 3;
+
+                SetColor(Index);
+                Sounds.PlayCollectSfx(Index);
+
+                _collectedCircles += 1;
+
+                Score += cirle.Value;
+
+                cirle.Alive = false;
+            }
+            else
+            {
+                _collectedCircles = 0;
+                IsAlive = false;
+            }
+        }
+
+        private void HandlePowerUpCollision(PowerUp powerUp)
+        {
+            
+        }
+
+        private void HandleDiamondCollision(Diamond diamond)
+        {
+            Money += diamond.Value;
+        }
+
+
+
+        public void SetColor(int index)
+        {
+            if (index == 2)
+            {
+                int previousId = Id;
+
+                int randomId = Random.Range(0, 3);
+
+                Id = randomId;
+
+                if (previousId == randomId)
+                {
+                    Id = (previousId + 1) % 3;
+                }
+
+                GliderSpriteFilled.DOColor(ColorPalette.Colors[Id], 0.4f);
+                GliderSpriteOutline.DOColor(ColorPalette.Colors[Id], 0.4f);
+
+                EngineParticleSystem.startColor = ColorPalette.Colors[Id];
+                EngineDustParticleSystem.startColor = ColorPalette.Colors[Id];
+            }        
+        }
+
+
+
+    }
+
+    public enum CollisionStates
+    {
+        None,
+        JustCollided,
     }
 }

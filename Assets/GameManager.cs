@@ -9,41 +9,30 @@ namespace Assets
     
     public class GameManager : MonoBehaviour
     {
+        public InputController InputController;
         public ColorPalette ColorPalette;
         public CirclesView CirclesView;
         public Glider Glider;
         private Collisions _collisions;
         public ScoreView ScoreView;
         private int _numberOfCollisions;
-        private int _score;
 
 
         public float GliderMoveSpeed;
 
-        public AreaPressed LeftAreaPressed;
-        public AreaPressed RighAreaPressed;
+        
 
-        public RectTransform LeftAreaTransform;
-        public RectTransform RightAreaTransform;
-        public Image RightAreaImage;
-        public Image LeftAreaImage;
+
 
         public RectTransform MainCanvasTransform;
 
         public Image PanelImage;
         public RectTransform GameStateRectTransform;
-        public Text GameStateText;
-        public Text HighScore;
+        
 
  
 
-        public Image UnlockProgressImageRight;
-        public Image UnlockProgressImageLeft;
-        public Image UnlockProgressFill;
-        public Image UnlockProgressFillTriangle;
-        public Image RightTutorialArrow;
-        public Image LeftTutorialArrow;
-        public Text TutorialText;
+        
 
         public Transform TutoralTexTransform;
 
@@ -51,7 +40,7 @@ namespace Assets
 
         private GameState _state;
         private int _highScore;
-        private float _currentPressedTime;
+        
         private Color _color;
 
         public Sounds Sounds;
@@ -61,24 +50,24 @@ namespace Assets
         void Awake ()
         {
             LoadValues();
-            HighScore.text = "Highscore: " + _highScore;
-            TutorialText.text = Phrases.GetTutorialPhrase();
+            
             _state = GameState.Init;
             CirclesView.ColorPalette = ColorPalette;
+            Glider.ColorPalette = ColorPalette;
+            Glider.Sounds = Sounds;
 
 
             _screenWidth = Camera.main.orthographicSize * Camera.main.aspect;
 
             CirclesView.SetUp(_screenWidth);
 
-            _collisions = new Collisions();
-            _collisions.Circles = CirclesView.Circles;
+            _collisions = new Collisions(CirclesView.Circles, new Diamond[0], new PowerUp[0] );
             _collisions.Glider = Glider;
+            Glider.Id = 0;
+
+            _color = ColorPalette.Colors[Glider.Id];
 
             
-
-            RighAreaPressed.Action = () => MoveGlider(Direction.Right);
-            LeftAreaPressed.Action = () => MoveGlider(Direction.Left);
             
             Setup();
         }
@@ -86,9 +75,13 @@ namespace Assets
         private void Setup()
         {
             _numberOfCollisions = 0;
-            _score = 0;
 
-            GameStateText.text = "New Game";
+            InputController.GameStateText.text = "New Game";
+            InputController.HighScore.text = "Highscore: " + _highScore;
+            InputController.TutorialText.text = Phrases.GetTutorialPhrase();
+            InputController.RighAreaPressed.Action = () => MoveGlider(Direction.Right);
+            InputController.LeftAreaPressed.Action = () => MoveGlider(Direction.Left);
+            InputController.SetColors(_color);
 
             Glider.IsAlive = false;
             Glider.ResetPosition();
@@ -132,7 +125,7 @@ namespace Assets
 
         private void HandleInitState()
         {
-            if (TwoFingersConfirmation())
+            if (InputController.TwoFingersConfirmation())
             {
                 Sounds.PlayDeathTheme(false);
                 _state = GameState.Starting;
@@ -142,22 +135,21 @@ namespace Assets
         private void HandleStartingState()
         {
             _numberOfCollisions = 0;
-            _score = 0;
+            Glider.Score = 0;
 
             
-            CirclesView.SetParameters(_numberOfCollisions);
+            CirclesView.SetSpeed(_numberOfCollisions);
             CirclesView.ResetAllPositions();
             
             Glider.IsAlive = true;
-            Glider.HasHitBox = true;
-            ScoreView.SetScore(_score);
+            ScoreView.SetScore(Glider.Score);
             ScoreView.EmptyDots();
 
             Sounds.PlayMainTheme(true);
             Sounds.PlaySartGameSfx();
 
             SetColors();
-            MoveStartPanels();
+            InputController.MoveStartPanels();
 
             GameStateRectTransform.DOLocalMove(Vector3.up * 2000, 0.5f);
             TutoralTexTransform.DOLocalMove(Vector3.down * 2000, 0.5f);
@@ -168,29 +160,21 @@ namespace Assets
 
         private void HandlePlayingState()
         {
-            _collisions.CheckCollision();
-
-            var curentCollisions = _collisions.NormalCollections;
+            _collisions.CheckCollisions();
 
             MoveWithArrows();
 
-            if (curentCollisions != _numberOfCollisions && curentCollisions != 0)
+            if (Glider.CollisionState == CollisionStates.JustCollided)
             {
-                _score = _collisions.Score;
-                var index = _numberOfCollisions % 3;
+                ScoreView.SetScore(Glider.Score);
+                CirclesView.SetSpeed(Glider.Score);
+                SetColors();
+                SetCounterDots();
 
-                ScoreView.SetScore(_score);
-                CirclesView.SetParameters(_numberOfCollisions);
-
-                Sounds.PlayCollectSfx(index);
-                _numberOfCollisions = _collisions.NormalCollections;
-                
-                ScoreView.SetCounterDots(index,_color);
+                Glider.CollisionState = CollisionStates.None;
             }
 
-
             CirclesView.Move();
-            SwitchColors();
 
             if (!Glider.IsAlive)
             {
@@ -209,32 +193,33 @@ namespace Assets
             TutoralTexTransform.DOLocalMove(Vector3.down * 550, 0.5f);
             PanelImage.DOFade(0.8f, 0.2f);
 
-            GameStateText.text = "Game Over";
+            InputController.GameStateText.text = "Game Over";
 
             Sounds.PlayMainTheme(false);
             Sounds.PlayDeathSfx();
             Sounds.PlayDeathTheme(true);
 
-            if (_score > _highScore)
+            if (Glider.Score > _highScore)
             {
-                _highScore = _score;
+                _highScore = Glider.Score;
                 SaveValues();
 
-                TutorialText.text = Phrases.GetHighScorePhrase();
+                InputController.TutorialText.text = Phrases.GetHighScorePhrase();
             }
             else
             {
-                TutorialText.text = Phrases.GetRandomPhrase();
+                InputController.TutorialText.text = Phrases.GetRandomPhrase();
             }
 
-            HighScore.text = "Best: " + _highScore;
+            InputController.SetColors(_color);
+            InputController.HighScore.text = "Best: " + _highScore;
 
             _state = GameState.Dead;
         }
 
         private void HandleDeadState()
         {
-            if (TwoFingersConfirmation())
+            if (InputController.TwoFingersConfirmation())
             {
                 Sounds.PlayDeathTheme(false);
                 _state = GameState.Starting;
@@ -244,11 +229,12 @@ namespace Assets
         private void SetColors()
         {
             _color = ColorPalette.Colors[Glider.Id];
-            Glider.SetColor(_color);
             ScoreView.SetColor(_color);
+        }
 
-            LeftAreaImage.color = _color;
-            RightAreaImage.color = _color;
+        private void SetCounterDots()
+        {
+            ScoreView.SetCounterDots(Glider.Index, _color);
         }
 
         private void MoveGlider(Direction direction)
@@ -258,150 +244,7 @@ namespace Assets
                 Glider.Move(GliderMoveSpeed, _screenWidth, direction);
             }  
         }
-
-        private void SwitchColors()
-        {
-            if (_collisions.SwitchColor)
-            {
-                var previousId = Glider.Id;
-
-                var randomId = (int)Random.Range(0, 3);
-                Glider.Id = randomId;
-
-
-                if (previousId == randomId)
-                {
-                    Glider.Id = (previousId + 1) % 3;
-                }
-
-                SetColors();
-
-                _collisions.SwitchColor = false;
-            }
-        }
-
-        private void ChangeToColor(Color color)
-        {
-            Glider.SetColorOutline(color);
-            ScoreView.SetColor(color);
-            ScoreView.SetCounterDotsColor(color);
-
-            foreach (var circle in CirclesView.Circles)
-            {
-                circle.SetColor(color);
-            }
-        }
-
-        private void ChangeToColorUndo()
-        {
-            var oldColor = ColorPalette.Colors[Glider.Id];
-
-            Glider.SetColor(oldColor);
-            ScoreView.SetColor(oldColor);
-            ScoreView.SetCounterDotsColor(oldColor);
-
-            foreach (var circle in CirclesView.Circles)
-            {
-                circle.SetColor(ColorPalette.Colors[circle.Id]);
-            }
-        }
-
         
-
-        private bool TwoFingersConfirmation()
-        {
-            var canvasWidth = MainCanvasTransform.sizeDelta.x;
-            var counter = 0;
-
-            if (LeftAreaPressed.IsPressed() || Input.GetKey(KeyCode.LeftArrow))
-            {
-                LeftAreaTransform.transform.DOLocalMoveX(-canvasWidth*3.0f/4.0f, 0.4f);
-                UnlockProgressImageLeft.DOFillAmount(0.5f, 0.5f).SetEase(Ease.OutExpo);
-                LeftTutorialArrow.DOFade(0, 0.4f).SetEase(Ease.OutExpo);
-                counter++;
-            }
-
-            else
-            {
-                LeftAreaTransform.transform.DOLocalMoveX(-canvasWidth/4, 0.4f);
-                UnlockProgressImageLeft.DOFillAmount(0, 0.5f).SetEase(Ease.OutExpo);
-                LeftTutorialArrow.DOFade(1, 0.4f).SetEase(Ease.OutExpo);
-            }
-            
-            if (RighAreaPressed.IsPressed() || Input.GetKey(KeyCode.RightArrow))
-            {
-                RightAreaTransform.transform.DOLocalMoveX(canvasWidth * 3.0f / 4.0f, 0.4f);
-                UnlockProgressImageRight.DOFillAmount(0.5f, 0.5f).SetEase(Ease.OutExpo);
-                RightTutorialArrow.DOFade(0, 0.4f).SetEase(Ease.OutExpo);
-                counter++;
-            }
-            else
-            {
-                RightAreaTransform.transform.DOLocalMoveX(canvasWidth / 4, 0.4f);
-                UnlockProgressImageRight.DOFillAmount(0, 0.5f).SetEase(Ease.OutExpo);
-                RightTutorialArrow.DOFade(1, 0.4f).SetEase(Ease.OutExpo);
-            }
-
-            if (counter == 0)
-            {
-                GameStateText.text = "Game Over";
-                HighScore.DOFade(1, 0.4f);
-                UnlockProgressFill.DOFade(0, 0.4f);
-                UnlockProgressFillTriangle.DOFade(0, 0.4f);
-                TutorialText.DOFade(1, 0.2f);
-
-            }
-            else if (counter == 1)
-            {
-                GameStateText.text = "New Game";
-                HighScore.DOFade(0, 0.4f);
-                UnlockProgressFill.DOColor(Color.white, 0.4f);
-                UnlockProgressFillTriangle.DOFade(1, 0.4f);
-                TutorialText.DOFade(1, 0.2f);
-            }
-            else if (counter == 2)
-            {
-                GameStateText.text = "Start";
-                HighScore.DOFade(0, 0.4f);
-                UnlockProgressFill.DOColor(_color, 0.4f);
-                UnlockProgressFillTriangle.DOFade(1, 0.4f);
-                TutorialText.DOFade(0, 0.2f);
-
-                _currentPressedTime += Time.deltaTime;
-            }
-            if (counter != 2)
-            {
-                _currentPressedTime = 0f;
-            }
-
-            if (_currentPressedTime > 0.35f)
-            {
-                _currentPressedTime = 0f;
-                return true;
-            }
-
-            return false;
-        }
-
-
-        private bool TwoFingerPressed()
-        {
-            if ((LeftAreaPressed.IsPressed() || Input.GetKey(KeyCode.LeftArrow)) &&
-                (RighAreaPressed.IsPressed() || Input.GetKey(KeyCode.RightArrow)))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        private void MoveStartPanels()
-        {
-            var canvasWidth = MainCanvasTransform.sizeDelta.x;
-            LeftAreaTransform.transform.DOLocalMoveX(-canvasWidth * 3.0f / 4.0f, 0.4f);
-            RightAreaTransform.transform.DOLocalMoveX(canvasWidth * 3.0f / 4.0f, 0.4f);
-        }
-
 
         private void LoadValues()
         {
@@ -424,5 +267,17 @@ namespace Assets
                 MoveGlider(Direction.Right);
             }
         }
+
+
+        //private bool TwoFingerPressed()
+        //{
+        //    if ((InputController.LeftAreaPressed.IsPressed() || Input.GetKey(KeyCode.LeftArrow)) &&
+        //        (InputController.RighAreaPressed.IsPressed() || Input.GetKey(KeyCode.RightArrow)))
+        //    {
+        //        return true;
+        //    }
+
+        //    return false;
+        //}
     }
 }
