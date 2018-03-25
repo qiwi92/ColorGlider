@@ -119,17 +119,20 @@ namespace Assets
                 IsAlive = false;
                 CirclesView.KillAll();
                 DiamondsView.KillAll();
+                PowerupsView.KillAll();
             }
         }
 
         private void HandlePowerUpCollision(PowerUp powerUp)
         {
+            Sounds.PlayPowerUpSfx();
             PowerupsView.SetSpeed(Score);
             powerUp.IsAlive = false;
         }
 
         private void HandleDiamondCollision(Diamond diamond)
         {
+            Sounds.PlayDiamondSfx();
             DiamondsView.SetSpeed(Score);
 
             Money += diamond.Value;

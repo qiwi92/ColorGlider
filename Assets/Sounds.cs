@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using DG.Tweening;
+using UnityEngine;
 
 namespace Assets
 {
@@ -10,8 +11,23 @@ namespace Assets
         public AudioClip StartGame;
         public AudioSource[] Collect;
 
+        public AudioSource PowerUp;
+        public AudioSource Diamond;
+
         public AudioSource Music;
         public AudioSource Sfx;
+
+        private static bool _created = false;
+
+        private void Awake()
+        {
+            if (!_created)
+            {
+                DontDestroyOnLoad(this.gameObject);
+                PlayDeathTheme(true);
+                _created = true;
+            }
+        }
 
         public void PlayMainTheme(bool play)
         {
@@ -54,6 +70,16 @@ namespace Assets
         {
             Sfx.clip = StartGame;
             Sfx.Play();
+        }
+
+        public void PlayDiamondSfx()
+        {
+            Diamond.Play();
+        }
+
+        public void PlayPowerUpSfx()
+        {
+            PowerUp.Play();
         }
     }
 }

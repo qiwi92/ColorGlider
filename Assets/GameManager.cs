@@ -34,18 +34,20 @@ namespace Assets
         
         private Color _color;
 
-        public Sounds Sounds;
+        private Sounds _sounds;
         private Color _currentColor;
 
 
         void Awake ()
         {
+            _sounds = FindObjectOfType<Sounds>();
+            
             LoadValues();
             
             _state = GameState.Init;
             CirclesView.ColorPalette = ColorPalette;
             Glider.ColorPalette = ColorPalette;
-            Glider.Sounds = Sounds;
+            Glider.Sounds = _sounds;
 
 
             _screenWidth = Camera.main.orthographicSize * Camera.main.aspect;
@@ -89,8 +91,6 @@ namespace Assets
             Glider.IsAlive = false;
             Glider.ResetPosition();
             SetColors();
-
-            Sounds.PlayDeathTheme(true);
         }
 
         private enum GameState
@@ -130,7 +130,6 @@ namespace Assets
         {
             if (InputController.TwoFingersConfirmation())
             {
-                Sounds.PlayDeathTheme(false);
                 _state = GameState.Starting;
             }
         }
@@ -146,8 +145,8 @@ namespace Assets
             ScoreView.SetScore(Glider.Score);
             ScoreView.EmptyDots();
 
-            Sounds.PlayMainTheme(true);
-            Sounds.PlaySartGameSfx();
+            _sounds.PlayMainTheme(true);
+            _sounds.PlaySartGameSfx();
 
             SetColors();
             InputController.MoveStartPanels();
@@ -198,9 +197,9 @@ namespace Assets
 
             InputController.GameStateText.text = "Game Over";
 
-            Sounds.PlayMainTheme(false);
-            Sounds.PlayDeathSfx();
-            Sounds.PlayDeathTheme(true);
+            _sounds.PlayMainTheme(false);
+            _sounds.PlayDeathSfx();
+            _sounds.PlayDeathTheme(true);
 
             if (Glider.Score > _highScore)
             {
@@ -224,7 +223,7 @@ namespace Assets
         {
             if (InputController.TwoFingersConfirmation())
             {
-                Sounds.PlayDeathTheme(false);
+                _sounds.PlayDeathTheme(false);
                 _state = GameState.Starting;
             }         
         }

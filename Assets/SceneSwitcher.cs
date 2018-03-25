@@ -10,6 +10,9 @@ public class SceneSwitcher : MonoBehaviour
     public Image BotImage;
 
     public Image LoadingCircle;
+    public Image LoadingCircleFill;
+    public Image LoadingGlider;
+
 
     private bool _open = false;
 	void Start ()
@@ -34,6 +37,7 @@ public class SceneSwitcher : MonoBehaviour
         {
             TopImage.DOFillAmount(1, 0.5f);
             BotImage.DOFillAmount(1, 0.5f);
+
         }
         else
         {
