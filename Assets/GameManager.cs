@@ -71,21 +71,24 @@ namespace Assets
 
             _color = ColorPalette.Colors[Glider.Id];
 
-            
+            InputController.GliderTransform = Glider.transform;
+
             
             Setup();
+
+
         }
 
         private void Setup()
         {
             _numberOfCollisions = 0;
 
-            InputController.GameStateText.text = "New Game";
-            InputController.HighScore.text = "Highscore: " + _highScore;
-            InputController.TutorialText.text = Phrases.GetTutorialPhrase();
-            InputController.RighAreaPressed.Action = () => MoveGlider(Direction.Right);
-            InputController.LeftAreaPressed.Action = () => MoveGlider(Direction.Left);
-            InputController.SetColors(_color);
+            //InputController.GameStateText.text = "New Game";
+            //InputController.HighScore.text = "Highscore: " + _highScore;
+            //InputController.TutorialText.text = Phrases.GetTutorialPhrase();
+            //InputController.RighAreaPressed.Action = () => MoveGlider(Direction.Right);
+            //InputController.LeftAreaPressed.Action = () => MoveGlider(Direction.Left);
+            //InputController.SetColors(_color);
 
             
             Glider.IsAlive = false;
@@ -128,7 +131,8 @@ namespace Assets
 
         private void HandleInitState()
         {
-            if (InputController.TwoFingersConfirmation())
+
+            if (InputController.PlayButton.GetState())
             {
                 _state = GameState.Starting;
             }
@@ -149,7 +153,6 @@ namespace Assets
             _sounds.PlaySartGameSfx();
 
             SetColors();
-            InputController.MoveStartPanels();
 
             GameStateRectTransform.DOLocalMove(Vector3.up * 2000, 0.5f);
             TutoralTexTransform.DOLocalMove(Vector3.down * 2000, 0.5f);
@@ -161,6 +164,7 @@ namespace Assets
         private void HandlePlayingState()
         {
             Glider.Collisions.CheckCollisions();
+            Glider.Move(GliderMoveSpeed, _screenWidth,InputController.GetMoveDirection());
 
             MoveWithArrows();
 
@@ -195,7 +199,7 @@ namespace Assets
             TutoralTexTransform.DOLocalMove(Vector3.down * 550, 0.5f);
             PanelImage.DOFade(0.8f, 0.2f);
 
-            InputController.GameStateText.text = "Game Over";
+            //InputController.GameStateText.text = "Game Over";
 
             _sounds.PlayMainTheme(false);
             _sounds.PlayDeathSfx();
@@ -205,23 +209,18 @@ namespace Assets
             {
                 _highScore = Glider.Score;
                 SaveValues();
-
-                InputController.TutorialText.text = Phrases.GetHighScorePhrase();
             }
-            else
-            {
-                InputController.TutorialText.text = Phrases.GetRandomPhrase();
-            }
+       
 
-            InputController.SetColors(_color);
-            InputController.HighScore.text = "Best: " + _highScore;
+            //InputController.SetColors(_color);
+            //InputController.HighScore.text = "Best: " + _highScore;
 
             _state = GameState.Dead;
         }
 
         private void HandleDeadState()
         {
-            if (InputController.TwoFingersConfirmation())
+            if (InputController.PlayButton.GetState())
             {
                 _sounds.PlayDeathTheme(false);
                 _state = GameState.Starting;
@@ -271,17 +270,5 @@ namespace Assets
                 MoveGlider(Direction.Right);
             }
         }
-
-
-        //private bool TwoFingerPressed()
-        //{
-        //    if ((InputController.LeftAreaPressed.IsPressed() || Input.GetKey(KeyCode.LeftArrow)) &&
-        //        (InputController.RighAreaPressed.IsPressed() || Input.GetKey(KeyCode.RightArrow)))
-        //    {
-        //        return true;
-        //    }
-
-        //    return false;
-        //}
     }
 }

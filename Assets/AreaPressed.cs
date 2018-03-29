@@ -9,13 +9,13 @@ namespace Assets
         public Action Action;
         private bool _isPressed = false;
 
-        void Update()
-        {
-            if (_isPressed)
-            {
-                Action();
-            }             
-        }
+        //void Update()
+        //{
+        //    if (_isPressed)
+        //    {
+        //        Action();
+        //    }             
+        //}
         
         public void OnPointerDown(PointerEventData eventData)
         {

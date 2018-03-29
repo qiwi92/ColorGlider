@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using System;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,119 +7,82 @@ namespace Assets
 {
     public class InputController : MonoBehaviour
     {
-        public RectTransform LeftAreaTransform;
-        public RectTransform RightAreaTransform;
+        public PlayButtonView PlayButton;
 
-        public RectTransform MainCanvasTransform;
+        //[HideInInspector] public float ScreenWidth;
+        [HideInInspector] public Transform GliderTransform;
 
-        public Image RightAreaImage;
-        public Image LeftAreaImage;
 
-        public AreaPressed LeftAreaPressed;
-        public AreaPressed RighAreaPressed;
+        private Direction _gliderMoveDirection;
 
-        public Image UnlockProgressImageRight;
-        public Image UnlockProgressImageLeft;
-        public Image UnlockProgressFill;
-        public Image UnlockProgressFillTriangle;
-        public Image RightTutorialArrow;
-        public Image LeftTutorialArrow;
-        public Text TutorialText;
+        [Range(0, 1)] public float Tolerance;
+        [Range(0, 1)] public float Sensibility;
 
-        public Text GameStateText;
-        public Text HighScore;
 
-        private float _currentPressedTime;
-        private Color _color;
-
-        public bool TwoFingersConfirmation()
+        private void Update()
         {
-            var canvasWidth = MainCanvasTransform.sizeDelta.x;
-            var counter = 0;
-
-            if (LeftAreaPressed.IsPressed() || Input.GetKey(KeyCode.LeftArrow))
+            if (Input.GetMouseButton(0))
             {
-                LeftAreaTransform.transform.DOLocalMoveX(-canvasWidth * 3.0f / 4.0f, 0.4f);
-                UnlockProgressImageLeft.DOFillAmount(0.5f, 0.5f).SetEase(Ease.OutExpo);
-                LeftTutorialArrow.DOFade(0, 0.4f).SetEase(Ease.OutExpo);
-                counter++;
-            }
-
-            else
-            {
-                LeftAreaTransform.transform.DOLocalMoveX(-canvasWidth / 4, 0.4f);
-                UnlockProgressImageLeft.DOFillAmount(0, 0.5f).SetEase(Ease.OutExpo);
-                LeftTutorialArrow.DOFade(1, 0.4f).SetEase(Ease.OutExpo);
-            }
-
-            if (RighAreaPressed.IsPressed() || Input.GetKey(KeyCode.RightArrow))
-            {
-                RightAreaTransform.transform.DOLocalMoveX(canvasWidth * 3.0f / 4.0f, 0.4f);
-                UnlockProgressImageRight.DOFillAmount(0.5f, 0.5f).SetEase(Ease.OutExpo);
-                RightTutorialArrow.DOFade(0, 0.4f).SetEase(Ease.OutExpo);
-                counter++;
+                SetMoveDirection();
             }
             else
             {
-                RightAreaTransform.transform.DOLocalMoveX(canvasWidth / 4, 0.4f);
-                UnlockProgressImageRight.DOFillAmount(0, 0.5f).SetEase(Ease.OutExpo);
-                RightTutorialArrow.DOFade(1, 0.4f).SetEase(Ease.OutExpo);
+                _gliderMoveDirection = Direction.None;
             }
-
-            if (counter == 0)
-            {
-                GameStateText.text = "Game Over";
-                HighScore.DOFade(1, 0.4f);
-                UnlockProgressFill.DOFade(0, 0.4f);
-                UnlockProgressFillTriangle.DOFade(0, 0.4f);
-                TutorialText.DOFade(1, 0.2f);
-
-            }
-            else if (counter == 1)
-            {
-                GameStateText.text = "New Game";
-                HighScore.DOFade(0, 0.4f);
-                UnlockProgressFill.DOColor(Color.white, 0.4f);
-                UnlockProgressFillTriangle.DOFade(1, 0.4f);
-                TutorialText.DOFade(1, 0.2f);
-            }
-            else if (counter == 2)
-            {
-                GameStateText.text = "Start";
-                HighScore.DOFade(0, 0.4f);
-                UnlockProgressFill.DOColor(_color, 0.4f);
-                UnlockProgressFillTriangle.DOFade(1, 0.4f);
-                TutorialText.DOFade(0, 0.2f);
-
-                _currentPressedTime += Time.deltaTime;
-            }
-
-            if (counter != 2)
-            {
-                _currentPressedTime = 0f;
-            }
-
-            if (_currentPressedTime > 0.35f)
-            {
-                _currentPressedTime = 0f;
-                return true;
-            }
-
-            return false;
         }
 
-        public void MoveStartPanels()
+        private void SetMoveDirection()
         {
-            var canvasWidth = MainCanvasTransform.sizeDelta.x;
-            LeftAreaTransform.transform.DOLocalMoveX(-canvasWidth * 3.0f / 4.0f, 0.4f);
-            RightAreaTransform.transform.DOLocalMoveX(canvasWidth * 3.0f / 4.0f, 0.4f);
+            var mousePosition = GetMousePosition();
+            var targetPos = ConvertMousePosIntoTargetPos(mousePosition);
+            var gliderPos = GliderTransform.position;
+
+            var distance = Mathf.Abs(targetPos.x - gliderPos.x);
+            var sign = (targetPos.x - gliderPos.x);
+
+            if (sign < 0 && distance > Tolerance)
+            {
+                _gliderMoveDirection = Direction.Left;
+            }
+            else if (sign > 0 && distance > Tolerance)
+            {
+                _gliderMoveDirection = Direction.Right;
+            }
+            else if(distance < Tolerance)
+            {
+                _gliderMoveDirection = Direction.None;
+            }
+            else
+            {
+                throw new Exception("Case not covered");
+            }
         }
 
-        public void SetColors(Color color)
+        public Direction GetMoveDirection()
         {
-            _color = color;
-            RightAreaImage.DOColor(color, 0.4f);
-            LeftAreaImage.DOColor(color, 0.4f);
+            return _gliderMoveDirection;
         }
+
+        private Vector3 ConvertMousePosIntoTargetPos(Vector3 mousePos)
+        {
+            var factor = 1 + Sensibility;
+            return new Vector3(mousePos.x*factor,-2,0);
+        }
+
+        private Vector3 GetMousePosition()
+        {
+            var v3 = Input.mousePosition;
+            v3.z = 10f;
+            return Camera.main.ScreenToWorldPoint(v3);
+        }
+
+        //private void OnDrawGizmos()
+        //{
+        //    Gizmos.color = Color.blue;
+        //    Gizmos.DrawCube(_mousePosition, Vector3.one*0.3f);
+
+        //    Gizmos.color = Color.red;
+        //    Gizmos.DrawCube(_targetPos, Vector3.one * 0.3f);
+        //}
     }
 }
