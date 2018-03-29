@@ -124,10 +124,10 @@ namespace Assets
         private void HandleInitState()
         {
 
-            if (InputController.PlayButton.GetState())
-            {
+            //if (InputController.PlayButton.GetState())
+            //{
                 _state = GameState.Starting;
-            }
+            //}
         }
 
         private void HandleStartingState()

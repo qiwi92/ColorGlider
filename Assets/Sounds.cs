@@ -19,15 +19,15 @@ namespace Assets
 
         private static bool _created = false;
 
-        private void Awake()
-        {
-            if (!_created)
-            {
-                DontDestroyOnLoad(this.gameObject);
-                PlayDeathTheme(true);
-                _created = true;
-            }
-        }
+        //private void Awake()
+        //{
+        //    if (!_created)
+        //    {
+        //        DontDestroyOnLoad(this.gameObject);
+        //        PlayDeathTheme(true);
+        //        _created = true;
+        //    }
+        //}
 
         public void PlayMainTheme(bool play)
         {
