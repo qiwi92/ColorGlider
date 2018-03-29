@@ -184,7 +184,7 @@ namespace Assets
 
         private void HandleDyingState()
         {
-            
+            InputController.PlayButton.SetStateToNotPlaying();
             Glider.ResetPositionSmooth();
 
             GameStateRectTransform.DOLocalMove(Vector3.up * 200, 0.5f);

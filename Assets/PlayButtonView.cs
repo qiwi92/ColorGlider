@@ -12,6 +12,7 @@ namespace Assets
         private void Start ()
         {
             _isPlaying = false;
+
             Button.onClick.AddListener(ClickAnimation);
             Button.onClick.AddListener(SetStateToPlaying);
         }
@@ -24,18 +25,23 @@ namespace Assets
 
         public bool GetState()
         {
-            if (_isPlaying)
-            {
-                _isPlaying = false;
-                return true;
-            }
+            //if (IsPlaying)
+            //{
+            //    IsPlaying = false;
+            //    return true;
+            //}
 
-            return false;
+            return _isPlaying;
         }
 
         private void SetStateToPlaying()
         {
             _isPlaying = true;
+        }
+
+        public void SetStateToNotPlaying()
+        {
+            _isPlaying = false;
         }
     }
 }
