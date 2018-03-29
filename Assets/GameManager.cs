@@ -82,15 +82,7 @@ namespace Assets
         private void Setup()
         {
             _numberOfCollisions = 0;
-
-            //InputController.GameStateText.text = "New Game";
-            //InputController.HighScore.text = "Highscore: " + _highScore;
-            //InputController.TutorialText.text = Phrases.GetTutorialPhrase();
-            //InputController.RighAreaPressed.Action = () => MoveGlider(Direction.Right);
-            //InputController.LeftAreaPressed.Action = () => MoveGlider(Direction.Left);
-            //InputController.SetColors(_color);
-
-            
+           
             Glider.IsAlive = false;
             Glider.ResetPosition();
             SetColors();
