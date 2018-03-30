@@ -13,8 +13,8 @@ namespace Assets
         {
             _isPlaying = false;
 
-            Button.onClick.AddListener(ClickAnimation);
             Button.onClick.AddListener(SetStateToPlaying);
+            Button.onClick.AddListener(ClickAnimation);
         }
 
         public void ClickAnimation()

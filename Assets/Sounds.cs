@@ -17,8 +17,6 @@ namespace Assets
         public AudioSource Music;
         public AudioSource Sfx;
 
-        private static bool _created = false;
-
         //private void Awake()
         //{
         //    if (!_created)

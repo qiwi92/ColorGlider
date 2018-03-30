@@ -164,9 +164,6 @@ namespace Assets
                 EngineDustParticleSystem.startColor = ColorPalette.Colors[Id];
             }        
         }
-
-
-
     }
 
     public enum CollisionStates
