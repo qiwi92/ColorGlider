@@ -2,7 +2,6 @@
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
-using Random = UnityEngine.Random;
 
 namespace Assets
 {
@@ -15,9 +14,7 @@ namespace Assets
         public DiamondsView DiamondsView;
         public PowerupsView PowerupsView;
         public Glider Glider;
-        private Collisions _collisions;
         public ScoreView ScoreView;
-        private int _numberOfCollisions;
 
 
         public float GliderMoveSpeed;
@@ -25,8 +22,6 @@ namespace Assets
         public Image PanelImage;
         public RectTransform GameStateRectTransform;
         
-        public Transform TutoralTexTransform;
-
         private float _screenWidth;
 
         private GameState _state;
@@ -34,20 +29,18 @@ namespace Assets
         
         private Color _color;
 
-        private Sounds _sounds;
-        private Color _currentColor;
+        public Sounds Sounds;
 
 
         void Awake ()
         {
-            _sounds = FindObjectOfType<Sounds>();
             
             LoadValues();
             
             _state = GameState.Init;
             CirclesView.ColorPalette = ColorPalette;
             Glider.ColorPalette = ColorPalette;
-            Glider.Sounds = _sounds;
+            Glider.Sounds = Sounds;
 
 
             _screenWidth = Camera.main.orthographicSize * Camera.main.aspect;
@@ -81,8 +74,6 @@ namespace Assets
 
         private void Setup()
         {
-            _numberOfCollisions = 0;
-           
             Glider.IsAlive = false;
             Glider.ResetPosition();
             SetColors();
@@ -124,10 +115,10 @@ namespace Assets
         private void HandleInitState()
         {
 
-            //if (InputController.PlayButton.GetState())
-            //{
+            if (InputController.PlayButton.GetState())
+            {
                 _state = GameState.Starting;
-            //}
+            }
         }
 
         private void HandleStartingState()
@@ -141,13 +132,12 @@ namespace Assets
             ScoreView.SetScore(Glider.Score);
             ScoreView.EmptyDots();
 
-            _sounds.PlayMainTheme(true);
-            _sounds.PlaySartGameSfx();
+            Sounds.PlayMainTheme(true);
+            Sounds.PlaySartGameSfx();
 
             SetColors();
 
             GameStateRectTransform.DOLocalMove(Vector3.up * 2000, 0.5f);
-            TutoralTexTransform.DOLocalMove(Vector3.down * 2000, 0.5f);
             PanelImage.DOFade(0, 0.2f);
 
             _state = GameState.Playing;
@@ -188,14 +178,13 @@ namespace Assets
             Glider.ResetPositionSmooth();
 
             GameStateRectTransform.DOLocalMove(Vector3.up * 200, 0.5f);
-            TutoralTexTransform.DOLocalMove(Vector3.down * 550, 0.5f);
             PanelImage.DOFade(0.8f, 0.2f);
 
             //InputController.GameStateText.text = "Game Over";
 
-            _sounds.PlayMainTheme(false);
-            _sounds.PlayDeathSfx();
-            _sounds.PlayDeathTheme(true);
+            Sounds.PlayMainTheme(false);
+            Sounds.PlayDeathSfx();
+            Sounds.PlayDeathTheme(true);
 
             if (Glider.Score > _highScore)
             {
@@ -214,7 +203,7 @@ namespace Assets
         {
             if (InputController.PlayButton.GetState())
             {
-                _sounds.PlayDeathTheme(false);
+                Sounds.PlayDeathTheme(false);
                 _state = GameState.Starting;
             }         
         }

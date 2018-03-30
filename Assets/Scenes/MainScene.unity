@@ -15558,7 +15558,6 @@ MonoBehaviour:
   DiamondsView: {fileID: 0}
   CirclesView: {fileID: 0}
   PowerupsView: {fileID: 0}
-  GameObject: {fileID: 1422919600}
   CollisionDistance: 0.305
   Id: 0
   IsAlive: 0
@@ -15990,7 +15989,7 @@ MonoBehaviour:
   GliderMoveSpeed: 6
   PanelImage: {fileID: 681416218}
   GameStateRectTransform: {fileID: 1189900314}
-  TutoralTexTransform: {fileID: 0}
+  Sounds: {fileID: 65295962}
 --- !u!4 &1646766662
 Transform:
   m_ObjectHideFlags: 0
@@ -19777,7 +19776,7 @@ Camera:
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
-  m_AllowMSAA: 1
+  m_AllowMSAA: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10

@@ -9,7 +9,7 @@ namespace Assets
         public Button Button;
         private bool _isPlaying;
 
-        private void Start ()
+        public void Start()
         {
             _isPlaying = false;
 

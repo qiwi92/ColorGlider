@@ -6,19 +6,18 @@ namespace Assets
 {
     public class Glider : MonoBehaviour
     {
-        public int Score;
-        public int Money;
+        [HideInInspector] public int Score;
+        [HideInInspector] public int Money;
 
         private int _collectedCircles = 0;
-        public int Index;
+        [HideInInspector] public int Index;
 
-        public CollisionStates CollisionState;
+        [HideInInspector] public CollisionStates CollisionState;
 
         [HideInInspector] public DiamondsView DiamondsView;
         [HideInInspector] public CirclesView CirclesView;
         [HideInInspector] public PowerupsView PowerupsView;
 
-        public GameObject GameObject;
         [Range(0.1f,1)] public float CollisionDistance;
         private readonly float _height = 2.80f;
         [HideInInspector] public int Id;
@@ -31,9 +30,9 @@ namespace Assets
 
         public Collisions Collisions;
 
-        public Sounds Sounds;
+        [HideInInspector] public Sounds Sounds;
 
-        public ColorPalette ColorPalette;
+        [HideInInspector] public ColorPalette ColorPalette;
 
         public void Setup()
         {
