@@ -10,6 +10,9 @@ namespace Assets.Scripts
         public RectTransform PowerUpShopCanvasTransform;
         [SerializeField] private Transform _powerupItemShopViewParent;
         [SerializeField] private PowerupItemShopView _powerupItemShopViewPrefab;
+        [SerializeField] private ColorPalette _colorPalette;
+        [SerializeField] private Sprite _icon;
+
 
         public void CreatePowerupItemShopViews(List<PowerupItemShopModel> models)
         {
@@ -18,7 +21,7 @@ namespace Assets.Scripts
                 var itemShopView = Instantiate(_powerupItemShopViewPrefab);
                 itemShopView.transform.SetParent(_powerupItemShopViewParent,false);
 
-                itemShopView.Setup(itemShopModel);
+                itemShopView.Setup(itemShopModel, _icon, _colorPalette.PowerupShield);
             }
         }
     }
