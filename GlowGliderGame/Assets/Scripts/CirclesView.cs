@@ -71,7 +71,7 @@ namespace Assets.Scripts
                     
                 }
 
-                circle.transform.position += circle.Speed * Time.deltaTime * Vector3.down;
+                circle.transform.position += circle.Speed * Time.smoothDeltaTime * Vector3.down;
             }
         }
 
