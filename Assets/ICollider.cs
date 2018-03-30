@@ -5,7 +5,7 @@ namespace Assets
     public interface ICollider
     {
         float GetSize();
-        ObjectType GetType();
+        ObjectType GetObjectType();
         Vector3 GetPosition();
     }
 }

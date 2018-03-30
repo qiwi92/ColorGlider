@@ -51,7 +51,7 @@ namespace Assets
             return 0.305f;
         }
 
-        public ObjectType GetType()
+        public ObjectType GetObjectType()
         {
             return ObjectType.Circle;
         }

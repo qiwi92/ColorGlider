@@ -4,7 +4,7 @@ namespace Assets
 {
     public class PowerupsView : MonoBehaviour {
 
-        public PowerUp DiamondPrefab;
+        public Powerup PowerupPrefab;
 
         public int Amount;
         private float _speed;
@@ -14,7 +14,7 @@ namespace Assets
 
         private ParticleSystem.EmitParams _emitParams;
 
-        [HideInInspector] public PowerUp[] PowerUps;
+        [HideInInspector] public Powerup[] Powerups;
         [HideInInspector] public ColorPalette ColorPalette;
 
         private float _width;
@@ -24,16 +24,16 @@ namespace Assets
         public void SetUp(float width)
         {
             _width = width;
-            PowerUps = new PowerUp[Amount];
+            Powerups = new Powerup[Amount];
             SetSpeed(0);
 
-            for (var index = 0; index < PowerUps.Length; index++)
+            for (var index = 0; index < Powerups.Length; index++)
             {
                 var randomPos = new Vector3(Random.Range(-_width, _width), Height, 0);
-                var newPowerUp = Instantiate(DiamondPrefab, randomPos, Quaternion.identity);
+                var newPowerUp = Instantiate(PowerupPrefab, randomPos, Quaternion.identity);
 
                 newPowerUp.IsAlive = true;
-                PowerUps[index] = newPowerUp;
+                Powerups[index] = newPowerUp;
 
             }
 
@@ -50,7 +50,7 @@ namespace Assets
 
         public void Move()
         {
-            foreach (var powerUp in PowerUps)
+            foreach (var powerUp in Powerups)
             {
                 if (powerUp.transform.position.y < -Height)
                 {
@@ -81,14 +81,14 @@ namespace Assets
             return _speed = Random.Range(baseSpeed, baseSpeed * 1.3f);
         }
 
-        private void Reset(PowerUp diamond)
+        private void Reset(Powerup diamond)
         {
             diamond.transform.position = new Vector3(Random.Range(-_width, _width), Height, 0);
         }
 
         public void KillAll()
         {
-            foreach (var powerUp in PowerUps)
+            foreach (var powerUp in Powerups)
             {
                 powerUp.IsAlive = false;
             }

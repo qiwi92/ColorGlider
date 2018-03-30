@@ -16,7 +16,6 @@ namespace Assets
         public Glider Glider;
         public ScoreView ScoreView;
 
-
         public float GliderMoveSpeed;
 
         public Image PanelImage;
@@ -34,7 +33,6 @@ namespace Assets
 
         void Awake ()
         {
-            
             LoadValues();
             
             _state = GameState.Init;
@@ -44,9 +42,6 @@ namespace Assets
 
 
             _screenWidth = Camera.main.orthographicSize * Camera.main.aspect;
-
-            
-            
 
             Glider.CirclesView = CirclesView;
             Glider.DiamondsView = DiamondsView;
@@ -68,8 +63,6 @@ namespace Assets
 
             
             Setup();
-
-
         }
 
         private void Setup()
@@ -114,7 +107,6 @@ namespace Assets
 
         private void HandleInitState()
         {
-
             if (InputController.PlayButton.GetState())
             {
                 _state = GameState.Starting;
