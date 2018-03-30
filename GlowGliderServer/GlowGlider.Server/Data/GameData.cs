@@ -2,11 +2,10 @@
 
 namespace GlowGlider.Server.Data
 {
-    public class HighScoreData
+    public class GameData
     {
-        public int Rank { get; set; }
         public Guid PlayerId { get; set; }
-        public string PlayerName { get; set; }
+        public string PlayerAlias { get; set; }
         public int Score { get; set; }
     }
 }

@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 
-namespace GlowGlider.Server.Controllers
+namespace GlowGlider.Server.Data
 {
     public interface IHighScoreRepository
     {
         IReadOnlyList<HighScoreData> GetBestScores();
-        IReadOnlyList<HighScoreData> GetScoresForPlayer(string playerName);
-        void InsertScore(string playerName, int score);
+        IReadOnlyList<HighScoreData> GetScoresForPlayer(string playerId);
+        void InsertScore(GameData data);
     }
 }

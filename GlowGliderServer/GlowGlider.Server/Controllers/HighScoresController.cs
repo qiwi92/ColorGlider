@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
+using GlowGlider.Server.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GlowGlider.Server.Controllers
@@ -17,14 +18,14 @@ namespace GlowGlider.Server.Controllers
         }
 
         [HttpGet]
-        public IReadOnlyList<HighScoreData> Get(string playerName)
+        public IReadOnlyList<HighScoreData> Get(string playerId)
         {
-            if (string.IsNullOrEmpty(playerName))
+            if (string.IsNullOrEmpty(playerId))
             {
                 return _repository.GetBestScores();
             }
 
-            return _repository.GetScoresForPlayer(playerName);
+            return _repository.GetScoresForPlayer(playerId);
         }
 
         [HttpPost]
@@ -40,7 +41,12 @@ namespace GlowGlider.Server.Controllers
 
             if (CalculateHash($"{player}-{score}") == request.Token)
             {
-                _repository.InsertScore(player, score);
+                _repository.InsertScore(new GameData
+                {
+                    PlayerAlias = player,
+                    Score = score,
+                    PlayerId = Guid.NewGuid(),
+                });
             }
 
             return new OkObjectResult(Get(player));
