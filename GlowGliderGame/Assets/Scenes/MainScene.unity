@@ -7833,7 +7833,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -111.28998}
+  m_AnchoredPosition: {x: 0, y: -111.29004}
   m_SizeDelta: {x: 453.8, y: 192.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &421203520
@@ -8239,7 +8239,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.0000019073, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &673088702
@@ -12344,6 +12344,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StartScreenView: {fileID: 681416220}
   PowerupShopView: {fileID: 673088704}
+  ShopCanvas: {fileID: 673088700}
 --- !u!4 &957172040
 Transform:
   m_ObjectHideFlags: 0
