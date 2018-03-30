@@ -48,7 +48,7 @@ namespace GlowGlider.Server.Controllers
                 });
             }
 
-            return new OkObjectResult(Get(player));
+            return new OkResult();
         }
     }
 }
