@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using GlowGlider.Server.Data;
 
 namespace GlowGlider.Server.Controllers
 {
-    internal class MockHighScoreRepository : IHighScoreRepository
+    internal class MockHighScoreRepository 
     {
         public IReadOnlyList<HighScoreData> GetBestScores()
         {

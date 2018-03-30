@@ -1,11 +1,8 @@
-﻿using System;
-
-namespace GlowGlider.Server.Data
+﻿namespace GlowGlider.Server.Data
 {
-    public class HighScoreData
+    public class HighScoreViewModel 
     {
         public int Rank { get; set; }
-        public Guid PlayerId { get; set; }
         public string PlayerName { get; set; }
         public int Score { get; set; }
     }
