@@ -7,6 +7,7 @@ namespace Assets.Scripts
     public class StartScreenView : MonoBehaviour
     {
         public PlayButtonView PlayButton;
+        public Button OpenShoptButton;
         public Text HighScoreText;
         public RectTransform StartScreenTransform;
 
