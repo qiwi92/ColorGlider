@@ -8,8 +8,8 @@ namespace GlowGlider.Server.Controllers
         {
             return new[]
             {
-                new HighScoreData {Rank=1, PlayerName = "RUBEN", Score = 121},
-                new HighScoreData {Rank=2, PlayerName = "JOSH", Score = 69},
+                new HighScoreData {Rank=1, PlayerName = "JOSH", Score = 231},
+                new HighScoreData {Rank=2, PlayerName = "RUBEN", Score = 121},
                 new HighScoreData {Rank=3, PlayerName = "JERRY", Score = 40},
                 new HighScoreData {Rank=4, PlayerName = "MAGI", Score = 32},
                 new HighScoreData {Rank=5, PlayerName = "MARCEL", Score = -1},
