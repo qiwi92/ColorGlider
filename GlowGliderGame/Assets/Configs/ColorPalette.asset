@@ -17,5 +17,5 @@ MonoBehaviour:
   - {r: 1, g: 0.52728194, b: 0.41911763, a: 1}
   Untargetable: {r: 0.3455882, g: 0.3455882, b: 0.3455882, a: 0}
   Diamond: {r: 1, g: 0.74036515, b: 0.058823526, a: 1}
-  PowerupBoost: {r: 0.6471601, g: 0.47794116, b: 1, a: 1}
-  PowerupShield: {r: 1, g: 1, b: 1, a: 0}
+  PowerupBoost: {r: 1, g: 1, b: 1, a: 1}
+  PowerupShield: {r: 0.6471601, g: 0.47794116, b: 1, a: 1}
