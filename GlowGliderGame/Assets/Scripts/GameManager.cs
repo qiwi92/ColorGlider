@@ -1,5 +1,6 @@
 ﻿using System;
 using DG.Tweening;
+using Money;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -225,13 +226,11 @@ namespace Assets.Scripts
         private void LoadValues()
         {
             _highScore = PlayerPrefs.GetInt("HighScore");
-            Glider.Money = PlayerPrefs.GetInt("Money");
         }
 
         private void SaveValues()
         {
             PlayerPrefs.SetInt("HighScore",_highScore);
-            PlayerPrefs.SetInt("Money",Glider.Money);
         }
 
         private void MoveWithArrows()

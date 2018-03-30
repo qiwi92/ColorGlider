@@ -271,6 +271,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 161632741}
+  - component: {fileID: 161632742}
   m_Layer: 5
   m_Name: DiamondsDisplay
   m_TagString: Untagged
@@ -298,6 +299,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 371}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &161632742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 161632740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e521d29b03e0774a81e5f11778fe473, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DiamondsImage: {fileID: 516267859}
+  DiamondText: {fileID: 971312590}
 --- !u!1 &166128755
 GameObject:
   m_ObjectHideFlags: 0
@@ -7407,8 +7421,9 @@ GameObject:
   m_Component:
   - component: {fileID: 504951639}
   - component: {fileID: 504951640}
+  - component: {fileID: 504951641}
   m_Layer: 0
-  m_Name: Sheild
+  m_Name: Shield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7422,7 +7437,7 @@ Transform:
   m_GameObject: {fileID: 504951638}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.6}
+  m_LocalScale: {x: 0.55, y: 0.55, z: 0.6}
   m_Children: []
   m_Father: {fileID: 1422919601}
   m_RootOrder: 4
@@ -7460,7 +7475,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: a378726a425730f4f9195d2d819ae71f, type: 3}
-  m_Color: {r: 0.72008115, g: 1, b: 0.49264705, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -7469,6 +7484,19 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+--- !u!114 &504951641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 504951638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da8ed20662cafa54a8ff5f6eee328b0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShieldSpriteRenderer: {fileID: 504951640}
+  Duration: 2
 --- !u!1 &516267857
 GameObject:
   m_ObjectHideFlags: 0
@@ -8056,7 +8084,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -339275330
+  randomSeed: -1999356499
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -11674,7 +11702,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 812171075
+  randomSeed: -790432153
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -15443,7 +15471,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Score: 0
-  Money: 0
   Index: 0
   CollisionState: 0
   DiamondsView: {fileID: 0}
@@ -15454,9 +15481,9 @@ MonoBehaviour:
   IsAlive: 0
   GliderSpriteFilled: {fileID: 1462121856}
   GliderSpriteOutline: {fileID: 258550567}
-  GliderShield: {fileID: 504951640}
   EngineParticleSystem: {fileID: 746789245}
   EngineDustParticleSystem: {fileID: 1008843795}
+  Shield: {fileID: 504951641}
   Sounds: {fileID: 0}
   ColorPalette: {fileID: 0}
 --- !u!1 &1462121854
@@ -15913,7 +15940,7 @@ MonoBehaviour:
   Untargetable: {r: 0.74264705, g: 0.74264705, b: 0.74264705, a: 1}
   Diamond: {r: 1, g: 0.74036515, b: 0.058823526, a: 1}
   PowerupBoost: {r: 0.6471601, g: 0.47794116, b: 1, a: 1}
-  PowerupShield: {r: 0.97119695, g: 1, b: 0.47794116, a: 1}
+  PowerupShield: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1647166241
 GameObject:
   m_ObjectHideFlags: 0
@@ -15946,8 +15973,6 @@ MonoBehaviour:
   DiamondPrefab: {fileID: 114051716091538906, guid: bf4f0581d3ce40542898504ea3ef7924,
     type: 2}
   Amount: 1
-  DiamondsImage: {fileID: 516267859}
-  DiamondText: {fileID: 971312590}
   SpawnProbability: 1
   ParticleSystem: {fileID: 1647166244}
   Diamonds: []

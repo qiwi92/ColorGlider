@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using Money;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -6,7 +7,6 @@ namespace Assets.Scripts
     public class Glider : MonoBehaviour
     {
         [HideInInspector] public int Score;
-        [HideInInspector] public int Money;
 
         private int _collectedCircles = 0;
         [HideInInspector] public int Index;
@@ -83,18 +83,18 @@ namespace Assets.Scripts
             }                     
         }
 
-        public void HandleCollision(ICollider collider)
+        public void HandleCollision(ICollider collijder)
         {
-            switch (collider.GetObjectType())
+            switch (collijder.GetObjectType())
             {
                 case ObjectType.Circle:
-                    HandleCircleCollision(collider as CircleView);
+                    HandleCircleCollision(collijder as CircleView);
                     break;
                 case ObjectType.PowerUp:
-                    HandlePowerUpCollision(collider as PowerupView);
+                    HandlePowerUpCollision(collijder as PowerupView);
                     break;
                 case ObjectType.Diamond:
-                    HandleDiamondCollision(collider as DiamondView);
+                    HandleDiamondCollision(collijder as DiamondView);
                     break;
             }
         }
@@ -162,9 +162,7 @@ namespace Assets.Scripts
             Sounds.PlayDiamondSfx();
             DiamondsView.SetSpeed(Score);
 
-            Money += diamond.Value;
-
-            DiamondsView.SetNewValue(Money);
+            MoneyService.Instance.AddMoney(diamond.Value);
             diamond.IsAlive = false;
         }
 
