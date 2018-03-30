@@ -8,7 +8,7 @@ namespace Highscore
 
         private void Start()
         {
-            var model = new DummyHighScoreModel();
+            var model = new HighScoreModel();
             _highscoreView.Initialize(model);
         }
     }

@@ -110,6 +110,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: {fileID: 114691533334803338}
   _score: {fileID: 114126099688873976}
+  _box: {fileID: 114478680715742112}
 --- !u!114 &114478680715742112
 MonoBehaviour:
   m_ObjectHideFlags: 1

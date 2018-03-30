@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using GlowGlider.Shared;
 
 namespace Highscore
 {
@@ -6,12 +7,12 @@ namespace Highscore
     {
         public IEnumerable<PlayerHighScore> HighScoresAroundPlayer => new[]
         {
-            new PlayerHighScore{Name = "Goku",  Score = 9001},
-            new PlayerHighScore{Name = "xXxHuntxXx",  Score = 2798},
-            new PlayerHighScore{Name = "DeineMudda",  Score = 2144},
-            new PlayerHighScore{Name = "Manfred",  Score = 1896},
-            new PlayerHighScore{Name = "GliderLove",  Score = 1403},
-            new PlayerHighScore{Name = "Luftpumpe",  Score = 12},
+            new PlayerHighScore{PlayerName = "Goku",  Score = 9001},
+            new PlayerHighScore{PlayerName = "xXxHuntxXx",  Score = 2798},
+            new PlayerHighScore{PlayerName = "DeineMudda",  Score = 2144},
+            new PlayerHighScore{PlayerName = "Manfred",  Score = 1896, IsPlayer = true},
+            new PlayerHighScore{PlayerName = "GliderLove",  Score = 1403},
+            new PlayerHighScore{PlayerName = "Luftpumpe",  Score = 12},
         };
     }
 }
