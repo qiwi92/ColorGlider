@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using Money;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -6,7 +7,6 @@ namespace Assets.Scripts
     public class Glider : MonoBehaviour
     {
         [HideInInspector] public int Score;
-        [HideInInspector] public int Money;
 
         private int _collectedCircles = 0;
         [HideInInspector] public int Index;
@@ -24,9 +24,10 @@ namespace Assets.Scripts
     
         public SpriteRenderer GliderSpriteFilled;
         public SpriteRenderer GliderSpriteOutline;
-        public SpriteRenderer GliderShield;
         public ParticleSystem EngineParticleSystem;
         public ParticleSystem EngineDustParticleSystem;
+
+        public Shield Shield;
 
 
 
@@ -38,6 +39,7 @@ namespace Assets.Scripts
 
         public void Setup()
         {
+            Shield.Deactivate();
             Collisions = new Collisions(this, CirclesView.Circles, DiamondsView.Diamonds, PowerupsView.Powerups);
         }
 
@@ -81,18 +83,18 @@ namespace Assets.Scripts
             }                     
         }
 
-        public void HandleCollision(ICollider collider)
+        public void HandleCollision(ICollider collijder)
         {
-            switch (collider.GetObjectType())
+            switch (collijder.GetObjectType())
             {
                 case ObjectType.Circle:
-                    HandleCircleCollision(collider as CircleView);
+                    HandleCircleCollision(collijder as CircleView);
                     break;
                 case ObjectType.PowerUp:
-                    HandlePowerUpCollision(collider as PowerupView);
+                    HandlePowerUpCollision(collijder as PowerupView);
                     break;
                 case ObjectType.Diamond:
-                    HandleDiamondCollision(collider as DiamondView);
+                    HandleDiamondCollision(collijder as DiamondView);
                     break;
             }
         }
@@ -119,6 +121,13 @@ namespace Assets.Scripts
                 if(SROptions.InvincibilityCheatActive)
                     return;
 
+                if (Shield.IsActive())
+                {
+                    Shield.Deactivate();
+                    cirle.Alive = false;
+                    return;
+                }
+
                 _collectedCircles = 0;
                 IsAlive = false;
                 CirclesView.KillAll();
@@ -132,16 +141,26 @@ namespace Assets.Scripts
             Sounds.PlayPowerUpSfx();
             PowerupsView.SetSpeed(Score);
             powerup.IsAlive = false;
-        }
 
+            var powerupType = powerup.PowerupType;
+
+            switch (powerupType)
+            {
+                case PowerupType.Shield:
+                    Shield.Activate();
+                    break;
+                case PowerupType.Boost:
+
+                    break;
+            }
+        }
+     
         private void HandleDiamondCollision(DiamondView diamond)
         {
             Sounds.PlayDiamondSfx();
             DiamondsView.SetSpeed(Score);
 
-            Money += diamond.Value;
-
-            DiamondsView.SetNewValue(Money);
+            MoneyService.Instance.AddMoney(diamond.Value);
             diamond.IsAlive = false;
         }
 
@@ -164,7 +183,10 @@ namespace Assets.Scripts
 
                 GliderSpriteFilled.DOColor(ColorPalette.Colors[Id], 0.4f);
                 GliderSpriteOutline.DOColor(ColorPalette.Colors[Id], 0.4f);
-                GliderShield.DOColor(ColorPalette.Colors[Id], 0.4f);
+
+                var colorWithoutAlpha = ColorPalette.Colors[Id];
+                colorWithoutAlpha.a = 0;
+                Shield.ShieldSpriteRenderer.DOColor(colorWithoutAlpha, 0.4f);
 
                 EngineParticleSystem.startColor = ColorPalette.Colors[Id];
                 EngineDustParticleSystem.startColor = ColorPalette.Colors[Id];

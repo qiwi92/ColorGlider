@@ -1,6 +1,4 @@
-﻿using DG.Tweening;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 namespace Assets.Scripts
 {
@@ -11,8 +9,7 @@ namespace Assets.Scripts
         public int Amount;
         private float _speed;
 
-        public Image DiamondsImage;
-        public Text DiamondText;
+
 
         [Range(0, 1)] public float SpawnProbability;
 
@@ -104,16 +101,7 @@ namespace Assets.Scripts
             }
         }
 
-        public void SetNewValue(int diamondAmount)
-        {
-            DiamondText.text = diamondAmount.ToString("0");
-            DiamondText.DOFade(1, 0.2f);
-            DiamondsImage.DOFade(1, 0.2f).OnComplete(() =>
-            {
-                DiamondText.DOFade(0, 2f);
-                DiamondsImage.DOFade(0, 2f);
-            });
-        }
+      
 
 
         private void SetSpawnState(DiamondView diamond)
