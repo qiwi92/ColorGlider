@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using Money;
 using UnityEngine;
@@ -17,6 +18,7 @@ namespace Assets.Scripts
         public Glider Glider;
 
         public ScoreView ScoreView;
+        public PowerupShopView PowerupShopView;
 
         public float GliderMoveSpeed;
 
@@ -67,6 +69,14 @@ namespace Assets.Scripts
             Setup();
 
             StartScreenView.SetHighScore(_highScore);
+
+            var shopItemModels = new List<PowerupItemShopModel>
+            {
+                new PowerupItemShopModel(0,"Shield"),
+                new PowerupItemShopModel(1,"Poost"),
+            };
+
+            PowerupShopView.CreatePowerupItemShopViews(shopItemModels);
         }
 
         private void Setup()
