@@ -1,9 +1,14 @@
 ﻿using DG.Tweening;
 using UnityEngine;
 
-
-namespace Assets
+namespace Assets.Scripts
 {
+    public class Powerup
+    {
+
+    }
+
+
     public class Glider : MonoBehaviour
     {
         [HideInInspector] public int Score;
@@ -25,6 +30,7 @@ namespace Assets
     
         public SpriteRenderer GliderSpriteFilled;
         public SpriteRenderer GliderSpriteOutline;
+        public SpriteRenderer GliderShield;
         public ParticleSystem EngineParticleSystem;
         public ParticleSystem EngineDustParticleSystem;
 
@@ -161,6 +167,7 @@ namespace Assets
 
                 GliderSpriteFilled.DOColor(ColorPalette.Colors[Id], 0.4f);
                 GliderSpriteOutline.DOColor(ColorPalette.Colors[Id], 0.4f);
+                GliderShield.DOColor(ColorPalette.Colors[Id], 0.4f);
 
                 EngineParticleSystem.startColor = ColorPalette.Colors[Id];
                 EngineDustParticleSystem.startColor = ColorPalette.Colors[Id];

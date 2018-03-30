@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Assets
+namespace Assets.Scripts
 {
     public class ColorPalette : MonoBehaviour
     {
         public Color[] Colors;
         public Color Untargetable;
         public Color Diamond;
-        public Color PowerUp;
+        public Color[] Powerup;
     }
 }

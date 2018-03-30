@@ -1,5 +1,5 @@
+using Assets.PostProcessing.Runtime.Attributes;
 using UnityEngine;
-using UnityEngine.PostProcessing;
 
 namespace UnityEditor.PostProcessing
 {

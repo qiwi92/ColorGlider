@@ -1,6 +1,7 @@
 using System;
+using UnityEngine;
 
-namespace UnityEngine.PostProcessing
+namespace Assets.PostProcessing.Runtime.Utils
 {
     // Small wrapper on top of AnimationCurve to handle zero-key curves and keyframe looping
 

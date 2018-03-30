@@ -1,7 +1,6 @@
-﻿using DG.Tweening;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Assets
+namespace Assets.Scripts
 { 
     public class CircleView : MonoBehaviour, ICollider
     {

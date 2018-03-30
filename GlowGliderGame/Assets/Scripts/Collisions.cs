@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Assets
+namespace Assets.Scripts
 {
     public class Collisions
     {       

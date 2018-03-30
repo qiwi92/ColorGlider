@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Reflection;
+using Assets.PostProcessing.Runtime.Attributes;
+using Assets.PostProcessing.Runtime.Components;
 using UnityEngine;
-using UnityEngine.PostProcessing;
 
 namespace UnityEditor.PostProcessing
 {

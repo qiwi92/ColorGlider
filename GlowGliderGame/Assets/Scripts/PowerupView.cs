@@ -1,10 +1,15 @@
 ﻿using UnityEngine;
 
-namespace Assets
+namespace Assets.Scripts
 {
     public class PowerupView : MonoBehaviour, ICollider
     {
         [HideInInspector] public bool IsAlive;
+
+        public SpriteRenderer OutlineSpriteRenderer;
+        public SpriteRenderer LogoSpriteRenderer;
+
+        private Color _color;
 
         public float GetSize()
         {
@@ -19,6 +24,18 @@ namespace Assets
         public Vector3 GetPosition()
         {
             return this.transform.position;
+        }
+
+        public void SetColors(Color color)
+        {
+            _color = color;
+            OutlineSpriteRenderer.color = color;
+            LogoSpriteRenderer.color = color;
+        }
+
+        public Color GetColor()
+        {
+            return _color;
         }
     }
 }

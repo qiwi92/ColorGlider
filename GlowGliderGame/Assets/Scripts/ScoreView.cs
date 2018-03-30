@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets
+namespace Assets.Scripts
 {
     public class ScoreView : MonoBehaviour
     {

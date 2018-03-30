@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 
-namespace Assets
+namespace Assets.Scripts
 {
     public class PowerupsView : MonoBehaviour {
 
         public PowerupView PowerupPrefab;
-
+        public PowerupView ShieldPowerUp;
+    
         public int Amount;
+        public int AmountShields;
         private float _speed;
 
 
@@ -24,27 +26,36 @@ namespace Assets
         public void SetUp(float width)
         {
             _width = width;
-            Powerups = new PowerupView[Amount];
+            Powerups = new PowerupView[Amount + AmountShields];
             SetSpeed(0);
 
-            for (var index = 0; index < Powerups.Length; index++)
+            for (var index = 0; index < Amount; index++)
             {
                 var randomPos = new Vector3(Random.Range(-_width, _width), Height, 0);
                 var newPowerUp = Instantiate(PowerupPrefab, randomPos, Quaternion.identity);
-
+                
+                newPowerUp.SetColors(ColorPalette.Powerup[0]);
                 newPowerUp.IsAlive = true;
                 Powerups[index] = newPowerUp;
+            }
 
+            for (var index = Amount; index < Amount + AmountShields; index++)
+            {
+                var randomPos = new Vector3(Random.Range(-_width, _width), Height, 0);
+                var newPowerUp = Instantiate(ShieldPowerUp, randomPos, Quaternion.identity);
+
+                newPowerUp.SetColors(ColorPalette.Powerup[1]);
+                newPowerUp.IsAlive = true;
+                Powerups[index] = newPowerUp;
             }
 
 
             var mainModule = ParticleSystem.main;
             mainModule.duration = 4;
-            mainModule.startColor = ColorPalette.PowerUp;
+            
             mainModule.startDelay = 2f;
 
-            _emitParams = new ParticleSystem.EmitParams();
-            _emitParams.applyShapeToPosition = true;
+            _emitParams = new ParticleSystem.EmitParams {applyShapeToPosition = true};
 
         }
 
@@ -60,6 +71,10 @@ namespace Assets
                 if (!powerUp.IsAlive)
                 {
                     _emitParams.position = powerUp.transform.position;
+
+                    var mainModule = ParticleSystem.main;
+                    mainModule.startColor = powerUp.GetColor();
+
                     ParticleSystem.Emit(_emitParams, 4);
 
                     Reset(powerUp);

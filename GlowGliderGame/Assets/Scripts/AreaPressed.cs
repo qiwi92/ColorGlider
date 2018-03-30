@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Assets
+namespace Assets.Scripts
 {
     public class AreaPressed : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
