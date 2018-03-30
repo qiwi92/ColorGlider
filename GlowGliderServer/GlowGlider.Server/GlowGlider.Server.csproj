@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\GlowGlider.Shared\HighScoreData.cs" Link="Shared\HighScoreData.cs" />
+    <Compile Include="..\GlowGlider.Shared\PublishRequest.cs" Link="Shared\PublishRequest.cs" />
+    <Compile Include="..\GlowGlider.Shared\TokenBuilder.cs" Link="Shared\TokenBuilder.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

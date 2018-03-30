@@ -119,6 +119,7 @@ namespace Assets.Scripts
         private void HandleStartingState()
         {
             MainView.StartScreenView.PlayAnimation();
+            MainView.DeactivateShopCanvas();
 
             Glider.Score = 0;        
             CirclesView.SetSpeed(0);
@@ -170,6 +171,7 @@ namespace Assets.Scripts
 
         private void HandleDyingState()
         {
+            MainView.ActivateShopCanvas();
             Glider.ResetPositionSmooth();
             
             PanelImage.DOFade(0.8f, 0.2f);

@@ -10,6 +10,8 @@ namespace Assets.Scripts
         public StartScreenView StartScreenView;
         public PowerupShopView PowerupShopView;
 
+        public GameObject ShopCanvas;
+
         private Button _openShopButton;
         private Button _closeShopButton;
 
@@ -17,12 +19,14 @@ namespace Assets.Scripts
 
         private float _screenWidth;
 
-        public void Setup(int highscore)
+        public void Setup( int highscore)
         {
             _shopIsOpen = false;
 
-            _screenWidth = PowerupShopView.PowerUpShopCanvasTransform.rect.width;
-            PowerupShopView.PowerUpShopCanvasTransform.DOLocalMove(Vector3.right * _screenWidth, 0.4f);
+            _screenWidth = 2*Camera.main.orthographicSize * Camera.main.aspect;
+
+            MoveShopPanel();
+
 
 
             StartScreenView.SetHighScore(highscore);
@@ -46,14 +50,24 @@ namespace Assets.Scripts
         {
             if (_shopIsOpen)
             {
-                PowerupShopView.PowerUpShopCanvasTransform.DOLocalMove(Vector3.zero, 0.4f);
+                PowerupShopView.PowerUpShopCanvasTransform.DOMove(Vector3.zero,0.4f);
                 _shopIsOpen = false;
             }
             else
             {
-                PowerupShopView.PowerUpShopCanvasTransform.DOLocalMove(Vector3.right * _screenWidth, 0.4f);
+                PowerupShopView.PowerUpShopCanvasTransform.DOMove(Vector3.right * _screenWidth, 0.4f);
                 _shopIsOpen = true;
             }
+        }
+
+        public void DeactivateShopCanvas()
+        {
+            ShopCanvas.SetActive(false);
+        }
+
+        public void ActivateShopCanvas()
+        {
+            ShopCanvas.SetActive(true);
         }
     }
 }
