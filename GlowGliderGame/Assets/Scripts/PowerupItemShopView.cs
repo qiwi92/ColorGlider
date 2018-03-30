@@ -7,21 +7,27 @@ namespace Assets.Scripts
     public class PowerupItemShopView : MonoBehaviour, IObserver
     {
         [SerializeField] private PowerupProgressView _powerupProgressView;
+        [SerializeField] private PowerupIconView _powerupIconView;
         [SerializeField] private Text _itemName;
         [SerializeField] private Text _cost;
         [SerializeField] private Text _buttonLabel;
         [SerializeField] private Button _buyButton;
-        [SerializeField] private ColorPalette _colorPalette;
+        [SerializeField] private Image _buyButtonImage;
+
 
         private PowerupItemShopModel _itemShopModel;
 
-        public void Setup(PowerupItemShopModel model)
+        public void Setup(PowerupItemShopModel model,Sprite icon,Color color)
         {
             MoneyService.Instance.AddObserver(this);
 
+            _powerupIconView.SetImage(icon, color);
+            _buyButtonImage.color = color;
+            _itemName.color = color;
+
             _itemShopModel = model;
             _itemName.text = _itemShopModel.Name;
-            _powerupProgressView.Init();
+            _powerupProgressView.Init(color);
 
             _buyButton.onClick.AddListener(TryBuyPowerup);
 

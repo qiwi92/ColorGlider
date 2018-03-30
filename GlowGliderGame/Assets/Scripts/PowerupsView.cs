@@ -7,8 +7,6 @@ namespace Assets.Scripts
         public PowerupView PowerupPrefab;
         public PowerupView ShieldPowerUp;
     
-        public int AmountBoosts;
-        public int AmountShields;
         private float _speed;
 
 
@@ -26,39 +24,35 @@ namespace Assets.Scripts
         public void SetUp(float width)
         {
             _width = width;
-            Powerups = new PowerupView[AmountBoosts + AmountShields];
+            Powerups = new PowerupView[2];
             SetSpeed(0);
 
-            for (var index = 0; index < AmountBoosts; index++)
-            {
-                var randomPos = new Vector3(Random.Range(-_width, _width), Height, 0);
-                var newPowerUp = Instantiate(PowerupPrefab, randomPos, Quaternion.identity);
+            var randomPos = new Vector3(Random.Range(-_width, _width), Height, 0);
 
-                newPowerUp.PowerupType = PowerupType.Boost;
-                newPowerUp.SetColors(ColorPalette.PowerupBoost);
-                newPowerUp.IsAlive = true;
-                Powerups[index] = newPowerUp;
-            }
+            var newBoostPowerup = Instantiate(PowerupPrefab, randomPos, Quaternion.identity);
+            newBoostPowerup.PowerupType = PowerupType.Boost;
+            newBoostPowerup.SetColors(ColorPalette.PowerupBoost);
+            newBoostPowerup.IsAlive = true;
+            
+            
+            var newShieldPowerup = Instantiate(ShieldPowerUp, randomPos, Quaternion.identity);
+            newShieldPowerup.PowerupType = PowerupType.Shield;
+            newShieldPowerup.SetColors(ColorPalette.PowerupShield);
+            newShieldPowerup.IsAlive = true;
 
-            for (var index = AmountBoosts; index < AmountBoosts + AmountShields; index++)
-            {
-                var randomPos = new Vector3(Random.Range(-_width, _width), Height, 0);
-                var newPowerUp = Instantiate(ShieldPowerUp, randomPos, Quaternion.identity);
-
-                newPowerUp.PowerupType = PowerupType.Shield;
-                newPowerUp.SetColors(ColorPalette.PowerupShield);
-                newPowerUp.IsAlive = true;
-                Powerups[index] = newPowerUp;
-            }
-
+            Powerups[0] = newBoostPowerup;
+            Powerups[1] = newShieldPowerup;
 
             var mainModule = ParticleSystem.main;
             mainModule.duration = 4;
-            
             mainModule.startDelay = 2f;
-
             _emitParams = new ParticleSystem.EmitParams {applyShapeToPosition = true};
 
+
+            foreach (var powerUp in Powerups)
+            {
+                powerUp.SetSpawnChance(0.5f);
+            }
         }
 
         public void Move()
@@ -70,7 +64,7 @@ namespace Assets.Scripts
                     Reset(powerUp);
                 }
 
-                if (!powerUp.IsAlive)
+                if (!powerUp.IsAlive && powerUp.CanSpawn)
                 {
                     _emitParams.position = powerUp.transform.position;
 

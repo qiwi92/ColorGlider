@@ -931,11 +931,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _powerupProgressView: {fileID: 114610911830663602}
+  _powerupIconView: {fileID: 114935308658762540}
   _itemName: {fileID: 114149310100868468}
   _cost: {fileID: 114738554106360768}
   _buttonLabel: {fileID: 114598260707077306}
   _buyButton: {fileID: 114790854259257776}
-  _colorPalette: {fileID: 11400000, guid: 9e76914afbd386044aad910e2dd19f6c, type: 2}
+  _buyButtonImage: {fileID: 114522189611874536}
 --- !u!114 &114790854259257776
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1015,8 +1016,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cd29dfa137e4e2b972c54513726f246, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _iconImage: {fileID: 114453117856546784}
-  _outlineImage: {fileID: 0}
+  _iconImage: {fileID: 114340949374225340}
+  _outlineImage: {fileID: 114453117856546784}
 --- !u!114 &114953663391498576
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1197,7 +1198,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 284.655, y: -24}
+  m_AnchoredPosition: {x: 284.65497, y: -24}
   m_SizeDelta: {x: 20.49, y: 28}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224205173722190548
@@ -1321,7 +1322,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 84.859985, y: 0}
+  m_AnchoredPosition: {x: 84.85986, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224488381994528440
@@ -1429,7 +1430,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 10.245, y: -24}
+  m_AnchoredPosition: {x: 10.245003, y: -24}
   m_SizeDelta: {x: 20.49, y: 28}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224715737741470510
