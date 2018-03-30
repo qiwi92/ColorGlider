@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Text;
 using GlowGlider.Server.Data;
+using GlowGlider.Shared;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GlowGlider.Server.Controllers
@@ -31,7 +30,7 @@ namespace GlowGlider.Server.Controllers
         [HttpPost]
         public IActionResult PublishScore([FromBody] PublishRequest request)
         {
-            var player = request.PlayerName;
+            var player = request.PlayerAlias;
             var score = request.Score;
 
             if (string.IsNullOrWhiteSpace(player))
@@ -39,7 +38,7 @@ namespace GlowGlider.Server.Controllers
                 return new BadRequestResult();
             }
 
-            if (CalculateHash($"{player}-{score}") == request.Token)
+            if (TokenBuilder.TokenFor(request) == request.Token)
             {
                 _repository.InsertScore(new GameData
                 {
@@ -50,19 +49,6 @@ namespace GlowGlider.Server.Controllers
             }
 
             return new OkObjectResult(Get(player));
-        }
-
-        private string CalculateHash(string input)
-        {
-            using (var algorithm = SHA512.Create()) 
-            {
-                var hashedBytes = algorithm.ComputeHash(Encoding.UTF8.GetBytes(input));
-
-                return BitConverter.ToString(hashedBytes)
-                    .Replace("-", "")
-                    .ToLower()
-                    .Substring(0, 16);
-            }
         }
     }
 }

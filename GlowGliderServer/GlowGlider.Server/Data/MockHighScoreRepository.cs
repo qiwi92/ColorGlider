@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using GlowGlider.Server.Data;
+using GlowGlider.Shared;
 
-namespace GlowGlider.Server.Controllers
+namespace GlowGlider.Server.Data
 {
     internal class MockHighScoreRepository 
     {
