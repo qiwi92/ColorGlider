@@ -11,6 +11,7 @@ namespace Assets.Scripts
         [SerializeField] private Text _cost;
         [SerializeField] private Text _buttonLabel;
         [SerializeField] private Button _buyButton;
+        [SerializeField] private ColorPalette _colorPalette;
 
         private PowerupItemShopModel _itemShopModel;
 

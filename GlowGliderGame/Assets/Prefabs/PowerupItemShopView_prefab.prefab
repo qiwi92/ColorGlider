@@ -935,6 +935,7 @@ MonoBehaviour:
   _cost: {fileID: 114738554106360768}
   _buttonLabel: {fileID: 114598260707077306}
   _buyButton: {fileID: 114790854259257776}
+  _colorPalette: {fileID: 11400000, guid: 9e76914afbd386044aad910e2dd19f6c, type: 2}
 --- !u!114 &114790854259257776
 MonoBehaviour:
   m_ObjectHideFlags: 1

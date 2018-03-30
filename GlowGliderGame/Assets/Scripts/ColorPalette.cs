@@ -2,7 +2,8 @@
 
 namespace Assets.Scripts
 {
-    public class ColorPalette : MonoBehaviour
+    [CreateAssetMenu(fileName = "ColorPalette", menuName = "ScriptableObjects/ColorPalette")]
+    public class ColorPalette : ScriptableObject
     {
         public Color[] Colors;
         public Color Untargetable;

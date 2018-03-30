@@ -72,8 +72,8 @@ namespace Assets.Scripts
 
             var shopItemModels = new List<PowerupItemShopModel>
             {
-                new PowerupItemShopModel(0,"Shield"),
-                new PowerupItemShopModel(1,"Poost"),
+                new PowerupItemShopModel(ItemType.Shield),
+                new PowerupItemShopModel(ItemType.SpeedBoost),
             };
 
             PowerupShopView.CreatePowerupItemShopViews(shopItemModels);

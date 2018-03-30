@@ -426,7 +426,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 57451157
+  randomSeed: 1040641596
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -4151,7 +4151,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1918258307
+  randomSeed: 1748554509
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -8828,7 +8828,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1999356499
+  randomSeed: -1430319472
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -12615,7 +12615,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -790432153
+  randomSeed: 2077603373
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -17300,7 +17300,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1646766662}
   - component: {fileID: 1646766661}
-  - component: {fileID: 1646766663}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -17321,7 +17320,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StartScreenView: {fileID: 681416220}
   InputController: {fileID: 1653258931}
-  ColorPalette: {fileID: 1646766663}
+  ColorPalette: {fileID: 11400000, guid: 9e76914afbd386044aad910e2dd19f6c, type: 2}
   CirclesView: {fileID: 166128756}
   DiamondsView: {fileID: 1647166242}
   PowerupsView: {fileID: 257238167}
@@ -17344,25 +17343,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1646766663
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1646766660}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7ad2cb5f1654d842b3db9c622ae0518, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Colors:
-  - {r: 0.67, g: 1, b: 0.49264705, a: 1}
-  - {r: 0.39215687, g: 1, b: 1, a: 1}
-  - {r: 1, g: 0.52728194, b: 0.41911763, a: 1}
-  Untargetable: {r: 0.74264705, g: 0.74264705, b: 0.74264705, a: 1}
-  Diamond: {r: 1, g: 0.74036515, b: 0.058823526, a: 1}
-  PowerupBoost: {r: 0.6471601, g: 0.47794116, b: 1, a: 1}
-  PowerupShield: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1647166241
 GameObject:
   m_ObjectHideFlags: 0
@@ -17473,7 +17453,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -498206947
+  randomSeed: -72313497
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -21394,7 +21374,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000074148906}
+  m_AnchoredPosition: {x: 0, y: 0.00006718975}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2049619036
