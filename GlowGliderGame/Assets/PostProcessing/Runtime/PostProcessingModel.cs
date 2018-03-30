@@ -1,6 +1,8 @@
 using System;
+using Assets.PostProcessing.Runtime.Attributes;
+using UnityEngine;
 
-namespace UnityEngine.PostProcessing
+namespace Assets.PostProcessing.Runtime
 {
     [Serializable]
     public abstract class PostProcessingModel

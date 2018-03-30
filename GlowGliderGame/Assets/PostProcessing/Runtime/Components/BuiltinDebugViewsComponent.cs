@@ -1,7 +1,10 @@
 using System.Collections.Generic;
+using Assets.PostProcessing.Runtime.Models;
+using Assets.PostProcessing.Runtime.Utils;
+using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace UnityEngine.PostProcessing
+namespace Assets.PostProcessing.Runtime.Components
 {
     using Mode = BuiltinDebugViewsModel.Mode;
 

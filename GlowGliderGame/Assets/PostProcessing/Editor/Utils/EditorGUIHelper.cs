@@ -3,7 +3,8 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
-using UnityEngine.PostProcessing;
+using Assets.PostProcessing.Runtime;
+using Assets.PostProcessing.Runtime.Attributes;
 
 namespace UnityEditor.PostProcessing
 {

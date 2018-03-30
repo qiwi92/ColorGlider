@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4878518043410428}
   - component: {fileID: 212661893498327654}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Logo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -83,6 +83,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsAlive: 0
+  OutlineSpriteRenderer: {fileID: 212078360834532100}
+  LogoSpriteRenderer: {fileID: 212661893498327654}
 --- !u!212 &212078360834532100
 SpriteRenderer:
   m_ObjectHideFlags: 1

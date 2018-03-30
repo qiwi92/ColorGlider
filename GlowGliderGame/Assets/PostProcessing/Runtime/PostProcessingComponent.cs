@@ -1,6 +1,7 @@
+using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace UnityEngine.PostProcessing
+namespace Assets.PostProcessing.Runtime
 {
     public abstract class PostProcessingComponentBase
     {
