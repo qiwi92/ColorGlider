@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace Money
@@ -7,17 +6,14 @@ namespace Money
     public class MoneyService
     {
         private static MoneyService _instance;
-        public static MoneyService Instance
-        {
-            get { return _instance ?? (_instance = new MoneyService()); }
-        }
+        public static MoneyService Instance => _instance ?? (_instance = new MoneyService());
 
-        private List<IObserver> _observables;
+        private readonly List<IObserver> _observables;
 
         private int _money;
         private int Money
         {
-            get {return _money;}
+            get { return _money; }
             set
             {
                 _money = value;
@@ -32,10 +28,7 @@ namespace Money
             SetMoneyFromSaveGame();
         }
 
-        public int CurrentMoney
-        {
-            get { return Money; }
-        }
+        public int CurrentMoney => Money;
 
         public void AddMoney(int amount)
         {
