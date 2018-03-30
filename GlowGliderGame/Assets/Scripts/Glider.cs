@@ -122,6 +122,9 @@ namespace Assets.Scripts
             }
             else
             {
+                if(SROptions.InvincibilityCheatActive)
+                    return;
+
                 _collectedCircles = 0;
                 IsAlive = false;
                 CirclesView.KillAll();
