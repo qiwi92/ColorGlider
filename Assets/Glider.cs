@@ -36,7 +36,7 @@ namespace Assets
 
         public void Setup()
         {
-            Collisions = new Collisions(this, CirclesView.Circles, DiamondsView.Diamonds, PowerupsView.PowerUps);
+            Collisions = new Collisions(this, CirclesView.Circles, DiamondsView.Diamonds, PowerupsView.Powerups);
         }
 
         public void ResetPositionSmooth()
@@ -81,13 +81,13 @@ namespace Assets
 
         public void HandleCollision(ICollider collider)
         {
-            switch (collider.GetType())
+            switch (collider.GetObjectType())
             {
                 case ObjectType.Circle:
                     HandleCircleCollision(collider as Circle);
                     break;
                 case ObjectType.PowerUp:
-                    HandlePowerUpCollision(collider as PowerUp);
+                    HandlePowerUpCollision(collider as Powerup);
                     break;
                 case ObjectType.Diamond:
                     HandleDiamondCollision(collider as Diamond);
@@ -122,11 +122,11 @@ namespace Assets
             }
         }
 
-        private void HandlePowerUpCollision(PowerUp powerUp)
+        private void HandlePowerUpCollision(Powerup powerup)
         {
             Sounds.PlayPowerUpSfx();
             PowerupsView.SetSpeed(Score);
-            powerUp.IsAlive = false;
+            powerup.IsAlive = false;
         }
 
         private void HandleDiamondCollision(Diamond diamond)

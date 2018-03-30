@@ -2,7 +2,7 @@
 
 namespace Assets
 {
-    public class PowerUp : MonoBehaviour, ICollider
+    public class Powerup : MonoBehaviour, ICollider
     {
         [HideInInspector] public bool IsAlive;
 
@@ -11,7 +11,7 @@ namespace Assets
             return 0.305f;
         }
 
-        public ObjectType GetType()
+        public ObjectType GetObjectType()
         {
             return ObjectType.PowerUp;
         }

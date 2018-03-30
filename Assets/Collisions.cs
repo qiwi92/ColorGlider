@@ -8,14 +8,14 @@ namespace Assets
 
         private readonly List<ICollider> _collider;
 
-        public Collisions(Glider glider,Circle[] circles, Diamond[] diamonds, PowerUp[] powerUps)
+        public Collisions(Glider glider,Circle[] circles, Diamond[] diamonds, Powerup[] powerups)
         {
             _glider = glider;
             _collider = new List<ICollider>();
 
             _collider.AddRange(circles);
             _collider.AddRange(diamonds);
-            _collider.AddRange(powerUps);
+            _collider.AddRange(powerups);
         }
 
         public void CheckCollisions()

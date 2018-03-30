@@ -16,7 +16,6 @@ namespace Assets
         public Glider Glider;
         public ScoreView ScoreView;
 
-
         public float GliderMoveSpeed;
 
         public Image PanelImage;
@@ -37,12 +36,13 @@ namespace Assets
             LoadValues();
             
             _state = GameState.Init;
-            _screenWidth = Camera.main.orthographicSize * Camera.main.aspect;
-
             CirclesView.ColorPalette = ColorPalette;
-
             Glider.ColorPalette = ColorPalette;
             Glider.Sounds = Sounds;
+
+
+            _screenWidth = Camera.main.orthographicSize * Camera.main.aspect;
+
             Glider.CirclesView = CirclesView;
             Glider.DiamondsView = DiamondsView;
             Glider.PowerupsView = PowerupsView;
@@ -54,20 +54,24 @@ namespace Assets
             PowerupsView.SetUp(_screenWidth);
 
             Glider.Setup();
+
             Glider.Id = 0;
 
             _color = ColorPalette.Colors[Glider.Id];
 
             InputController.GliderTransform = Glider.transform;
 
+            
+            Setup();
+        }
+
+        private void Setup()
+        {
             Glider.IsAlive = false;
             Glider.ResetPosition();
             SetColors();
-
-            Sounds.PlayDeathTheme(true);
         }
 
-      
         private enum GameState
         {
             Init,
@@ -103,7 +107,6 @@ namespace Assets
 
         private void HandleInitState()
         {
-            
             if (InputController.PlayButton.GetState())
             {
                 _state = GameState.Starting;
@@ -164,7 +167,6 @@ namespace Assets
         private void HandleDyingState()
         {
             InputController.PlayButton.SetStateToNotPlaying();
-
             Glider.ResetPositionSmooth();
 
             GameStateRectTransform.DOLocalMove(Vector3.up * 200, 0.5f);
