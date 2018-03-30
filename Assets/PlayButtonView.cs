@@ -7,6 +7,7 @@ namespace Assets
     public class PlayButtonView : MonoBehaviour
     {
         public Button Button;
+        public Image ColoredCircleImage;
         private bool _isPlaying;
 
         public void Start()

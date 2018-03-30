@@ -12,13 +12,13 @@ namespace Assets
         public float Height;
         private float _speed;
 
-        public Circle CirclePrefab;
+        public CircleView CirclePrefab;
         public int CircleAmount;
 
         public ParticleSystem ParticleSystem;
         private ParticleSystem.EmitParams _emitParams;
 
-        [HideInInspector] public Circle[] Circles;
+        [HideInInspector] public CircleView[] Circles;
 
         private int _score;
 
@@ -31,7 +31,7 @@ namespace Assets
 
             _emitParams.applyShapeToPosition = true;
 
-            Circles = new Circle[CircleAmount];
+            Circles = new CircleView[CircleAmount];
 
             for (int i = 0; i < CircleAmount; i++)
             {
@@ -110,7 +110,7 @@ namespace Assets
             }
         }
 
-        private void ResetCircle(Circle circle)
+        private void ResetCircle(CircleView circle)
         {
             var randomX = Random.Range(-_width, _width);
             var randomY = Random.Range(0, 2*Height);

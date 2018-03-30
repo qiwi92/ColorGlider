@@ -7,11 +7,7 @@ namespace Assets
 {
     public class InputController : MonoBehaviour
     {
-        public PlayButtonView PlayButton;
-
-        //[HideInInspector] public float ScreenWidth;
         [HideInInspector] public Transform GliderTransform;
-
 
         private Direction _gliderMoveDirection;
 
@@ -75,14 +71,5 @@ namespace Assets
             v3.z = 10f;
             return Camera.main.ScreenToWorldPoint(v3);
         }
-
-        //private void OnDrawGizmos()
-        //{
-        //    Gizmos.color = Color.blue;
-        //    Gizmos.DrawCube(_mousePosition, Vector3.one*0.3f);
-
-        //    Gizmos.color = Color.red;
-        //    Gizmos.DrawCube(_targetPos, Vector3.one * 0.3f);
-        //}
     }
 }

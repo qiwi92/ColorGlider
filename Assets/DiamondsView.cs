@@ -6,7 +6,7 @@ namespace Assets
 {
     public class DiamondsView : MonoBehaviour
     {
-        public Diamond DiamondPrefab;
+        public DiamondView DiamondPrefab;
 
         public int Amount;
         private float _speed;
@@ -20,7 +20,7 @@ namespace Assets
 
         private ParticleSystem.EmitParams _emitParams;
 
-        [HideInInspector] public Diamond[] Diamonds;
+        [HideInInspector] public DiamondView[] Diamonds;
         [HideInInspector] public ColorPalette ColorPalette;
 
         private float _width;
@@ -30,7 +30,7 @@ namespace Assets
         public void SetUp(float width)
         {
             _width = width;
-            Diamonds = new Diamond[Amount];
+            Diamonds = new DiamondView[Amount];
             SetSpeed(0);
 
             for (var index = 0; index < Diamonds.Length; index++)
@@ -91,7 +91,7 @@ namespace Assets
             return _speed = Random.Range(baseSpeed, baseSpeed * 1.3f);
         }
 
-        private void Reset(Diamond diamond)
+        private void Reset(DiamondView diamond)
         {
             diamond.transform.position = new Vector3(Random.Range(-_width, _width), Height, 0);
         }
@@ -116,7 +116,7 @@ namespace Assets
         }
 
 
-        private void SetSpawnState(Diamond diamond)
+        private void SetSpawnState(DiamondView diamond)
         {
             var roll = Random.Range(0, 1f);
 

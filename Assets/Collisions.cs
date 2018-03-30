@@ -8,7 +8,7 @@ namespace Assets
 
         private readonly List<ICollider> _collider;
 
-        public Collisions(Glider glider,Circle[] circles, Diamond[] diamonds, Powerup[] powerups)
+        public Collisions(Glider glider,CircleView[] circles, DiamondView[] diamonds, PowerupView[] powerups)
         {
             _glider = glider;
             _collider = new List<ICollider>();

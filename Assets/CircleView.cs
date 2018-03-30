@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets
 { 
-    public class Circle : MonoBehaviour, ICollider
+    public class CircleView : MonoBehaviour, ICollider
     {
         [HideInInspector] public int Id;
         [HideInInspector] public bool Alive;

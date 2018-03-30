@@ -2,7 +2,7 @@
 
 namespace Assets
 {
-    public class Diamond : MonoBehaviour, ICollider
+    public class DiamondView : MonoBehaviour, ICollider
     {
         [HideInInspector] public int Value = 1;
         [HideInInspector] public bool IsAlive;

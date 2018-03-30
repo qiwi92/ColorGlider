@@ -4,7 +4,7 @@ namespace Assets
 {
     public class PowerupsView : MonoBehaviour {
 
-        public Powerup PowerupPrefab;
+        public PowerupView PowerupPrefab;
 
         public int Amount;
         private float _speed;
@@ -14,7 +14,7 @@ namespace Assets
 
         private ParticleSystem.EmitParams _emitParams;
 
-        [HideInInspector] public Powerup[] Powerups;
+        [HideInInspector] public PowerupView[] Powerups;
         [HideInInspector] public ColorPalette ColorPalette;
 
         private float _width;
@@ -24,7 +24,7 @@ namespace Assets
         public void SetUp(float width)
         {
             _width = width;
-            Powerups = new Powerup[Amount];
+            Powerups = new PowerupView[Amount];
             SetSpeed(0);
 
             for (var index = 0; index < Powerups.Length; index++)
@@ -81,7 +81,7 @@ namespace Assets
             return _speed = Random.Range(baseSpeed, baseSpeed * 1.3f);
         }
 
-        private void Reset(Powerup diamond)
+        private void Reset(PowerupView diamond)
         {
             diamond.transform.position = new Vector3(Random.Range(-_width, _width), Height, 0);
         }

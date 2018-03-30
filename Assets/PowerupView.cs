@@ -2,7 +2,7 @@
 
 namespace Assets
 {
-    public class Powerup : MonoBehaviour, ICollider
+    public class PowerupView : MonoBehaviour, ICollider
     {
         [HideInInspector] public bool IsAlive;
 

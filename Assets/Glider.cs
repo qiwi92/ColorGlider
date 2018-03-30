@@ -28,6 +28,8 @@ namespace Assets
         public ParticleSystem EngineParticleSystem;
         public ParticleSystem EngineDustParticleSystem;
 
+
+
         public Collisions Collisions;
 
         [HideInInspector] public Sounds Sounds;
@@ -84,18 +86,18 @@ namespace Assets
             switch (collider.GetObjectType())
             {
                 case ObjectType.Circle:
-                    HandleCircleCollision(collider as Circle);
+                    HandleCircleCollision(collider as CircleView);
                     break;
                 case ObjectType.PowerUp:
-                    HandlePowerUpCollision(collider as Powerup);
+                    HandlePowerUpCollision(collider as PowerupView);
                     break;
                 case ObjectType.Diamond:
-                    HandleDiamondCollision(collider as Diamond);
+                    HandleDiamondCollision(collider as DiamondView);
                     break;
             }
         }
 
-        private void HandleCircleCollision(Circle cirle)
+        private void HandleCircleCollision(CircleView cirle)
         {
             CollisionState = CollisionStates.JustCollided;
 
@@ -122,14 +124,14 @@ namespace Assets
             }
         }
 
-        private void HandlePowerUpCollision(Powerup powerup)
+        private void HandlePowerUpCollision(PowerupView powerup)
         {
             Sounds.PlayPowerUpSfx();
             PowerupsView.SetSpeed(Score);
             powerup.IsAlive = false;
         }
 
-        private void HandleDiamondCollision(Diamond diamond)
+        private void HandleDiamondCollision(DiamondView diamond)
         {
             Sounds.PlayDiamondSfx();
             DiamondsView.SetSpeed(Score);

@@ -5,21 +5,22 @@ using UnityEngine.UI;
 
 namespace Assets
 {
-    
     public class GameManager : MonoBehaviour
     {
+        public StartScreenView StartScreenView;
         public InputController InputController;
         public ColorPalette ColorPalette;
         public CirclesView CirclesView;
         public DiamondsView DiamondsView;
         public PowerupsView PowerupsView;
         public Glider Glider;
+
         public ScoreView ScoreView;
 
         public float GliderMoveSpeed;
 
         public Image PanelImage;
-        public RectTransform GameStateRectTransform;
+
         
         private float _screenWidth;
 
@@ -63,10 +64,13 @@ namespace Assets
 
             
             Setup();
+
+            StartScreenView.SetHighScore(_highScore);
         }
 
         private void Setup()
         {
+
             Glider.IsAlive = false;
             Glider.ResetPosition();
             SetColors();
@@ -107,7 +111,7 @@ namespace Assets
 
         private void HandleInitState()
         {
-            if (InputController.PlayButton.GetState())
+            if (StartScreenView.PlayButton.GetState())
             {
                 _state = GameState.Starting;
             }
@@ -115,6 +119,7 @@ namespace Assets
 
         private void HandleStartingState()
         {
+            StartScreenView.PlayAnimation();
 
             Glider.Score = 0;        
             CirclesView.SetSpeed(0);
@@ -129,7 +134,7 @@ namespace Assets
 
             SetColors();
 
-            GameStateRectTransform.DOLocalMove(Vector3.up * 2000, 0.5f);
+            
             PanelImage.DOFade(0, 0.2f);
 
             _state = GameState.Playing;
@@ -166,10 +171,11 @@ namespace Assets
 
         private void HandleDyingState()
         {
-            InputController.PlayButton.SetStateToNotPlaying();
+            StartScreenView.PlayAnimation();
+
             Glider.ResetPositionSmooth();
 
-            GameStateRectTransform.DOLocalMove(Vector3.up * 200, 0.5f);
+            
             PanelImage.DOFade(0.8f, 0.2f);
 
             //InputController.GameStateText.text = "Game Over";
@@ -183,17 +189,18 @@ namespace Assets
                 _highScore = Glider.Score;
                 SaveValues();
             }
-       
 
-            //InputController.SetColors(_color);
-            //InputController.HighScore.text = "Best: " + _highScore;
+            StartScreenView.PlayButton.SetStateToNotPlaying();
+            StartScreenView.SetHighScore(_highScore);
+            StartScreenView.SetColors(_color);
+
 
             _state = GameState.Dead;
         }
 
         private void HandleDeadState()
         {
-            if (InputController.PlayButton.GetState())
+            if (StartScreenView.PlayButton.GetState())
             {
                 Sounds.PlayDeathTheme(false);
                 _state = GameState.Starting;
