@@ -153,8 +153,6 @@ namespace Assets.Scripts
 
                     break;
             }
-
-
         }
      
         private void HandleDiamondCollision(DiamondView diamond)
