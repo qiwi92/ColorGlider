@@ -12,7 +12,7 @@ namespace Assets.PostProcessing.Runtime.Models
             [Tooltip("Shift the hue of chromatic aberrations.")]
             public Texture2D spectralTexture;
 
-            [Range(0f, 1f), Tooltip("Amount of tangential distortion.")]
+            [Range(0f, 1f), Tooltip("AmountBoosts of tangential distortion.")]
             public float intensity;
 
             public static Settings defaultSettings

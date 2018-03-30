@@ -4,5 +4,7 @@
     {
         void Activate();
         bool IsActive();
+        PowerupType GetPowerupType();
+
     }
 }

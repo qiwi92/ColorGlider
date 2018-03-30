@@ -14,7 +14,7 @@ namespace SRF.UI.Editor
         {
             base.OnEnable();
             _targetFieldProperty = serializedObject.FindProperty("TargetField");
-            _amountProperty = serializedObject.FindProperty("Amount");
+            _amountProperty = serializedObject.FindProperty("AmountBoosts");
         }
 
         public override void OnInspectorGUI()

@@ -7129,7 +7129,7 @@ MonoBehaviour:
     type: 2}
   ShieldPowerUp: {fileID: 114932886245190446, guid: 11ac0df2e8f698c498e40acd32d17b6d,
     type: 2}
-  Amount: 1
+  AmountBoosts: 0
   AmountShields: 1
   ParticleSystem: {fileID: 257238166}
   Powerups: []
@@ -8056,7 +8056,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -110320686
+  randomSeed: -339275330
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -15912,9 +15912,8 @@ MonoBehaviour:
   - {r: 1, g: 0.52728194, b: 0.41911763, a: 1}
   Untargetable: {r: 0.74264705, g: 0.74264705, b: 0.74264705, a: 1}
   Diamond: {r: 1, g: 0.74036515, b: 0.058823526, a: 1}
-  Powerup:
-  - {r: 0.6471601, g: 0.47794116, b: 1, a: 1}
-  - {r: 0.60294116, g: 1, b: 0.70425946, a: 1}
+  PowerupBoost: {r: 0.6471601, g: 0.47794116, b: 1, a: 1}
+  PowerupShield: {r: 0.97119695, g: 1, b: 0.47794116, a: 1}
 --- !u!1 &1647166241
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,12 +3,6 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class Powerup
-    {
-
-    }
-
-
     public class Glider : MonoBehaviour
     {
         [HideInInspector] public int Score;

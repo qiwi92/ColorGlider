@@ -42,5 +42,10 @@ namespace Assets.Scripts
         {
             return _isActive;
         }
+
+        public PowerupType GetPowerupType()
+        {
+            return PowerupType.Shield;
+        }
     }
 }

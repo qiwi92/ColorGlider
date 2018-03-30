@@ -7,7 +7,7 @@ namespace Assets.Scripts
         public PowerupView PowerupPrefab;
         public PowerupView ShieldPowerUp;
     
-        public int Amount;
+        public int AmountBoosts;
         public int AmountShields;
         private float _speed;
 
@@ -26,25 +26,27 @@ namespace Assets.Scripts
         public void SetUp(float width)
         {
             _width = width;
-            Powerups = new PowerupView[Amount + AmountShields];
+            Powerups = new PowerupView[AmountBoosts + AmountShields];
             SetSpeed(0);
 
-            for (var index = 0; index < Amount; index++)
+            for (var index = 0; index < AmountBoosts; index++)
             {
                 var randomPos = new Vector3(Random.Range(-_width, _width), Height, 0);
                 var newPowerUp = Instantiate(PowerupPrefab, randomPos, Quaternion.identity);
-                
-                newPowerUp.SetColors(ColorPalette.Powerup[0]);
+
+                newPowerUp.PowerupType = PowerupType.Boost;
+                newPowerUp.SetColors(ColorPalette.PowerupBoost);
                 newPowerUp.IsAlive = true;
                 Powerups[index] = newPowerUp;
             }
 
-            for (var index = Amount; index < Amount + AmountShields; index++)
+            for (var index = AmountBoosts; index < AmountBoosts + AmountShields; index++)
             {
                 var randomPos = new Vector3(Random.Range(-_width, _width), Height, 0);
                 var newPowerUp = Instantiate(ShieldPowerUp, randomPos, Quaternion.identity);
 
-                newPowerUp.SetColors(ColorPalette.Powerup[1]);
+                newPowerUp.PowerupType = PowerupType.Shield;
+                newPowerUp.SetColors(ColorPalette.PowerupShield);
                 newPowerUp.IsAlive = true;
                 Powerups[index] = newPowerUp;
             }
@@ -85,8 +87,6 @@ namespace Assets.Scripts
                 {
                     powerUp.transform.position += Vector3.down * _speed * Time.deltaTime;
                 }
-
-                
             }
         }
 
