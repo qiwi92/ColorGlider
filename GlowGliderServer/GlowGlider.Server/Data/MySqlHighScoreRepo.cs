@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using GlowGlider.Shared;
 using MySql.Data.MySqlClient;
 
 namespace GlowGlider.Server.Data

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GlowGlider.Server.Data
+namespace GlowGlider.Shared
 {
     public class HighScoreData
     {
@@ -8,5 +8,10 @@ namespace GlowGlider.Server.Data
         public Guid PlayerId { get; set; }
         public string PlayerName { get; set; }
         public int Score { get; set; }
+
+        public override string ToString()
+        {
+            return $"{nameof(Rank)}: {Rank}, {nameof(PlayerName)}: {PlayerName}, {nameof(Score)}: {Score}";
+        }
     }
 }
