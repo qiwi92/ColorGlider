@@ -3905,7 +3905,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 544408935
+  randomSeed: -1918258307
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -7127,7 +7127,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PowerupPrefab: {fileID: 114065787060562160, guid: cbb8016f47a45e643b0df2900aacec7c,
     type: 2}
-  ShieldPowerUp: {fileID: 0}
+  ShieldPowerUp: {fileID: 114932886245190446, guid: 11ac0df2e8f698c498e40acd32d17b6d,
+    type: 2}
   Amount: 1
   AmountShields: 1
   ParticleSystem: {fileID: 257238166}
@@ -16025,7 +16026,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1322722599
+  randomSeed: 1467103263
   InitialModule:
     serializedVersion: 3
     enabled: 1
