@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using DG.Tweening;
 using Money;
 using UnityEngine;
@@ -9,7 +8,7 @@ namespace Assets.Scripts
 {
     public class GameManager : MonoBehaviour
     {
-        public StartScreenView StartScreenView;
+        public MainView MainView;
         public InputController InputController;
         public ColorPalette ColorPalette;
         public CirclesView CirclesView;
@@ -18,7 +17,7 @@ namespace Assets.Scripts
         public Glider Glider;
 
         public ScoreView ScoreView;
-        public PowerupShopView PowerupShopView;
+
 
         public float GliderMoveSpeed;
 
@@ -44,13 +43,13 @@ namespace Assets.Scripts
             Glider.ColorPalette = ColorPalette;
             Glider.Sounds = Sounds;
 
-
             _screenWidth = Camera.main.orthographicSize * Camera.main.aspect;
+            MainView.Setup(_highScore);
 
             Glider.CirclesView = CirclesView;
             Glider.DiamondsView = DiamondsView;
             Glider.PowerupsView = PowerupsView;
-
+            
             CirclesView.SetUp(_screenWidth);
             DiamondsView.ColorPalette = ColorPalette;
             DiamondsView.SetUp(_screenWidth);
@@ -64,19 +63,8 @@ namespace Assets.Scripts
             _color = ColorPalette.Colors[Glider.Id];
 
             InputController.GliderTransform = Glider.transform;
-
             
             Setup();
-
-            StartScreenView.SetHighScore(_highScore);
-
-            var shopItemModels = new List<PowerupItemShopModel>
-            {
-                new PowerupItemShopModel(ItemType.Shield),
-                new PowerupItemShopModel(ItemType.SpeedBoost),
-            };
-
-            PowerupShopView.CreatePowerupItemShopViews(shopItemModels);
         }
 
         private void Setup()
@@ -122,7 +110,7 @@ namespace Assets.Scripts
 
         private void HandleInitState()
         {
-            if (StartScreenView.PlayButton.GetState())
+            if (MainView.StartScreenView.PlayButton.GetState())
             {
                 _state = GameState.Starting;
             }
@@ -130,7 +118,7 @@ namespace Assets.Scripts
 
         private void HandleStartingState()
         {
-            StartScreenView.PlayAnimation();
+            MainView.StartScreenView.PlayAnimation();
 
             Glider.Score = 0;        
             CirclesView.SetSpeed(0);
@@ -196,17 +184,17 @@ namespace Assets.Scripts
                 SaveValues();
             }
 
-            StartScreenView.PlayButton.SetStateToNotPlaying();
-            StartScreenView.PlayAnimation();
-            StartScreenView.SetHighScore(_highScore);
-            StartScreenView.SetColors(_color);
+            MainView.StartScreenView.PlayButton.SetStateToNotPlaying();
+            MainView.StartScreenView.PlayAnimation();
+            MainView.StartScreenView.SetHighScore(_highScore);
+            MainView.StartScreenView.SetColors(_color);
 
             _state = GameState.Dead;
         }
 
         private void HandleDeadState()
         {
-            if (StartScreenView.PlayButton.GetState())
+            if (MainView.StartScreenView.PlayButton.GetState())
             {
                 Sounds.PlayDeathTheme(false);
                 _state = GameState.Starting;
