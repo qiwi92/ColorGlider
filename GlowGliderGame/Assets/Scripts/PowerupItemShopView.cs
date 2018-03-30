@@ -26,6 +26,7 @@ namespace Assets.Scripts
             _buyButton.onClick.AddListener(TryBuyPowerup);
 
             UpdateView();
+            UpdateButtonState();
         }
 
         private void UpdateView()
