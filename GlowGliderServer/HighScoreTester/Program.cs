@@ -36,7 +36,7 @@ namespace HighScoreTester
 
                 var request = new PublishRequest(newGuid.ToString(), new string(nameChars), random.Next(20, 120));
                 var publishTask = api.PublishScore(request);
-                await publishTask;
+                publishTasks.Add(publishTask);
             }
 
             await Task.WhenAll(publishTasks);
