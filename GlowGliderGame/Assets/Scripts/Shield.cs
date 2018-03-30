@@ -1,46 +1,77 @@
-﻿using UnityEngine;
+﻿using DG.Tweening;
+using UnityEngine;
 
 namespace Assets.Scripts
 {
     public class Shield : MonoBehaviour , IPowerup
     {
-        private bool _isActive;
-        private float _counter;
+        private float _counter = 0;
+        public SpriteRenderer ShieldSpriteRenderer;
 
+        private ShieldState _shieldState = ShieldState.Deactivated;
+      
         public float Duration;
-
-        public Shield()
-        {
-            _isActive = false;
-            _counter = 0;
-        }
 
         public void Activate()
         {
-            _isActive = true;
+            ShieldSpriteRenderer.DOFade(1, 0.4f).SetEase(Ease.OutElastic);
+            _counter = 0;
+            _shieldState = ShieldState.Activated;
         }
 
         private void Update()
         {
-            if (_isActive)
+            switch (_shieldState)
             {
-                _counter += Time.deltaTime;
-                if (_counter > Duration)
-                {
-                    ResetShield();
-                }
+                case ShieldState.Deactivated:
+                    break;
+
+                case ShieldState.Activated:
+                    HandleActivated();
+                    break;
+
+                case ShieldState.Deactivation:
+                    break;
             }
         }
 
-        private void ResetShield()
+        private void HandleActivated()
         {
-            _isActive = false;
-            _counter = 0;
+            _counter += Time.deltaTime;
+            
+            if (_counter > Duration)
+            {
+                _shieldState = ShieldState.Deactivation;
+                ShieldSpriteRenderer.DOFade(0, 0.2f).SetEase(Ease.Linear)
+                    .SetLoops(10, LoopType.Yoyo)
+                    .OnComplete(() =>
+                    {
+                        Deactivate();
+                    });
+            }
+        }
+
+        private enum ShieldState
+        {
+            Deactivated,
+            Activated,
+            Deactivation
         }
 
         public bool IsActive()
         {
-            return _isActive;
+            return _shieldState == ShieldState.Activated || _shieldState == ShieldState.Deactivation;
+        }
+
+        public void Deactivate()
+        {
+            ShieldSpriteRenderer.DOFade(0, 0.3f);
+            _shieldState = ShieldState.Deactivated;
+        }
+
+        public PowerupType GetPowerupType()
+        {
+            return PowerupType.Shield;
         }
     }
 }

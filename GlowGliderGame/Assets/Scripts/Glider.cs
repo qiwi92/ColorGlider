@@ -3,12 +3,6 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class Powerup
-    {
-
-    }
-
-
     public class Glider : MonoBehaviour
     {
         [HideInInspector] public int Score;
@@ -30,9 +24,10 @@ namespace Assets.Scripts
     
         public SpriteRenderer GliderSpriteFilled;
         public SpriteRenderer GliderSpriteOutline;
-        public SpriteRenderer GliderShield;
         public ParticleSystem EngineParticleSystem;
         public ParticleSystem EngineDustParticleSystem;
+
+        public Shield Shield;
 
 
 
@@ -44,6 +39,7 @@ namespace Assets.Scripts
 
         public void Setup()
         {
+            Shield.Deactivate();
             Collisions = new Collisions(this, CirclesView.Circles, DiamondsView.Diamonds, PowerupsView.Powerups);
         }
 
@@ -125,6 +121,13 @@ namespace Assets.Scripts
                 if(SROptions.InvincibilityCheatActive)
                     return;
 
+                if (Shield.IsActive())
+                {
+                    Shield.Deactivate();
+                    cirle.Alive = false;
+                    return;
+                }
+
                 _collectedCircles = 0;
                 IsAlive = false;
                 CirclesView.KillAll();
@@ -138,8 +141,22 @@ namespace Assets.Scripts
             Sounds.PlayPowerUpSfx();
             PowerupsView.SetSpeed(Score);
             powerup.IsAlive = false;
-        }
 
+            var powerupType = powerup.PowerupType;
+
+            switch (powerupType)
+            {
+                case PowerupType.Shield:
+                    Shield.Activate();
+                    break;
+                case PowerupType.Boost:
+
+                    break;
+            }
+
+
+        }
+     
         private void HandleDiamondCollision(DiamondView diamond)
         {
             Sounds.PlayDiamondSfx();
@@ -170,7 +187,10 @@ namespace Assets.Scripts
 
                 GliderSpriteFilled.DOColor(ColorPalette.Colors[Id], 0.4f);
                 GliderSpriteOutline.DOColor(ColorPalette.Colors[Id], 0.4f);
-                GliderShield.DOColor(ColorPalette.Colors[Id], 0.4f);
+
+                var colorWithoutAlpha = ColorPalette.Colors[Id];
+                colorWithoutAlpha.a = 0;
+                Shield.ShieldSpriteRenderer.DOColor(colorWithoutAlpha, 0.4f);
 
                 EngineParticleSystem.startColor = ColorPalette.Colors[Id];
                 EngineDustParticleSystem.startColor = ColorPalette.Colors[Id];

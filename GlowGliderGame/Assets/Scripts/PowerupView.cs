@@ -9,6 +9,8 @@ namespace Assets.Scripts
         public SpriteRenderer OutlineSpriteRenderer;
         public SpriteRenderer LogoSpriteRenderer;
 
+        [HideInInspector] public PowerupType PowerupType; 
+
         private Color _color;
 
         public float GetSize()

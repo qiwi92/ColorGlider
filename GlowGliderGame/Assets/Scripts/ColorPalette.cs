@@ -7,6 +7,7 @@ namespace Assets.Scripts
         public Color[] Colors;
         public Color Untargetable;
         public Color Diamond;
-        public Color[] Powerup;
+        public Color PowerupBoost;
+        public Color PowerupShield;
     }
 }
