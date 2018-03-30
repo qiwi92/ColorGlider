@@ -32,11 +32,11 @@ namespace Assets
             var playing = PlayButton.GetState();
             if (playing)
             {
-                StartScreenTransform.DOLocalMove(Vector3.up * 2000, 0.5f);
+                StartScreenTransform.DOLocalMove(Vector3.up * StartScreenTransform.rect.height , 0.5f);
             }
             else
             {
-                StartScreenTransform.DOLocalMove(Vector3.up * 200, 0.5f);
+                StartScreenTransform.DOLocalMove(Vector3.up * _initOffSet, 0.5f);
             }
             
         }

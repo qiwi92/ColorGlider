@@ -32,12 +32,6 @@ namespace Assets
 
         public bool GetState()
         {
-            //if (IsPlaying)
-            //{
-            //    IsPlaying = false;
-            //    return true;
-            //}
-
             return _isPlaying;
         }
 

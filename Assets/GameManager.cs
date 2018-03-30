@@ -171,14 +171,9 @@ namespace Assets
 
         private void HandleDyingState()
         {
-            StartScreenView.PlayAnimation();
-
             Glider.ResetPositionSmooth();
-
             
             PanelImage.DOFade(0.8f, 0.2f);
-
-            //InputController.GameStateText.text = "Game Over";
 
             Sounds.PlayMainTheme(false);
             Sounds.PlayDeathSfx();
@@ -191,9 +186,9 @@ namespace Assets
             }
 
             StartScreenView.PlayButton.SetStateToNotPlaying();
+            StartScreenView.PlayAnimation();
             StartScreenView.SetHighScore(_highScore);
             StartScreenView.SetColors(_color);
-
 
             _state = GameState.Dead;
         }
