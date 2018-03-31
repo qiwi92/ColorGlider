@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using GlowGlider.Shared;
 using MySql.Data.MySqlClient;
@@ -37,14 +38,15 @@ namespace GlowGlider.Server.Data
         {
             OpenConnectionIfNeeded();
 
-            var transaction = Connection.BeginTransaction();
+            var transaction = Connection.BeginTransaction(IsolationLevel.Serializable);
 
-            var command = GetInsertIntoRankingCommand(data);
-            if (command.ExecuteNonQuery() == 1)
-            {
-                var updateCmd = GetUpdateRanksCommand();
-                updateCmd.ExecuteNonQuery();
-            }
+            var insertCommand = GetInsertIntoRankingCommand(data);
+            insertCommand.Transaction = transaction;
+            insertCommand.ExecuteNonQuery();
+
+            var updateCmd = GetUpdateRanksCommand();
+            updateCmd.Transaction = transaction;
+            updateCmd.ExecuteNonQuery();
 
             transaction.Commit();
         }
@@ -78,7 +80,7 @@ namespace GlowGlider.Server.Data
 
         private MySqlCommand GetSelectTopRanksCommand()
         {
-            var cmdText = "SELECT * FROM `ranking` ORDER BY `Score` DESC LIMIT 10";
+            var cmdText = "SELECT * FROM `ranking` ORDER BY `Rank` DESC LIMIT 10";
             var command = new MySqlCommand(cmdText, Connection);
 
             return command;
@@ -106,7 +108,7 @@ namespace GlowGlider.Server.Data
         {
             var cmdText = "SELECT * FROM `ranking` " +
                           "WHERE `Rank` >= (SELECT `Rank` FROM `ranking` WHERE `PlayerId` = @playerId) - 5 " +
-                          "ORDER BY `Score` DESC " +
+                          "ORDER BY `Rank` DESC " +
                           "LIMIT 10";
 
             var command = new MySqlCommand(cmdText, Connection);
