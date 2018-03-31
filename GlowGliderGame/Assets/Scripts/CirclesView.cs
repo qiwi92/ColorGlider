@@ -4,20 +4,14 @@ using Random = UnityEngine.Random;
 
 namespace Assets.Scripts
 {
-    public class ItemsView : MonoBehaviour
-    {
-        [SerializeField] private CirclesView _circlesView;
-        [SerializeField] private DiamondsView _diamondsView;
-        [SerializeField] private PowerupsView _powerupsView;
-
-
-    }
     public class CirclesView : MonoBehaviour
     {
         [HideInInspector] public ColorPalette ColorPalette;
 
         private float _width;
         
+        private readonly SpeedData _speedData = new SpeedData();
+
         public float Height;
         private float _speed;
 
@@ -51,6 +45,7 @@ namespace Assets.Scripts
                 var newCircle = Instantiate(CirclePrefab, randomPos, Quaternion.identity);
                 newCircle.Alive = true;
                 newCircle.Speed = _speed;
+                newCircle.RandomFactor = Random.Range(1, 1.1f);
 
                 newCircle.Id = (i + 1) % 3;
                 newCircle.SetColor(ColorPalette.Colors[newCircle.Id]);
@@ -125,27 +120,27 @@ namespace Assets.Scripts
             var randomY = Random.Range(0, 2*Height);
 
             circle.transform.position = new Vector3(randomX, Height + randomY, 0);
-            circle.Speed = _speed;
             circle.SetFill(ColorPalette.Colors[circle.Id]);
 
             var spawnFilled = _score >= 9;
             circle.SetValue(spawnFilled);
         }
 
-        public void SetSpeed(int score)
+        public void SetSpeed(int score, bool isBoosted)
         {
             _score = score;
-            var baseSpeed = 3 + 0.1f * score;
-            _speed = Random.Range(baseSpeed, baseSpeed * 1.3f);
+
+            foreach (var circle in Circles)
+            {
+                circle.Speed = _speedData.GetSpeed(score, isBoosted) * circle.RandomFactor;
+            }
         }
 
         public void SetSpeedFactor(float speedFactor)
         {
             foreach (var circle in Circles)
             {
-                var speed = circle.Speed;
-                circle.OldSpeed = speed;
-                circle.Speed = speed*speedFactor;
+                circle.Speed = _speed * speedFactor;
             }
         }
 

@@ -29,6 +29,7 @@ namespace Assets.Scripts
         private float _screenWidth;
 
         private GameState _state;
+        private BoostState _boostState;
         private int _highScore;
         
         private Color _color;
@@ -42,7 +43,8 @@ namespace Assets.Scripts
         void Awake ()
         {
             LoadValues();
-            
+
+            _boostState = BoostState.None;
             _state = GameState.Init;
             CirclesView.ColorPalette = ColorPalette;
             Glider.ColorPalette = ColorPalette;
@@ -74,7 +76,6 @@ namespace Assets.Scripts
 
         private void Setup()
         {
-
             Glider.IsAlive = false;
             Glider.ResetPosition();
             SetColors();
@@ -128,7 +129,8 @@ namespace Assets.Scripts
             MainView.DeactivateShopCanvas();
 
             Glider.Score = 0;        
-            CirclesView.SetSpeed(0);
+            SetSpeeds(false);
+
             CirclesView.ResetAllPositions();
             
             Glider.IsAlive = true;
@@ -159,11 +161,38 @@ namespace Assets.Scripts
             if (Glider.CollisionState == CollisionStates.JustCollided)
             {
                 ScoreView.SetScore(Glider.Score);
-                CirclesView.SetSpeed(Glider.Score);
+                CirclesView.SetSpeed(Glider.Score,Glider.IsBoosted);
+                DiamondsView.SetSpeed(Glider.Score, Glider.IsBoosted);
+                PowerupsView.SetSpeed(Glider.Score, Glider.IsBoosted);
                 SetColors();
                 SetCounterDots();
 
                 Glider.CollisionState = CollisionStates.None;
+            }
+
+            switch (_boostState)
+            {
+                case BoostState.None:
+                    if (Glider.IsBoosted)
+                    {
+                        _boostState = BoostState.StartingBoost;
+                    }
+                    break;
+                case BoostState.StartingBoost:
+                    SetSpeeds(true);
+                    _boostState = BoostState.Boosted;
+                    break;
+                case BoostState.Boosted:
+                    if (!Glider.IsBoosted)
+                    {
+                        _boostState = BoostState.StoppingBoost;
+                    }
+                    break;
+                case BoostState.StoppingBoost:
+                    SetSpeeds(false);
+                    _boostState = BoostState.None;
+                    CirclesView.KillAll();
+                    break;
             }
 
             CirclesView.Move();
@@ -253,6 +282,23 @@ namespace Assets.Scripts
             {
                 MoveGlider(Direction.Right);
             }
+        }
+
+        private enum BoostState
+        {
+            None,
+            StartingBoost,
+            Boosted,
+            StoppingBoost,
+        }
+
+        private void SetSpeeds(bool isBoosted)
+        {
+            var score = Glider.Score;
+
+            CirclesView.SetSpeed(score, isBoosted);
+            DiamondsView.SetSpeed(score, isBoosted);
+            PowerupsView.SetSpeed(score, isBoosted);
         }
     }
 }

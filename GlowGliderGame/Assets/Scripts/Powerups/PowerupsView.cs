@@ -7,7 +7,6 @@ namespace Assets.Scripts.Powerups
         public PowerupView PowerupPrefab;
         public PowerupView ShieldPowerUp;
     
-        private float _speed;
 
 
         public ParticleSystem ParticleSystem;
@@ -17,32 +16,37 @@ namespace Assets.Scripts.Powerups
         [HideInInspector] public PowerupView[] Powerups;
         [HideInInspector] public ColorPalette ColorPalette;
 
-        private IPowerupData shieldData;
-        private IPowerupData boostData;
+        private IPowerupData _shieldData;
+        private IPowerupData _boostData;
 
         private float _width;
         public float Height;
 
         private bool _isInitialized = false;
-        private float _counter;
+        private float _shieldCounter;
         private int _shieldLevel;
+
+        private float _boostCounter;
+        private int _boostLevel;
+        private readonly SpeedData _speedData = new SpeedData();
+        
+
 
         public void SetUp(float width)
         {
             _width = width;
             Powerups = new PowerupView[2];
-            SetSpeed(0);
 
             var randomPos = new Vector3(Random.Range(-_width, _width), Height, 0);
 
-            //shieldData = new BoostData(); TODO
+            _boostData = new BoostData(); 
             var newBoostPowerup = Instantiate(PowerupPrefab, randomPos, Quaternion.identity);
             newBoostPowerup.PowerupType = PowerupType.Boost;
             newBoostPowerup.SetColors(ColorPalette.PowerupBoost);
             newBoostPowerup.CurentPowerupItemState = PowerupItemState.Dead;
 
 
-            shieldData = new ShieldData();
+            _shieldData = new ShieldData();
             randomPos = new Vector3(Random.Range(-_width, _width), Height, 0);
             var newShieldPowerup = Instantiate(ShieldPowerUp, randomPos, Quaternion.identity);
             newShieldPowerup.PowerupType = PowerupType.Shield;
@@ -57,31 +61,30 @@ namespace Assets.Scripts.Powerups
             mainModule.duration = 4;
             mainModule.startDelay = 2f;
             _emitParams = new ParticleSystem.EmitParams {applyShapeToPosition = true};
-
-
-            foreach (var powerUp in Powerups)
-            {
-                powerUp.SetSpawnChance(0.2f);
-            }
         }
 
         public void SetStartValues()
         {
-            //Powerups[0].SpawnChance =  // TODO
+            _boostLevel = PlayerPrefs.GetInt(PowerupType.Boost.ToString());
+            Powerups[0].SpawnChance = _boostData.GetSpawnChance(_boostLevel, 0);
+            _boostCounter = 0;
 
             _shieldLevel = PlayerPrefs.GetInt(PowerupType.Shield.ToString());
-            Powerups[1].SpawnChance = shieldData.GetSpawnChance(_shieldLevel,0);
-            _counter = 0;
+            Powerups[1].SpawnChance = _shieldData.GetSpawnChance(_shieldLevel,0);
+            _shieldCounter = 0;
+
             _isInitialized = true;
-            SetSpeed(0);
         }
 
         private void Update()
         {
             if (!_isInitialized) return;
 
-            _counter += Time.deltaTime;
-            Powerups[1].SpawnChance = shieldData.GetSpawnChance(_shieldLevel, _counter);
+            _boostCounter += Time.deltaTime;
+            Powerups[0].SpawnChance = _boostData.GetSpawnChance(_boostLevel, _boostCounter);
+
+            _shieldCounter += Time.deltaTime;
+            Powerups[1].SpawnChance = _shieldData.GetSpawnChance(_shieldLevel, _shieldCounter);
         }
 
         public void Move()
@@ -95,7 +98,7 @@ namespace Assets.Scripts.Powerups
 
                 if (powerUp.CurentPowerupItemState == PowerupItemState.Alive)
                 {
-                    powerUp.transform.position += Vector3.down * _speed * Time.deltaTime;
+                    powerUp.transform.position += Vector3.down * powerUp.Speed * Time.deltaTime;
                 }
 
                 if (powerUp.CurentPowerupItemState == PowerupItemState.Dying)
@@ -112,16 +115,20 @@ namespace Assets.Scripts.Powerups
             }
         }
 
-        public void SetSpeed(int score)
+
+
+        public void SetSpeed(int score, bool isBoosted)
         {
-            var baseSpeed = 3 + 0.1f * score;
-            _speed = Random.Range(baseSpeed, baseSpeed * 1.3f);
+            foreach (var powerup in Powerups)
+            {
+                powerup.Speed = _speedData.GetSpeed(score, isBoosted);
+            }
         }
 
         private void Reset(PowerupView powerup)
         {
+            powerup.CurentPowerupItemState = PowerupItemState.Dying;
             powerup.transform.position = new Vector3(Random.Range(-_width, _width), Height, 0);
-            powerup.Speed = _speed;
         }
 
         public void KillAll()

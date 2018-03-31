@@ -7,7 +7,6 @@ namespace Assets.Scripts
         public DiamondView DiamondPrefab;
 
         public int Amount;
-        private float _speed;
 
 
 
@@ -22,13 +21,13 @@ namespace Assets.Scripts
 
         private float _width;
         public float Height;
+        private readonly SpeedData _speedData = new SpeedData();
 
 
         public void SetUp(float width)
         {
             _width = width;
             Diamonds = new DiamondView[Amount];
-            SetSpeed(0);
 
             for (var index = 0; index < Diamonds.Length; index++)
             {
@@ -78,16 +77,17 @@ namespace Assets.Scripts
             }
         }
 
-        public void SetSpeed(int score)
+        public void SetSpeed(int score, bool isBoosted)
         {
-            var baseSpeed = 3 + 0.1f * score;
-            _speed = Random.Range(baseSpeed, baseSpeed * 1.3f);
+            foreach (var diamond in Diamonds)
+            {
+                diamond.Speed = _speedData.GetSpeed(score, isBoosted); ;
+            }
         }
 
         private void Reset(DiamondView diamond)
         {
             diamond.IsAlive = false;
-            diamond.Speed = _speed;
             diamond.transform.position = new Vector3(Random.Range(-_width, _width), Height, 0);
         }
 
