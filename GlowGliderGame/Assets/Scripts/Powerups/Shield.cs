@@ -3,18 +3,19 @@ using UnityEngine;
 
 namespace Assets.Scripts.Powerups
 {
-    public class Shield : MonoBehaviour , IPowerup
+    public class Shield : MonoBehaviour , IPowerupEffect
     {
         private float _counter = 0;
-        public SpriteRenderer ShieldSpriteRenderer;
+        [SerializeField] private SpriteRenderer _shieldSpriteRenderer;
 
         private PowerupState _shieldState = PowerupState.Deactivated;
       
         public float Duration;
 
-        public void Activate()
+        public void Activate(Color color)
         {
-            ShieldSpriteRenderer.DOFade(1, 0.4f).SetEase(Ease.OutElastic);
+            _shieldSpriteRenderer.color = color;
+            _shieldSpriteRenderer.DOFade(1, 0.4f).SetEase(Ease.OutElastic);
             _counter = 0;
             _shieldState = PowerupState.Activated;
         }
@@ -42,21 +43,13 @@ namespace Assets.Scripts.Powerups
             if (_counter > Duration)
             {
                 _shieldState = PowerupState.Deactivation;
-                ShieldSpriteRenderer.DOFade(0, 0.2f).SetEase(Ease.Linear)
+                _shieldSpriteRenderer.DOFade(0, 0.2f).SetEase(Ease.Linear)
                     .SetLoops(10, LoopType.Yoyo)
                     .OnComplete(() =>
                     {
                         Deactivate();
                     });
             }
-        }
-
-        private enum PowerupState
-        {
-            Activation,
-            Activated,
-            Deactivation,
-            Deactivated,
         }
 
         public bool IsActive()
@@ -66,7 +59,7 @@ namespace Assets.Scripts.Powerups
 
         public void Deactivate()
         {
-            ShieldSpriteRenderer.DOFade(0, 0.3f);
+            _shieldSpriteRenderer.DOFade(0, 0.3f);
             _shieldState = PowerupState.Deactivated;
         }
 

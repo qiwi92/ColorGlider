@@ -29,6 +29,7 @@ namespace Assets.Scripts
         public ParticleSystem EngineDustParticleSystem;
 
         public Shield Shield;
+        public BoostEffect BoostEffect;
 
 
 
@@ -148,10 +149,10 @@ namespace Assets.Scripts
             switch (powerupType)
             {
                 case PowerupType.Shield:
-                    Shield.Activate();
+                    Shield.Activate(ColorPalette.Colors[Id]);
                     break;
                 case PowerupType.Boost:
-
+                    BoostEffect.Activate(ColorPalette.Colors[Id]);
                     break;
             }
         }
@@ -187,7 +188,6 @@ namespace Assets.Scripts
 
                 var colorWithoutAlpha = ColorPalette.Colors[Id];
                 colorWithoutAlpha.a = 0;
-                Shield.ShieldSpriteRenderer.DOColor(colorWithoutAlpha, 0.4f);
 
                 EngineParticleSystem.startColor = ColorPalette.Colors[Id];
                 EngineDustParticleSystem.startColor = ColorPalette.Colors[Id];
