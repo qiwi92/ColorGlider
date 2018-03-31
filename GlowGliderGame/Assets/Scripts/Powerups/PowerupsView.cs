@@ -66,11 +66,13 @@ namespace Assets.Scripts.Powerups
         public void SetStartValues()
         {
             _boostLevel = PlayerPrefs.GetInt(PowerupType.Boost.ToString());
-            Powerups[0].SpawnChance = _boostData.GetSpawnChance(_boostLevel, 0);
+            Debug.Log("BoostLevel: " + _boostLevel);
+            Powerups[0].SpawnChance = _boostData.GetSpawnChance(_boostLevel, -1);
             _boostCounter = 0;
 
             _shieldLevel = PlayerPrefs.GetInt(PowerupType.Shield.ToString());
-            Powerups[1].SpawnChance = _shieldData.GetSpawnChance(_shieldLevel,0);
+            Debug.Log("ShieldLevel: " + _shieldLevel);
+            Powerups[1].SpawnChance = _shieldData.GetSpawnChance(_shieldLevel,-1);
             _shieldCounter = 0;
 
             _isInitialized = true;
