@@ -33,6 +33,7 @@ namespace Highscore
                 _highScoreEntryViews[i] = entryView;
             }
 
+            _nameInputView.Initialize();
             _nameInputView.SubmitRequested += NameInputViewOnSubmitRequested;
         }
 
