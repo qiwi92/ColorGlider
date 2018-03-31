@@ -19,6 +19,11 @@ namespace Assets.Scripts.Powerups
             _level = lvl;
         }
 
+        public void ChangeColor(Color color)
+        {
+            _shieldSpriteRenderer.DOColor(color, 0.2f);
+        }
+
         public void Activate(Color color)
         {
             _shieldSpriteRenderer.color = color;

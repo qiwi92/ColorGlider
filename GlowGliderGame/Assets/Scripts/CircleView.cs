@@ -7,10 +7,15 @@ namespace Assets.Scripts
         [HideInInspector] public int Id;
         [HideInInspector] public bool Alive;
         [HideInInspector] public float Speed;
+        [HideInInspector] public float RandomFactor;
         [HideInInspector] public float OldSpeed;
         [HideInInspector] public int Value;
 
         private bool _isAlive;
+
+        private float _speed;
+  
+
 
         public SpriteRenderer OuterCircleSpriteRenderer;
         public SpriteRenderer FillSpriteRenderer;

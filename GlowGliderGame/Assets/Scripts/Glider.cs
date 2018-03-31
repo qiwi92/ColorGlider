@@ -135,6 +135,7 @@ namespace Assets.Scripts
                 return;
             }
 
+            
 
             if (cirle.Id == Id)
             {
@@ -148,6 +149,11 @@ namespace Assets.Scripts
                 Score += cirle.Value;
 
                 cirle.Alive = false;
+
+                if (ShieldEffect.IsActive())
+                {
+                    ShieldEffect.ChangeColor(ColorPalette.Colors[Id]);
+                }
             }
             else
             {
@@ -173,7 +179,7 @@ namespace Assets.Scripts
         private void HandlePowerUpCollision(PowerupView powerup)
         {
             Sounds.PlayPowerUpSfx();
-            PowerupsView.SetSpeed(Score);
+            //PowerupsView.SetSpeed(Score);
             powerup.CurentPowerupItemState = PowerupItemState.Dying;
 
             var powerupType = powerup.PowerupType;
@@ -192,7 +198,7 @@ namespace Assets.Scripts
         private void HandleDiamondCollision(DiamondView diamond)
         {
             Sounds.PlayDiamondSfx();
-            DiamondsView.SetSpeed(Score);
+            //DiamondsView.SetSpeed(Score);
 
             MoneyService.Instance.AddMoney(diamond.Value);
             diamond.IsAlive = false;
