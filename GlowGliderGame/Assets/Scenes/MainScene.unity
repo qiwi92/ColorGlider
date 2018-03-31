@@ -7681,7 +7681,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1215650192
+  randomSeed: 1377253139
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -11007,6 +11007,8 @@ MonoBehaviour:
   Powerups: []
   ColorPalette: {fileID: 0}
   Height: 7
+  ShieldEffect: {fileID: 504951641}
+  BoostEffect: {fileID: 1822623699}
 --- !u!4 &257238168
 Transform:
   m_ObjectHideFlags: 0
@@ -23658,7 +23660,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1096894460}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9999999
+  m_Size: 0.9999998
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -28099,7 +28101,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -2554.9998, y: 3168}
+  m_AnchoredPosition: {x: -2555, y: 3168}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1367594220
@@ -28178,8 +28180,6 @@ MonoBehaviour:
   GliderSpriteOutline: {fileID: 258550567}
   EngineParticleSystem: {fileID: 746789245}
   EngineDustParticleSystem: {fileID: 1008843795}
-  ShieldEffect: {fileID: 504951641}
-  BoostEffect: {fileID: 1822623699}
   IsBoosted: 0
   Sounds: {fileID: 0}
   ColorPalette: {fileID: 0}
@@ -32794,11 +32794,11 @@ RectTransform:
   m_Father: {fileID: 681416217}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 83.75, y: -85.5}
-  m_SizeDelta: {x: 78.98, y: 80.72}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -60, y: -60}
+  m_SizeDelta: {x: 80, y: 80}
+  m_Pivot: {x: 1, y: 1}
 --- !u!114 &1742788273
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33603,7 +33603,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.0003690541}
+  m_AnchoredPosition: {x: 0, y: -0.00035226374}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2049619036
