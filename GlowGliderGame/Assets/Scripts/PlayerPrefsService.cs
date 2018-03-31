@@ -16,4 +16,10 @@ public class PlayerPrefsService
         get { return PlayerPrefs.GetString("PlayerAlias"); }
         set { PlayerPrefs.SetString("PlayerAlias", value); }
     }
+
+    public string Guid
+    {
+        get { return PlayerPrefs.GetString("Guid"); }
+        set { PlayerPrefs.SetString("Guid",value); }
+    }
 }

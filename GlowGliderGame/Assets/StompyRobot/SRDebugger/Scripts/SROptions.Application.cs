@@ -10,4 +10,7 @@ public partial class SROptions
     {
         PlayerPrefs.DeleteAll();
     }
+
+    [Category(ApplicationCategory)]
+    public string Guid => PlayerPrefsService.Instance.Guid;
 }
