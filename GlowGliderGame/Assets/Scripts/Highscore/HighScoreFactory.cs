@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+
 using UnityEngine;
 
 namespace Highscore
@@ -6,21 +7,22 @@ namespace Highscore
     public class HighScoreFactory : MonoBehaviour
     {
         [SerializeField] private HighscoreView _highscoreView;
-        [SerializeField] private DebugEnterHighScoreView _debugEnterHighScoreView;
 
         private void Start()
         {
             var model = new HighScoreModel();
             _highscoreView.Initialize(model);
+            
+        }
 
-            if (Debug.isDebugBuild && _debugEnterHighScoreView.enabled)
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.A))
             {
-                _debugEnterHighScoreView.Initialize(model);
+                var highScore = Random.Range(10, 150);
+                _highscoreView.OpenHighScoreView(true, highScore);
             }
-            else
-            {
-                _debugEnterHighScoreView.enabled = false;
-            }
+
         }
     }
 }

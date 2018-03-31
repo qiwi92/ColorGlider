@@ -7,15 +7,20 @@ namespace Highscore
     {
         [SerializeField] private Text _name;
         [SerializeField] private Text _score;
+        [SerializeField] private Text _rank;
 
-        [SerializeField] private Image _box;
-
-        public void UpdateDescription(string playerName, string score, bool highScoreIsPlayer)
+        public void UpdateDescription(string playerName, int score,int rank, bool highScoreIsPlayer)
         {
             _name.text = playerName;
-            _score.text = score;
+            _score.text = score.ToString();
+            _rank.text = rank + ".";
 
-            _box.color = highScoreIsPlayer ? Color.red : Color.white;
+            var col = _name.color;
+            col.a = highScoreIsPlayer ? 1 : 0.5f;
+
+            _name.color = col;
+            _score.color = col;
+            _rank.color = col;
         }
     }
 }

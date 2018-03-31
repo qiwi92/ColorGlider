@@ -26,16 +26,17 @@ namespace Highscore
 
         private void UpdateHighscore()
         {
-            Task.Run(ReadData)
+            var playerId = PlayerId;
+            Task.Run(async () => await ReadData (playerId))
                 .ContinueWith(c => _highscoresAroundPlayer = c.Result);
         }
 
-        private async Task<IReadOnlyList<HighScoreData>> ReadData()
+        private async Task<IReadOnlyList<HighScoreData>> ReadData(Guid playerId)
         {
             Debug.Log("Calling Api");
             try
             {
-                var highScoreDatas = await _highScoreApi.GetTop10Async();
+                var highScoreDatas = await _highScoreApi.GetRanksAroundPlayer(playerId);
                 Debug.Log("Received " + highScoreDatas.Count);
                 return highScoreDatas;
             }
@@ -62,13 +63,13 @@ namespace Highscore
 
         public void UploadHighScore(int highscore,string playerAlias)
         {
-            var request = new PublishRequest(PlayerId.ToString(),playerAlias,highscore);
-            Task.Run(async () => await _highScoreApi.PublishScore(request)).ContinueWith(res =>
-            {
-                Debug.Log("Uploaded Highscore! " + request.ToString() );
-                UpdateHighscore();
-            });
-            
+            var request = new PublishRequest(PlayerId.ToString(), playerAlias, highscore);
+            Task.Run(async () => await _highScoreApi.PublishScore(request))
+                .ConfigureAwait(true).GetAwaiter().OnCompleted(() =>
+                {
+                    Debug.Log("Uploaded Highscore! " + request);
+                    UpdateHighscore();
+                });
         }
 
         public IEnumerable<PlayerHighScore> HighScoresAroundPlayer => _highscoresAroundPlayer.Select(MapServerToViewHighscore);
