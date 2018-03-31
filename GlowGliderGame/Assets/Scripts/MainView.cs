@@ -74,6 +74,11 @@ namespace Assets.Scripts
             }
         }
 
+        public void TryOpenScore(bool highScoreUnlocked)
+        {
+            if(highScoreUnlocked)
+                MoveScorePanel();
+        }
 
         private void MoveShopPanel()
         {
@@ -109,17 +114,21 @@ namespace Assets.Scripts
             ScorePanel.SetActive(true);
         }
 
-
-        public void SetHighScoreButtonState(bool shouldShowButton)
-        {
-            _openScoreButton.gameObject.SetActive(shouldShowButton);
-        }
-
         public void SetColors(Color color)
         {
             StartScreenView.SetColors(color);
             ShopView.SetColors(color);
             HighScoreView.SetColors(color);
+        }
+
+        public void SetHighScoreButtonState(bool isUnlocked)
+        {
+            _openScoreButton.gameObject.SetActive(isUnlocked);
+        }
+
+        public void SetShopButtonState(bool shopUnlocked)
+        {
+            _openShopButton.gameObject.SetActive(shopUnlocked);
         }
     }
 }

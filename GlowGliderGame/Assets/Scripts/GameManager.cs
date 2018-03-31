@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Net;
 using Analytics;
+using Assets.Scripts.Money;
 using Assets.Scripts.Powerups;
 using DG.Tweening;
 using Highscore;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Assets.Scripts
@@ -22,12 +22,10 @@ namespace Assets.Scripts
 
         public ScoreView ScoreView;
 
-
         public float GliderMoveSpeed;
 
         public Image PanelImage;
 
-        
         private float _screenWidth;
 
         private GameState _state;
@@ -47,7 +45,9 @@ namespace Assets.Scripts
             if(Debug.isDebugBuild)
                SRDebug.Init();
 
+            Screen.sleepTimeout = SleepTimeout.NeverSleep;
             ServicePointManager.ServerCertificateValidationCallback = ServerUtils.MyRemoteCertificateValidationCallback;
+
             LoadValues();
 
             _boostState = BoostState.None;
@@ -76,10 +76,26 @@ namespace Assets.Scripts
             _color = ColorPalette.Colors[Glider.Id];
 
             InputController.GliderTransform = Glider.transform;
-            MainView.SetHighScoreButtonState(!string.IsNullOrEmpty(PlayerPrefs.GetString("PlayerAlias")));
+            MainView.SetHighScoreButtonState(HighScoreUnlocked());
+            MainView.SetShopButtonState(ShopUnlocked());
 
             Setup();
-            
+        }
+
+
+        private bool HighScoreUnlocked()
+        {
+            return _highScore > 30;
+        }
+
+        private bool ShopUnlocked()
+        {
+            if (PlayerPrefsService.Instance.HasUnlockedShop)
+                return true;
+
+            var shouldUnlock = MoneyService.Instance.CurrentMoney >= 20;
+            PlayerPrefsService.Instance.HasUnlockedShop = shouldUnlock;
+            return shouldUnlock;
         }
 
         private void Setup()
@@ -147,7 +163,7 @@ namespace Assets.Scripts
             MainView.DeactivateShopCanvas();
             MainView.DeactivateScoreCanvas();
 
-            Glider.Score = 0;        
+            Glider.Score = SROptions.StartScoreOption;        
             SetSpeeds(false);
 
             CirclesView.ResetAllPositions();
@@ -222,8 +238,6 @@ namespace Assets.Scripts
             {
                 _state = GameState.Dying;
             }
-
-
         }
 
         private void HandleDyingState()
@@ -243,8 +257,8 @@ namespace Assets.Scripts
             {
                 _highScore = Glider.Score;
                 SaveValues();
+                MainView.TryOpenScore(HighScoreUnlocked());
                 MainView.HighScoreView.OpenHighScoreView(true,_highScore);
-                MainView.StartScreenView.OpenScoreButton.onClick.Invoke();
             }
 
             MainView.StartScreenView.PlayButton.SetStateToNotPlaying();
@@ -252,8 +266,9 @@ namespace Assets.Scripts
             MainView.StartScreenView.SetHighScore(_highScore);
             MainView.SetColors(_color);
 
-            MainView.SetHighScoreButtonState(!string.IsNullOrEmpty(PlayerPrefs.GetString("PlayerAlias")));
-            
+            MainView.SetHighScoreButtonState(HighScoreUnlocked());
+            MainView.SetShopButtonState(ShopUnlocked());
+
 
             _state = GameState.Dead;
         }
@@ -285,7 +300,6 @@ namespace Assets.Scripts
                 Glider.Move(GliderMoveSpeed, _screenWidth, direction);
             }  
         }
-        
 
         private void LoadValues()
         {

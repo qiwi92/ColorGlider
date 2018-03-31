@@ -34,7 +34,7 @@ namespace UI.HighScore
 
         public void Open()
         {
-            var alias = PlayerPrefs.GetString("PlayerAlias");
+            var alias = PlayerPrefsService.Instance.Alias;
 
             if (!string.IsNullOrEmpty(alias))
             {
@@ -56,7 +56,7 @@ namespace UI.HighScore
         protected virtual void OnSubmitRequested()
         {
             var enteredName = GetEnteredName();
-            PlayerPrefs.SetString("PlayerAlias", enteredName);
+            PlayerPrefsService.Instance.Alias = enteredName;
 
             SubmitRequested?.Invoke(enteredName);
         }

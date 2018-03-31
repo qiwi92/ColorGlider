@@ -23,7 +23,8 @@ namespace Highscore
         private void UpdateHighscore()
         {
             var playerId = PlayerId;
-            Task.Run(async () => await ReadData(playerId))
+            var hasAlias = !string.IsNullOrEmpty(PlayerPrefsService.Instance.Alias);
+            Task.Run(async () => await ReadData(playerId, hasAlias))
                 .ContinueWith(c => RelevantHighScores = ConvertScores(c.Result), CurrentContext);
         }
 
@@ -33,11 +34,16 @@ namespace Highscore
             return result.Select(MapServerToViewHighscore).ToList();
         }
 
-        private async Task<IReadOnlyList<HighScoreData>> ReadData(Guid playerId)
+        private async Task<IReadOnlyList<HighScoreData>> ReadData(Guid playerId, bool hasAlias)
         {
             Debug.Log("Calling Api");
             try
             {
+                if (!hasAlias)
+                {
+                    return await _highScoreApi.GetTop10Async();
+                }
+
                 var highScoreDatas = await _highScoreApi.GetRanksAroundPlayer(playerId);
                 Debug.Log("Received " + highScoreDatas.Count);
                 return highScoreDatas;
