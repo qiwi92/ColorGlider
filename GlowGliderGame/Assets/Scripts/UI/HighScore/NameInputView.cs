@@ -40,7 +40,7 @@ namespace UI.HighScore
             {
                 for (var index = 0; index < _viewModels.Count; index++)
                 {
-                    var aliasChar = index < alias.Length - 1 ? alias[index].ToString() : "-";
+                    var aliasChar = index < alias.Length ? alias[index].ToString() : "-";
                     _viewModels[index].Character = aliasChar;
                 }
             }
