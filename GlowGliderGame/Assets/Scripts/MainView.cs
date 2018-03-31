@@ -10,22 +10,32 @@ namespace Assets.Scripts
         public StartScreenView StartScreenView;
         public PowerupShopView ShopView;
 
-        public GameObject ShopCanvas;
+        public HighScorePanelView HighScorePanelView;
+
+        public GameObject ShopPanel;
+        public GameObject ScorePanel;
 
         private Button _openShopButton;
         private Button _closeShopButton;
 
+        private Button _openScoreButton;
+        private Button _closeScoreButton;
+
         private bool _shopIsOpen;
+        private bool _scoreIsOpen;
 
         private float _screenWidth;
+        
 
         public void Setup( int highscore)
         {
             _shopIsOpen = false;
+            _scoreIsOpen = false;
 
             _screenWidth = 2*Camera.main.orthographicSize * Camera.main.aspect;
 
             MoveShopPanel();
+            MoveScorePanel();
 
 
 
@@ -44,7 +54,27 @@ namespace Assets.Scripts
             _openShopButton.onClick.AddListener(MoveShopPanel);
             _closeShopButton = ShopView.CloseShoptButton;
             _closeShopButton.onClick.AddListener(MoveShopPanel);
+
+            _openScoreButton = StartScreenView.OpenScoreButton;
+            _openScoreButton.onClick.AddListener(MoveScorePanel);
+            _closeScoreButton = HighScorePanelView.PlayButton;
+            _closeScoreButton.onClick.AddListener(MoveScorePanel);
         }
+
+        private void MoveScorePanel()
+        {
+            if (_scoreIsOpen)
+            {
+                HighScorePanelView.PanelTransform.DOMove(Vector3.zero, 0.4f);
+                _scoreIsOpen = false;
+            }
+            else
+            {
+                HighScorePanelView.PanelTransform.DOMove(Vector3.left * _screenWidth, 0.4f);
+                _scoreIsOpen = true;
+            }
+        }
+
 
         private void MoveShopPanel()
         {
@@ -62,12 +92,22 @@ namespace Assets.Scripts
 
         public void DeactivateShopCanvas()
         {
-            ShopCanvas.SetActive(false);
+            ShopPanel.SetActive(false);
         }
 
         public void ActivateShopCanvas()
         {
-            ShopCanvas.SetActive(true);
+            ShopPanel.SetActive(true);
+        }
+
+        public void DeactivateScoreCanvas()
+        {
+            ScorePanel.SetActive(false);
+        }
+
+        public void ActivateScoreCanvas()
+        {
+            ScorePanel.SetActive(true);
         }
     }
 }

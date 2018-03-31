@@ -8,6 +8,7 @@ namespace Assets.Scripts
     {
         public PlayButtonView PlayButton;
         public Button OpenShoptButton;
+        public Button OpenScoreButton;
         public Text HighScoreText;
         public RectTransform StartScreenTransform;
 
