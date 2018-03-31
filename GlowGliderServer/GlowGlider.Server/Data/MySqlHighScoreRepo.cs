@@ -1,45 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using GlowGlider.Shared;
 using MySql.Data.MySqlClient;
 
 namespace GlowGlider.Server.Data
 {
-    public class MySqlHighScoreRepo : IHighScoreRepository, IDisposable
+    public class MySqlHighScoreRepo : MySqlRepositoryBase, IHighScoreRepository
     {
-        private readonly MySqlConnection _connection;
-
-        public MySqlHighScoreRepo()
-        {
-
-            var builder = new MySqlConnectionStringBuilder
-            {
-                Server = "127.0.0.1",
-                AllowUserVariables = true,
-                UserID = "azure",
-                Password = "6#vWHD_$",
-                Database = "localdb",
-                Port = 52361,
-                SslMode = MySqlSslMode.None,
-                
-            };
-
-            //var connectionString = Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb");
-
-            var connectionString = builder.GetConnectionString(true);
-            _connection = new MySqlConnection(connectionString);
-        }
-
-        private void OpenConnectionIfNeeded()
-        {
-            if (_connection.State != ConnectionState.Open)
-            {
-                _connection.Open();
-            }
-        }
-
         public IReadOnlyList<HighScoreData> GetBestScores()
         {
             OpenConnectionIfNeeded();
@@ -69,7 +37,7 @@ namespace GlowGlider.Server.Data
         {
             OpenConnectionIfNeeded();
 
-            var transaction = _connection.BeginTransaction();
+            var transaction = Connection.BeginTransaction();
 
             var command = GetInsertIntoRankingCommand(data);
             if (command.ExecuteNonQuery() == 1)
@@ -102,7 +70,7 @@ namespace GlowGlider.Server.Data
                           "SET `Rank` = @counter := @counter + 1 " +
                           "ORDER BY `Score` DESC;";
 
-            var command = new MySqlCommand(cmdText, _connection);
+            var command = new MySqlCommand(cmdText, Connection);
             
 
             return command;
@@ -111,7 +79,7 @@ namespace GlowGlider.Server.Data
         private MySqlCommand GetSelectTopRanksCommand()
         {
             var cmdText = "SELECT * FROM `ranking` ORDER BY `Score` DESC LIMIT 10";
-            var command = new MySqlCommand(cmdText, _connection);
+            var command = new MySqlCommand(cmdText, Connection);
 
             return command;
         }
@@ -126,7 +94,7 @@ namespace GlowGlider.Server.Data
                           " `PlayerAlias` = @playerAlias, " +
                           " `Score` = @score";
 
-            var command = new MySqlCommand(cmdText, _connection);
+            var command = new MySqlCommand(cmdText, Connection);
             command.Parameters.AddWithValue("playerId", data.PlayerId);
             command.Parameters.AddWithValue("playerAlias", data.PlayerAlias);
             command.Parameters.AddWithValue("score", data.Score);
@@ -141,15 +109,11 @@ namespace GlowGlider.Server.Data
                           "ORDER BY `Score` DESC " +
                           "LIMIT 10";
 
-            var command = new MySqlCommand(cmdText, _connection);
+            var command = new MySqlCommand(cmdText, Connection);
             command.Parameters.AddWithValue("playerId", playerId);
 
             return command;
         }
 
-        public void Dispose()
-        {
-            _connection?.Dispose();
-        }
     }
 }
