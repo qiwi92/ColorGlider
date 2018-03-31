@@ -242,7 +242,7 @@ namespace Assets.Scripts
 
         private void HandleDyingState()
         {
-            _analyticsApi.TrackSession((ushort) _gameDuration, _guidProvider.GetGuid().ToString(),(ushort) _highScore);
+            _analyticsApi.TrackSession((ushort) _gameDuration, _guidProvider.GetGuid().ToString(),(ushort)Glider.Score);
             MainView.ActivateShopCanvas();
             MainView.ActivateScoreCanvas();
             Glider.ResetPositionSmooth();
