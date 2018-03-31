@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts.Powerups;
-using UnityEditor;
 using UnityEngine;
 
 namespace Assets.Scripts
