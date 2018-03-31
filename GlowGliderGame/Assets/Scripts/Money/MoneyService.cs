@@ -54,6 +54,7 @@ namespace Assets.Scripts.Money
         public void AddObserver(IObserver observer)
         {
             _observables.Add(observer);
+            observer.NotifyChange(Money);
         }
 
         private void NotifyObservers(int value)

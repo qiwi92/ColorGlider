@@ -4,18 +4,12 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public interface IPowerupData
-    {
-        float GetSpawnChance(int level);
-        float GetCost(int level);
-    }
-
-
     public class PowerupView : MonoBehaviour, ICollider
     {
         [HideInInspector] private bool _isAlive;
+        [HideInInspector] public float Speed;
         private float _counter = 0;
-        private float _spawnChance = 0;
+        public float SpawnChance = 0;
 
         public PowerupItemState CurentPowerupItemState;
 
@@ -26,7 +20,7 @@ namespace Assets.Scripts
 
         private Color _color;
 
-       
+  
 
         public float GetSize()
         {
@@ -57,7 +51,7 @@ namespace Assets.Scripts
 
         public void SetSpawnChance(float chance)
         {
-            _spawnChance = chance;
+            SpawnChance = chance;
         }
 
         private void Update()
@@ -113,7 +107,7 @@ namespace Assets.Scripts
             {
                 var chance = Random.Range(0, 1.0f);
 
-                if (chance < _spawnChance)
+                if (chance < SpawnChance)
                 {
                     return true;
                 }

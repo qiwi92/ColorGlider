@@ -33,9 +33,9 @@ namespace Assets.Scripts
             }
         }
 
-        public void SetValue(int score)
+        public void SetValue(bool canSpawnFilled)
         {
-            if (score <= 9)
+            if (canSpawnFilled)
             {
                 Value = 1;
             }

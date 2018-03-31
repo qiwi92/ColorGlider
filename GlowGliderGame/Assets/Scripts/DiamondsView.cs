@@ -73,12 +73,8 @@ namespace Assets.Scripts
 
                 if(diamond.CanSapwn)
                 {
-                    diamond.transform.position += Vector3.down * _speed * Time.deltaTime;
+                    diamond.transform.position += Vector3.down * diamond.Speed * Time.deltaTime;
                 }
-
-
-
-                       
             }
         }
 
@@ -90,6 +86,8 @@ namespace Assets.Scripts
 
         private void Reset(DiamondView diamond)
         {
+            diamond.IsAlive = false;
+            diamond.Speed = _speed;
             diamond.transform.position = new Vector3(Random.Range(-_width, _width), Height, 0);
         }
 
@@ -97,7 +95,7 @@ namespace Assets.Scripts
         {
             foreach (var diamond in Diamonds)
             {
-                diamond.IsAlive = false;
+                Reset(diamond);           
             }
         }
 

@@ -6,15 +6,16 @@ namespace Assets.Scripts
 {
     public class PowerupItemShopModel
     {
-        private ItemType _itemType;
+        private readonly ItemType _itemType;
+        private readonly IPowerupData _powerupData;
         private double _baseCost = 100;
         private int _level;
 
-        private readonly string _name;
-
-        public PowerupItemShopModel(ItemType type)
+        public PowerupItemShopModel(ItemType type, IPowerupData powerupData)
         {
-            _name = type.ToString();
+            _itemType = type;
+            _powerupData = powerupData;
+            Name = powerupData.GetName();
             _level = PlayerPrefs.GetInt(type.ToString());
         }
 
@@ -24,14 +25,11 @@ namespace Assets.Scripts
             private set
             {
                 _level = value;
-                PlayerPrefs.SetInt(Name,value);
+                PlayerPrefs.SetInt(_itemType.ToString(),value);
             }
         }
 
-        public string Name
-        {
-            get { return _name; }
-        }
+        public string Name { get; }
 
         public void TryBuy()
         {
@@ -43,6 +41,8 @@ namespace Assets.Scripts
             MoneyService.Instance.SubtractMoney((int)Cost);
             Level++;
         }
+
+        public ItemType Type => _itemType;
 
         public bool IsMaxLevel
         {
@@ -56,7 +56,7 @@ namespace Assets.Scripts
 
         public double Cost
         {
-            get { return _baseCost * (_level + 1); }
+            get { return _powerupData.GetCost(_level); }
         }
 
         public int MaxLevel

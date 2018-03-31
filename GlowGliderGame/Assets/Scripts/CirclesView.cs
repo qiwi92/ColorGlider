@@ -127,7 +127,9 @@ namespace Assets.Scripts
             circle.transform.position = new Vector3(randomX, Height + randomY, 0);
             circle.Speed = _speed;
             circle.SetFill(ColorPalette.Colors[circle.Id]);
-            circle.SetValue(_score);
+
+            var spawnFilled = _score >= 9;
+            circle.SetValue(spawnFilled);
         }
 
         public float SetSpeedForReset(int score)

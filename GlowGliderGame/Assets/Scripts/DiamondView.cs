@@ -7,6 +7,7 @@ namespace Assets.Scripts
         [HideInInspector] public int Value = 1;
         [HideInInspector] public bool IsAlive;
         [HideInInspector] public bool CanSapwn;
+        [HideInInspector] public float Speed;
 
         public float GetSize()
         {

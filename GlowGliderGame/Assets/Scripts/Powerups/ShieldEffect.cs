@@ -12,6 +12,13 @@ namespace Assets.Scripts.Powerups
       
         public float Duration;
 
+        private int _level;
+
+        public void Initialize(int lvl)
+        {
+            _level = lvl;
+        }
+
         public void Activate(Color color)
         {
             _shieldSpriteRenderer.color = color;

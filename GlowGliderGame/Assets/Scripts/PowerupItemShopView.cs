@@ -19,8 +19,6 @@ namespace Assets.Scripts
 
         public void Setup(PowerupItemShopModel model,Sprite icon,Color color)
         {
-            MoneyService.Instance.AddObserver(this);
-
             _powerupIconView.SetImage(icon, color);
             _buyButtonImage.color = color;
             _itemName.color = color;
@@ -32,7 +30,8 @@ namespace Assets.Scripts
             _buyButton.onClick.AddListener(TryBuyPowerup);
 
             UpdateView();
-            UpdateButtonState();
+
+            MoneyService.Instance.AddObserver(this);
         }
 
         private void UpdateView()
