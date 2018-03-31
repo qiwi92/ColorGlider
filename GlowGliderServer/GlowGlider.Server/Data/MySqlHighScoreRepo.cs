@@ -13,16 +13,23 @@ namespace GlowGlider.Server.Data
 
         public MySqlHighScoreRepo()
         {
+
             var builder = new MySqlConnectionStringBuilder
             {
-                Password = "LHpxTYQmWcY8kpgE",
-                Database = "d029f449",
-                UserID = "d029f449",
-                Server = "unholyfist.de",
+                Server = "127.0.0.1",
                 AllowUserVariables = true,
+                UserID = "azure",
+                Password = "6#vWHD_$",
+                Database = "localdb",
+                Port = 52361,
+                SslMode = MySqlSslMode.None,
+                
             };
-            
-            _connection = new MySqlConnection(builder.GetConnectionString(true));
+
+            //var connectionString = Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb");
+
+            var connectionString = builder.GetConnectionString(true);
+            _connection = new MySqlConnection(connectionString);
         }
 
         private void OpenConnectionIfNeeded()

@@ -27,7 +27,7 @@ namespace HighScoreTester
             var random = new Random();
             var publishTasks = new List<Task>();
             Guid newGuid = Guid.NewGuid();
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 20; i++)
             {
                 newGuid = Guid.NewGuid();
                 var nameChars = Enumerable.Range(0, random.Next(4, 8))
