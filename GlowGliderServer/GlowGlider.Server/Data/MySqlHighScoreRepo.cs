@@ -28,6 +28,15 @@ namespace GlowGlider.Server.Data
 
         public IReadOnlyList<HighScoreData> GetBestScores()
         {
+            return new HighScoreData[]
+            {
+                new HighScoreData
+                {
+                    PlayerName = Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb")
+                }, 
+            };
+
+
             OpenConnectionIfNeeded();
 
             var command = GetSelectTopRanksCommand();
