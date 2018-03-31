@@ -5,7 +5,7 @@ namespace Highscore
 {
     public interface IHighScoreModel
     {
-        IEnumerable<PlayerHighScore> HighScoresAroundPlayer { get; }
+        IReadOnlyList<PlayerHighScore> RelevantHighScores { get; }
         void UploadHighScore(int highScore, string alias);
     }
 }

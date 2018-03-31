@@ -6,12 +6,12 @@ namespace Highscore
 {
     public class HighScoreFactory : MonoBehaviour
     {
-        [SerializeField] private HighscoreView _highscoreView;
+        [SerializeField] private HighScoreView _highScoreView;
 
         private void Start()
         {
             var model = new HighScoreModel();
-            _highscoreView.Initialize(model);
+            _highScoreView.Initialize(model);
             
         }
 
@@ -20,7 +20,7 @@ namespace Highscore
             if (Input.GetKeyDown(KeyCode.A))
             {
                 var highScore = Random.Range(10, 150);
-                _highscoreView.OpenHighScoreView(true, highScore);
+                _highScoreView.OpenHighScoreView(true, highScore);
             }
 
         }

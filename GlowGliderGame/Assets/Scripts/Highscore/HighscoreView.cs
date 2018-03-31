@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using UI.HighScore;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Highscore
 {
-    public class HighscoreView : MonoBehaviour
+    public class HighScoreView : MonoBehaviour
     {
         [SerializeField] private HighScoreEntryView _highScoreEntryViewPrefab;
         [SerializeField] private Transform _highScoreEntryParent;
         [SerializeField] private NameInputView _nameInputView;
+
+        public Transform PanelTransform;
+        public Button PlayButton;
 
         private IHighScoreModel _model;
 
@@ -21,11 +25,11 @@ namespace Highscore
         {
             _model = model;
 
-            for(int i =0; i < 10; i++)
+            for (int i = 0; i < 10; i++)
             {
                 var entryView = Instantiate(_highScoreEntryViewPrefab);
-                entryView.transform.SetParent(_highScoreEntryParent,false);
-                entryView.UpdateDescription("....",i*10,i,false);
+                entryView.transform.SetParent(_highScoreEntryParent, false);
+                entryView.UpdateDescription("....", 0, i, false);
 
                 _highScoreEntryViews[i] = entryView;
             }
@@ -41,8 +45,8 @@ namespace Highscore
 
         private void Update()
         {
-            var highscores = _model.HighScoresAroundPlayer;
-            if (highscores != null && highscores.Any())
+            var highscores = _model.RelevantHighScores;
+            if (highscores?.Count > 0)
             {
                 SetHighScores(highscores);
             }

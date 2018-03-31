@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using DG.Tweening;
+using Highscore;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,7 +11,7 @@ namespace Assets.Scripts
         public StartScreenView StartScreenView;
         public PowerupShopView ShopView;
 
-        public HighScorePanelView HighScorePanelView;
+        public HighScoreView HighScoreView;
 
         public GameObject ShopPanel;
         public GameObject ScorePanel;
@@ -37,9 +38,8 @@ namespace Assets.Scripts
             MoveShopPanel();
             MoveScorePanel();
 
-
-
             StartScreenView.SetHighScore(highscore);
+            HighScoreView.Initialize(new HighScoreModel());
 
             var shopItemModels = new List<PowerupItemShopModel>
             {
@@ -57,7 +57,7 @@ namespace Assets.Scripts
 
             _openScoreButton = StartScreenView.OpenScoreButton;
             _openScoreButton.onClick.AddListener(MoveScorePanel);
-            _closeScoreButton = HighScorePanelView.PlayButton;
+            _closeScoreButton = HighScoreView.PlayButton;
             _closeScoreButton.onClick.AddListener(MoveScorePanel);
         }
 
@@ -65,12 +65,12 @@ namespace Assets.Scripts
         {
             if (_scoreIsOpen)
             {
-                HighScorePanelView.PanelTransform.DOMove(Vector3.zero, 0.4f);
+                HighScoreView.PanelTransform.DOMove(Vector3.zero, 0.4f);
                 _scoreIsOpen = false;
             }
             else
             {
-                HighScorePanelView.PanelTransform.DOMove(Vector3.left * _screenWidth, 0.4f);
+                HighScoreView.PanelTransform.DOMove(Vector3.left * _screenWidth, 0.4f);
                 _scoreIsOpen = true;
             }
         }

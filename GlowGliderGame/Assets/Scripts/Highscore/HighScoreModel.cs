@@ -9,11 +9,12 @@ namespace Highscore
 {
     public class HighScoreModel : IHighScoreModel
     {
+        private static TaskScheduler CurrentContext => TaskScheduler.FromCurrentSynchronizationContext();
+
+        public IReadOnlyList<PlayerHighScore> RelevantHighScores { get; private set; }
         private readonly HighScoreApi _highScoreApi = new HighScoreApi("https://glowglider.azurewebsites.net");
         private readonly GuidProvider _guidProvider = new GuidProvider();
-        private IReadOnlyList<HighScoreData> _highscoresAroundPlayer = new HighScoreData[0];
-
-
+        
         public HighScoreModel()
         {
             UpdateHighscore();
@@ -22,8 +23,14 @@ namespace Highscore
         private void UpdateHighscore()
         {
             var playerId = PlayerId;
-            Task.Run(async () => await ReadData (playerId))
-                .ContinueWith(c => _highscoresAroundPlayer = c.Result);
+            Task.Run(async () => await ReadData(playerId))
+                .ContinueWith(c => RelevantHighScores = ConvertScores(c.Result), CurrentContext);
+        }
+
+
+        private IReadOnlyList<PlayerHighScore> ConvertScores(IReadOnlyList<HighScoreData> result)
+        {
+            return result.Select(MapServerToViewHighscore).ToList();
         }
 
         private async Task<IReadOnlyList<HighScoreData>> ReadData(Guid playerId)
@@ -60,13 +67,11 @@ namespace Highscore
         {
             var request = new PublishRequest(PlayerId.ToString(), playerAlias, highscore);
             Task.Run(async () => await _highScoreApi.PublishScore(request))
-                .ConfigureAwait(true).GetAwaiter().OnCompleted(() =>
+                .ContinueWith(res =>
                 {
                     Debug.Log("Uploaded Highscore! " + request);
                     UpdateHighscore();
-                });
+                }, CurrentContext);
         }
-
-        public IEnumerable<PlayerHighScore> HighScoresAroundPlayer => _highscoresAroundPlayer.Select(MapServerToViewHighscore);
     }
 }
