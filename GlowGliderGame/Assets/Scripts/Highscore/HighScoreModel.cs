@@ -12,9 +12,9 @@ namespace Highscore
 {
     public class HighScoreModel : IHighScoreModel
     {
-        private readonly HighScoreApi _highScoreApi = new HighScoreApi();
+        private readonly HighScoreApi _highScoreApi = new HighScoreApi("https://glowglider.azurewebsites.net");
         private readonly GuidProvider _guidProvider = new GuidProvider();
-        private IReadOnlyList<HighScoreData> _highscoresAroundPlayer;
+        private IReadOnlyList<HighScoreData> _highscoresAroundPlayer = new HighScoreData[0];
 
 
         public HighScoreModel()
@@ -26,16 +26,17 @@ namespace Highscore
 
         private void UpdateHighscore()
         {
-            Task.Run(ReadData)
+            var playerId = PlayerId;
+            Task.Run(async () => await ReadData (playerId))
                 .ContinueWith(c => _highscoresAroundPlayer = c.Result);
         }
 
-        private async Task<IReadOnlyList<HighScoreData>> ReadData()
+        private async Task<IReadOnlyList<HighScoreData>> ReadData(Guid playerId)
         {
             Debug.Log("Calling Api");
             try
             {
-                var highScoreDatas = await _highScoreApi.GetTop10Async();
+                var highScoreDatas = await _highScoreApi.GetRanksAroundPlayer(playerId);
                 Debug.Log("Received " + highScoreDatas.Count);
                 return highScoreDatas;
             }
@@ -62,11 +63,13 @@ namespace Highscore
 
         public void UploadHighScore(int highscore,string playerAlias)
         {
-            var request = new PublishRequest(PlayerId.ToString(),playerAlias,highscore);
-            Task.Run(async () => await _highScoreApi.PublishScore(request)).ContinueWith(res =>
-            {
-                Debug.Log("Uploaded Highscore! " + request.ToString() );
-            });
+            var request = new PublishRequest(PlayerId.ToString(), playerAlias, highscore);
+            Task.Run(async () => await _highScoreApi.PublishScore(request))
+                .ConfigureAwait(true).GetAwaiter().OnCompleted(() =>
+                {
+                    Debug.Log("Uploaded Highscore! " + request);
+                    UpdateHighscore();
+                });
         }
 
         public IEnumerable<PlayerHighScore> HighScoresAroundPlayer => _highscoresAroundPlayer.Select(MapServerToViewHighscore);
@@ -99,29 +102,6 @@ namespace Highscore
                 }
             }
             return isOk;
-        }
-    }
-
-    public class GuidProvider
-    {
-        public Guid GetGuid()
-        {
-            var guidString = PlayerPrefs.GetString("Guid",null);
-            Debug.Log("Guid Loaded: " + guidString);
-            if (!string.IsNullOrEmpty(guidString))
-                return new Guid(guidString);
-
-            var guid = GenerateGuid();
-
-            Debug.Log("Guid Generated: " + guid);
-            PlayerPrefs.SetString("Guid", guid.ToString());
-
-            return guid;
-        }
-
-        private Guid GenerateGuid()
-        {
-           return Guid.NewGuid();
         }
     }
 }
