@@ -15846,7 +15846,7 @@ GameObject:
   - component: {fileID: 957172040}
   - component: {fileID: 957172039}
   m_Layer: 0
-  m_Name: MainView
+  m_Name: MainUIView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15864,7 +15864,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StartScreenView: {fileID: 681416220}
-  PowerupShopView: {fileID: 673088704}
+  ShopView: {fileID: 673088704}
   ShopCanvas: {fileID: 673088700}
 --- !u!4 &957172040
 Transform:
@@ -27434,6 +27434,7 @@ MonoBehaviour:
   EngineDustParticleSystem: {fileID: 1008843795}
   ShieldEffect: {fileID: 504951641}
   BoostEffect: {fileID: 1822623699}
+  IsBoosted: 0
   Sounds: {fileID: 0}
   ColorPalette: {fileID: 0}
 --- !u!1 &1462121854

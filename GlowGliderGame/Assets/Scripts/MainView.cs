@@ -8,7 +8,7 @@ namespace Assets.Scripts
     public class MainView : MonoBehaviour
     {
         public StartScreenView StartScreenView;
-        public ShopView ShopView;
+        public PowerupShopView ShopView;
 
         public GameObject ShopCanvas;
 
