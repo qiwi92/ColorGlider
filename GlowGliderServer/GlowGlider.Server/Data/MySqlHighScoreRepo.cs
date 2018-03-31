@@ -80,7 +80,7 @@ namespace GlowGlider.Server.Data
 
         private MySqlCommand GetSelectTopRanksCommand()
         {
-            var cmdText = "SELECT * FROM `ranking` ORDER BY `Rank` DESC LIMIT 10";
+            var cmdText = "SELECT * FROM `ranking` ORDER BY `Rank` ASC LIMIT 10";
             var command = new MySqlCommand(cmdText, Connection);
 
             return command;
@@ -108,7 +108,7 @@ namespace GlowGlider.Server.Data
         {
             var cmdText = "SELECT * FROM `ranking` " +
                           "WHERE `Rank` >= (SELECT `Rank` FROM `ranking` WHERE `PlayerId` = @playerId) - 5 " +
-                          "ORDER BY `Rank` DESC " +
+                          "ORDER BY `Rank` ASC " +
                           "LIMIT 10";
 
             var command = new MySqlCommand(cmdText, Connection);
