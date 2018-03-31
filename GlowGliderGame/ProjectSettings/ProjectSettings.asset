@@ -242,7 +242,7 @@ PlayerSettings:
   clonedFromGUID: 00000000000000000000000000000000
   AndroidTargetDevice: 3
   AndroidSplashScreenScale: 0
-  androidSplashScreen: {fileID: 2800000, guid: 6968a8f5a095afb4094b9628254b02af, type: 3}
+  androidSplashScreen: {fileID: 0}
   AndroidKeystoreName: C:/Users/Josh/Desktop/GolorGlider/ColorGlider/glowglider.keystore
   AndroidKeyaliasName: qiwi92
   AndroidTVCompatibility: 0
