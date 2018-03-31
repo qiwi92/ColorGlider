@@ -11992,6 +11992,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayButton: {fileID: 1900525903}
   OpenShoptButton: {fileID: 1751144215}
+  OpenScoreButton: {fileID: 1081350892}
   HighScoreText: {fileID: 1805618620}
   StartScreenTransform: {fileID: 681416217}
 --- !u!1 &698169367
@@ -15924,7 +15925,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -85.350006, y: 0}
+  m_AnchoredPosition: {x: -85.34961, y: 0}
   m_SizeDelta: {x: 170.70001, y: 161.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &789679489
@@ -16293,7 +16294,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StartScreenView: {fileID: 681416220}
   ShopView: {fileID: 673088704}
-  ShopCanvas: {fileID: 673088700}
+  HighScorePanelView: {fileID: 1367594220}
+  ShopPanel: {fileID: 0}
+  ScorePanel: {fileID: 0}
 --- !u!4 &957172040
 Transform:
   m_ObjectHideFlags: 0
@@ -28119,6 +28122,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8567786a8ab5eee42a4a45b71ac8ae3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PanelTransform: {fileID: 1367594219}
+  PlayButton: {fileID: 789679489}
 --- !u!1 &1422919600
 GameObject:
   m_ObjectHideFlags: 0
@@ -32659,7 +32664,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 83.76001, y: -85.5}
+  m_AnchoredPosition: {x: 83.759766, y: -85.5}
   m_SizeDelta: {x: 78.98, y: 80.72}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1742788273
