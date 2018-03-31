@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using UI.HighScore;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Highscore
 {
-    public class HighScoreView : MonoBehaviour
+    public class HighScorePanelView : MonoBehaviour
     {
         [SerializeField] private HighScoreEntryView _highScoreEntryViewPrefab;
         [SerializeField] private Transform _highScoreEntryParent;
@@ -58,7 +56,7 @@ namespace Highscore
 
             foreach (var highScore in highScores)
             {
-                _highScoreEntryViews[index].UpdateDescription(highScore.PlayerName,highScore.Score,highScore.Rank, highScore.IsPlayer);
+                _highScoreEntryViews[index].UpdateDescription(highScore.PlayerName, highScore.Score, highScore.Rank, highScore.IsPlayer);
                 index++;
             }
         }

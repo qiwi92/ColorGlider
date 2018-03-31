@@ -6,7 +6,7 @@ namespace Highscore
 {
     public class HighScoreFactory : MonoBehaviour
     {
-        [SerializeField] private HighScoreView _highScoreView;
+        [SerializeField] private HighScorePanelView _highScoreView;
 
         private void Start()
         {

@@ -11,7 +11,7 @@ namespace Assets.Scripts
         public StartScreenView StartScreenView;
         public PowerupShopView ShopView;
 
-        public HighScoreView HighScoreView;
+        public HighScorePanelView HighScoreView;
 
         public GameObject ShopPanel;
         public GameObject ScorePanel;
