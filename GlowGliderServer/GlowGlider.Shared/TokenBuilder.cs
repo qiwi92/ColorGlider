@@ -30,5 +30,10 @@ namespace GlowGlider.Shared
         {
             return Build(request.PlayerId, request.PlayerAlias, request.Score);
         }
+
+        public static string TokenFor(AnalyticsData request)
+        {
+            return Build(request.PlayerId, request.Score, request.GameDuration);
+        }
     }
 }
