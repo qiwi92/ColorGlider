@@ -1,4 +1,4 @@
-﻿namespace Money
+﻿namespace Assets.Scripts.Money
 {
     public interface IObserver
     {

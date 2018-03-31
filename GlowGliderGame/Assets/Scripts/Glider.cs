@@ -1,5 +1,7 @@
-﻿using DG.Tweening;
-using Money;
+﻿using Assets.Scripts.Money;
+using Assets.Scripts.Powerups;
+using Assets.StompyRobot.SRDebugger.Scripts;
+using DG.Tweening;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -140,7 +142,7 @@ namespace Assets.Scripts
         {
             Sounds.PlayPowerUpSfx();
             PowerupsView.SetSpeed(Score);
-            powerup.IsAlive = false;
+            powerup.CurentPowerupItemState = PowerupItemState.Dying;
 
             var powerupType = powerup.PowerupType;
 
