@@ -1,6 +1,6 @@
 ﻿using System;
+using Assets.Scripts.Powerups;
 using DG.Tweening;
-using Money;
 using UnityEngine;
 using UnityEngine.UI;
 

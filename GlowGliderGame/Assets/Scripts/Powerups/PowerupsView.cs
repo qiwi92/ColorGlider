@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.Scripts
+namespace Assets.Scripts.Powerups
 {
     public class PowerupsView : MonoBehaviour {
 
@@ -32,13 +32,14 @@ namespace Assets.Scripts
             var newBoostPowerup = Instantiate(PowerupPrefab, randomPos, Quaternion.identity);
             newBoostPowerup.PowerupType = PowerupType.Boost;
             newBoostPowerup.SetColors(ColorPalette.PowerupBoost);
-            newBoostPowerup.IsAlive = true;
-            
-            
+            newBoostPowerup.CurentPowerupItemState = PowerupItemState.Dead;
+
+
+            randomPos = new Vector3(Random.Range(-_width, _width), Height, 0);
             var newShieldPowerup = Instantiate(ShieldPowerUp, randomPos, Quaternion.identity);
             newShieldPowerup.PowerupType = PowerupType.Shield;
             newShieldPowerup.SetColors(ColorPalette.PowerupShield);
-            newShieldPowerup.IsAlive = true;
+            newShieldPowerup.CurentPowerupItemState = PowerupItemState.Dead;
 
             Powerups[0] = newBoostPowerup;
             Powerups[1] = newShieldPowerup;
@@ -51,7 +52,7 @@ namespace Assets.Scripts
 
             foreach (var powerUp in Powerups)
             {
-                powerUp.SetSpawnChance(0.5f);
+                powerUp.SetSpawnChance(0.2f);
             }
         }
 
@@ -64,7 +65,7 @@ namespace Assets.Scripts
                     Reset(powerUp);
                 }
 
-                if (!powerUp.IsAlive && powerUp.CanSpawn)
+                if(powerUp.CurentPowerupItemState == PowerupItemState.Dying)
                 {
                     _emitParams.position = powerUp.transform.position;
 
@@ -74,10 +75,8 @@ namespace Assets.Scripts
                     ParticleSystem.Emit(_emitParams, 4);
 
                     Reset(powerUp);
-
-                    powerUp.IsAlive = true;
                 }
-                else
+                if(powerUp.CurentPowerupItemState == PowerupItemState.Alive)
                 {
                     powerUp.transform.position += Vector3.down * _speed * Time.deltaTime;
                 }
@@ -99,7 +98,7 @@ namespace Assets.Scripts
         {
             foreach (var powerUp in Powerups)
             {
-                powerUp.IsAlive = false;
+                powerUp.CurentPowerupItemState = PowerupItemState.Dying;
             }
         }
     }

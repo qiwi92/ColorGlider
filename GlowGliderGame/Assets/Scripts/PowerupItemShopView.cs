@@ -1,4 +1,4 @@
-﻿using Money;
+﻿using Assets.Scripts.Money;
 using UnityEngine;
 using UnityEngine.UI;
 

@@ -1,5 +1,5 @@
-﻿using DG.Tweening;
-using Money;
+﻿using Assets.Scripts.Money;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 

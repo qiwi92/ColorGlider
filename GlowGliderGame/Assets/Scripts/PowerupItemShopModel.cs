@@ -1,5 +1,5 @@
 ﻿using System;
-using Money;
+using Assets.Scripts.Money;
 using UnityEngine;
 
 namespace Assets.Scripts

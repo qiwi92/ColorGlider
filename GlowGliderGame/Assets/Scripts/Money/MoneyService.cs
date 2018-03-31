@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Money
+namespace Assets.Scripts.Money
 {
     public class MoneyService
     {
