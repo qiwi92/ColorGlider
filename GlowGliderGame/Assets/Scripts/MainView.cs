@@ -10,7 +10,6 @@ namespace Assets.Scripts
     {
         public StartScreenView StartScreenView;
         public PowerupShopView ShopView;
-
         public HighScorePanelView HighScoreView;
 
         public GameObject ShopPanel;
@@ -110,9 +109,17 @@ namespace Assets.Scripts
             ScorePanel.SetActive(true);
         }
 
+
         public void SetHighScoreButtonState(bool shouldShowButton)
         {
             _openScoreButton.gameObject.SetActive(shouldShowButton);
+        }
+
+        public void SetColors(Color color)
+        {
+            StartScreenView.SetColors(color);
+            ShopView.SetColors(color);
+            HighScoreView.SetColors(color);
         }
     }
 }

@@ -40,7 +40,7 @@ namespace Assets.Scripts
 
         public void SetValue(bool canSpawnFilled)
         {
-            if (canSpawnFilled)
+            if (!canSpawnFilled)
             {
                 Value = 1;
             }

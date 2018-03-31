@@ -12,6 +12,8 @@ namespace Assets.Scripts
         [SerializeField] private PowerupItemShopView _powerupItemShopViewPrefab;
         [SerializeField] private ColorPalette _colorPalette;
         [SerializeField] private Sprite _icon;
+        [SerializeField] private Image _backButtonImage;
+
 
 
         public void CreatePowerupItemShopViews(List<PowerupItemShopModel> models)
@@ -23,6 +25,11 @@ namespace Assets.Scripts
 
                 itemShopView.Setup(itemShopModel, _icon, _colorPalette.PowerupShield);
             }
+        }
+
+        public void SetColors(Color color)
+        {
+            _backButtonImage.color = color;
         }
     }
 }
