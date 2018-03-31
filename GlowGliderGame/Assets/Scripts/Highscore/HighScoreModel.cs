@@ -12,9 +12,9 @@ namespace Highscore
 {
     public class HighScoreModel : IHighScoreModel
     {
-        private readonly HighScoreApi _highScoreApi = new HighScoreApi();
+        private readonly HighScoreApi _highScoreApi = new HighScoreApi("https://glowglider.azurewebsites.net");
         private readonly GuidProvider _guidProvider = new GuidProvider();
-        private IReadOnlyList<HighScoreData> _highscoresAroundPlayer;
+        private IReadOnlyList<HighScoreData> _highscoresAroundPlayer = new HighScoreData[0];
 
 
         public HighScoreModel()
@@ -66,7 +66,9 @@ namespace Highscore
             Task.Run(async () => await _highScoreApi.PublishScore(request)).ContinueWith(res =>
             {
                 Debug.Log("Uploaded Highscore! " + request.ToString() );
+                UpdateHighscore();
             });
+            
         }
 
         public IEnumerable<PlayerHighScore> HighScoresAroundPlayer => _highscoresAroundPlayer.Select(MapServerToViewHighscore);
@@ -99,29 +101,6 @@ namespace Highscore
                 }
             }
             return isOk;
-        }
-    }
-
-    public class GuidProvider
-    {
-        public Guid GetGuid()
-        {
-            var guidString = PlayerPrefs.GetString("Guid",null);
-            Debug.Log("Guid Loaded: " + guidString);
-            if (!string.IsNullOrEmpty(guidString))
-                return new Guid(guidString);
-
-            var guid = GenerateGuid();
-
-            Debug.Log("Guid Generated: " + guid);
-            PlayerPrefs.SetString("Guid", guid.ToString());
-
-            return guid;
-        }
-
-        private Guid GenerateGuid()
-        {
-           return Guid.NewGuid();
         }
     }
 }
