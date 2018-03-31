@@ -5,6 +5,7 @@ using Assets.Scripts.Powerups;
 using DG.Tweening;
 using Highscore;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Assets.Scripts
@@ -75,7 +76,8 @@ namespace Assets.Scripts
             _color = ColorPalette.Colors[Glider.Id];
 
             InputController.GliderTransform = Glider.transform;
-            
+            MainView.SetHighScoreButtonState(!string.IsNullOrEmpty(PlayerPrefs.GetString("PlayerAlias")));
+
             Setup();
         }
 
@@ -230,12 +232,17 @@ namespace Assets.Scripts
             {
                 _highScore = Glider.Score;
                 SaveValues();
+                MainView.HighScoreView.OpenHighScoreView(true,_highScore);
+                MainView.StartScreenView.OpenScoreButton.onClick.Invoke();
             }
 
             MainView.StartScreenView.PlayButton.SetStateToNotPlaying();
             MainView.StartScreenView.PlayAnimation();
             MainView.StartScreenView.SetHighScore(_highScore);
             MainView.StartScreenView.SetColors(_color);
+
+            MainView.SetHighScoreButtonState(!string.IsNullOrEmpty(PlayerPrefs.GetString("PlayerAlias")));
+            
 
             _state = GameState.Dead;
         }

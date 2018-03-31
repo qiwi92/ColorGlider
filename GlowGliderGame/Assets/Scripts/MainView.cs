@@ -109,5 +109,10 @@ namespace Assets.Scripts
         {
             ScorePanel.SetActive(true);
         }
+
+        public void SetHighScoreButtonState(bool shouldShowButton)
+        {
+            _openScoreButton.gameObject.SetActive(shouldShowButton);
+        }
     }
 }

@@ -1,10 +1,18 @@
-﻿namespace UI.HighScore
+﻿using System.Collections.Generic;
+
+namespace UI.HighScore
 {
     public class CharacterSelectorViewModel : ICharacterSelectorViewModel
     {
-        public string Character => Characters[_currentIdx];
+        private int _currentIdx;
 
-        private static readonly string[] Characters = 
+        public string Character
+        {
+            get { return Characters[_currentIdx]; }
+            set { _currentIdx = Characters.IndexOf(value); }
+        }
+
+        private static readonly List<string> Characters = new List<string>
         {
             "-", "A", "B", "C", "D", "E",
             "F", "G", "H", "I", "J", "K",
@@ -12,8 +20,6 @@
             "R", "S", "T", "U", "V", "W",
             "X", "Y", "Z"
         };
-
-        private int _currentIdx;
 
         public void IncrementCharacter()
         {
@@ -27,8 +33,8 @@
 
         private static int WrapValue(int value)
         {
-            if (value < 0) value = Characters.Length - 1;
-            if (value >= Characters.Length) value = value % Characters.Length;
+            if (value < 0) value = Characters.Count - 1;
+            if (value >= Characters.Count) value = value % Characters.Count;
 
             return value;
         }

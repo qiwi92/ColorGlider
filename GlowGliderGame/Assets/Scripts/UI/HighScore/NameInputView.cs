@@ -16,9 +16,8 @@ namespace UI.HighScore
 
         public Text NewPlayerHighScoreText;
 
-        void Start()
+        public void Awake()
         {
-            Debug.Log("teeest");
             for (int i = 0; i < 5; i++)
             {
                 var viewModel = new CharacterSelectorViewModel();
@@ -29,10 +28,23 @@ namespace UI.HighScore
             }
 
             _submitButton.onClick.AddListener(OnSubmitRequested);
+
+            gameObject.SetActive(false);
         }
 
         public void Open()
         {
+            var alias = PlayerPrefs.GetString("PlayerAlias");
+
+            if (!string.IsNullOrEmpty(alias))
+            {
+                for (var index = 0; index < _viewModels.Count; index++)
+                {
+                    var aliasChar = index < alias.Length - 1 ? alias[index].ToString() : "-";
+                    _viewModels[index].Character = aliasChar;
+                }
+            }
+
             gameObject.SetActive(true);
         }
 
@@ -44,6 +56,8 @@ namespace UI.HighScore
         protected virtual void OnSubmitRequested()
         {
             var enteredName = GetEnteredName();
+            PlayerPrefs.SetString("PlayerAlias", enteredName);
+
             SubmitRequested?.Invoke(enteredName);
         }
 
