@@ -43,6 +43,9 @@ namespace Assets.Scripts
 
         void Awake ()
         {
+            if(Debug.isDebugBuild)
+               SRDebug.Init();
+
             ServicePointManager.ServerCertificateValidationCallback = ServerUtils.MyRemoteCertificateValidationCallback;
             LoadValues();
 
