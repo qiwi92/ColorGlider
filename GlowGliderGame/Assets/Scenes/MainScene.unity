@@ -316,7 +316,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1951405288
+  randomSeed: -1839283233
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -16173,7 +16173,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -251992301
+  randomSeed: 117032523
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -23849,7 +23849,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1372902022
+  randomSeed: 750455198
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -27432,7 +27432,7 @@ MonoBehaviour:
   GliderSpriteOutline: {fileID: 258550567}
   EngineParticleSystem: {fileID: 746789245}
   EngineDustParticleSystem: {fileID: 1008843795}
-  Shield: {fileID: 504951641}
+  ShieldEffect: {fileID: 504951641}
   BoostEffect: {fileID: 1822623699}
   Sounds: {fileID: 0}
   ColorPalette: {fileID: 0}
@@ -31932,7 +31932,7 @@ MonoBehaviour:
   BoostParticles: {fileID: 997801114}
   BoostDebreeParticles: {fileID: 1225487522}
   SpeedEffectParticleSystem: {fileID: 113312289}
-  Duration: 2
+  Duration: 5
 --- !u!4 &1822623700
 Transform:
   m_ObjectHideFlags: 0

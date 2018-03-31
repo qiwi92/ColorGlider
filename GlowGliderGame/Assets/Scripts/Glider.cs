@@ -28,8 +28,10 @@ namespace Assets.Scripts
         public ParticleSystem EngineParticleSystem;
         public ParticleSystem EngineDustParticleSystem;
 
-        public Shield Shield;
+        public ShieldEffect ShieldEffect;
         public BoostEffect BoostEffect;
+
+        [HideInInspector] public bool IsBoosted;
 
 
 
@@ -41,7 +43,7 @@ namespace Assets.Scripts
 
         public void Setup()
         {
-            Shield.Deactivate();
+            ShieldEffect.Deactivate();
             Collisions = new Collisions(this, CirclesView.Circles, DiamondsView.Diamonds, PowerupsView.Powerups);
         }
 
@@ -55,8 +57,6 @@ namespace Assets.Scripts
             this.transform.position = Vector3.down * _height;
         }
 
-        
-
         public void SetColorOutline(Color color)
         {
             GliderSpriteOutline.DOColor(color, 0.4f);
@@ -65,6 +65,17 @@ namespace Assets.Scripts
         public void Move(float speed, float maxWidth, Direction direction)
         {
             Direction curentDirection;
+
+            float speedWhileBoosted;
+
+            if (BoostEffect.IsActive())
+            {
+                speedWhileBoosted = speed * 0.5f;
+            }
+            else
+            {
+                speedWhileBoosted = speed;
+            }
 
             if (this.transform.position.x > 0)
             {
@@ -77,11 +88,11 @@ namespace Assets.Scripts
 
             if (direction != curentDirection)
             {
-                transform.position += speed * Vector3.right * ((float)direction) * Time.deltaTime;
+                transform.position += speedWhileBoosted * Vector3.right * ((float)direction) * Time.deltaTime;
             }
             else if (Mathf.Abs(this.transform.position.x) < maxWidth)
             {
-                transform.position += speed * Vector3.right * ((float)direction) * Time.deltaTime;
+                transform.position += speedWhileBoosted * Vector3.right * ((float)direction) * Time.deltaTime;
             }                     
         }
 
@@ -101,9 +112,29 @@ namespace Assets.Scripts
             }
         }
 
+        private void Update()
+        {
+            if (BoostEffect.IsActive())
+            {
+                IsBoosted = true;
+            }
+            else
+            {
+                IsBoosted = false;
+            }
+        }
+
         private void HandleCircleCollision(CircleView cirle)
         {
             CollisionState = CollisionStates.JustCollided;
+
+            if (BoostEffect.IsActive())
+            {
+                Score += cirle.Value;
+                cirle.Alive = false;
+                return;
+            }
+
 
             if (cirle.Id == Id)
             {
@@ -123,9 +154,10 @@ namespace Assets.Scripts
                 if(SROptions.InvincibilityCheatActive)
                     return;
 
-                if (Shield.IsActive())
+                
+                if (ShieldEffect.IsActive())
                 {
-                    Shield.Deactivate();
+                    ShieldEffect.Deactivate();
                     cirle.Alive = false;
                     return;
                 }
@@ -149,7 +181,7 @@ namespace Assets.Scripts
             switch (powerupType)
             {
                 case PowerupType.Shield:
-                    Shield.Activate(ColorPalette.Colors[Id]);
+                    ShieldEffect.Activate(ColorPalette.Colors[Id]);
                     break;
                 case PowerupType.Boost:
                     BoostEffect.Activate(ColorPalette.Colors[Id]);

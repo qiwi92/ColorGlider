@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Powerups
 {
-    public class Shield : MonoBehaviour , IPowerupEffect
+    public class ShieldEffect : MonoBehaviour , IPowerupEffect
     {
         private float _counter = 0;
         [SerializeField] private SpriteRenderer _shieldSpriteRenderer;

@@ -7,6 +7,7 @@ namespace Assets.Scripts
         [HideInInspector] public int Id;
         [HideInInspector] public bool Alive;
         [HideInInspector] public float Speed;
+        [HideInInspector] public float OldSpeed;
         [HideInInspector] public int Value;
 
         private bool _isAlive;
