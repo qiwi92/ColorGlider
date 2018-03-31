@@ -1,19 +1,20 @@
 ﻿using System;
 using Assets.Scripts.Money;
+using Assets.Scripts.Powerups;
 using UnityEngine;
 
 namespace Assets.Scripts
 {
     public class PowerupItemShopModel
     {
-        private readonly ItemType _itemType;
+        private readonly PowerupType _powerupType;
         private readonly IPowerupData _powerupData;
         private double _baseCost = 100;
         private int _level;
 
-        public PowerupItemShopModel(ItemType type, IPowerupData powerupData)
+        public PowerupItemShopModel(PowerupType type, IPowerupData powerupData)
         {
-            _itemType = type;
+            _powerupType = type;
             _powerupData = powerupData;
             Name = powerupData.GetName();
             _level = PlayerPrefs.GetInt(type.ToString());
@@ -25,7 +26,7 @@ namespace Assets.Scripts
             private set
             {
                 _level = value;
-                PlayerPrefs.SetInt(_itemType.ToString(),value);
+                PlayerPrefs.SetInt(_powerupType.ToString(),value);
             }
         }
 
@@ -42,7 +43,7 @@ namespace Assets.Scripts
             Level++;
         }
 
-        public ItemType Type => _itemType;
+        public PowerupType Type => _powerupType;
 
         public bool IsMaxLevel
         {
@@ -68,11 +69,5 @@ namespace Assets.Scripts
         {
             return MoneyService.Instance.CurrentMoney >= Cost && !IsMaxLevel;
         }     
-    }
-
-    public enum ItemType
-    {
-        Shield,
-        SpeedBoost,
     }
 }

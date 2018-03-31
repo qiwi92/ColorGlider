@@ -11,7 +11,7 @@ namespace Assets.Scripts
                 return 0;
             }
 
-            return Mathf.Clamp(level * 0.01f, 0, 0.5f);
+            return Mathf.Clamp(level * 0.05f, 0, 0.5f);
         }
 
         public float GetCost(int level)
