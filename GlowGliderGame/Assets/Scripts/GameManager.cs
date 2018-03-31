@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using Analytics;
 using Assets.Scripts.Powerups;
 using DG.Tweening;
@@ -42,6 +43,7 @@ namespace Assets.Scripts
 
         void Awake ()
         {
+            ServicePointManager.ServerCertificateValidationCallback = ServerUtils.MyRemoteCertificateValidationCallback;
             LoadValues();
 
             _boostState = BoostState.None;

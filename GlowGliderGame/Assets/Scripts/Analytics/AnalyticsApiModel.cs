@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using GlowGlider.Shared;
 using UnityEngine;
 
@@ -17,10 +18,23 @@ namespace Analytics
                 Score = score,
             };
 
-            Task.Run( async ()  => await _analyticsApi.PublishRoundData(analyticsData)).ContinueWith(res =>
+            Task.Run(async () => await PublishRoundData(analyticsData)).ContinueWith(res =>
             {
                 Debug.Log("Uploaded analytics Data");
             });
+        }
+
+        private async Task PublishRoundData(AnalyticsData analyticsData)
+        {
+            try
+            {
+                await _analyticsApi.PublishRoundData(analyticsData);
+            }
+            catch (Exception e)
+            {
+                Debug.Log("upload failed: " + e);
+                throw;
+            }
         }
     }
 }
