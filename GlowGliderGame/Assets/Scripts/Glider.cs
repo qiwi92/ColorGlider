@@ -28,8 +28,6 @@ namespace Assets.Scripts
         public ParticleSystem EngineParticleSystem;
         public ParticleSystem EngineDustParticleSystem;
 
-        public ShieldEffect ShieldEffect;
-        public BoostEffect BoostEffect;
 
         [HideInInspector] public bool IsBoosted;
 
@@ -43,7 +41,7 @@ namespace Assets.Scripts
 
         public void Setup()
         {
-            ShieldEffect.Deactivate();
+            PowerupsView.ShieldEffect.Deactivate();
             Collisions = new Collisions(this, CirclesView.Circles, DiamondsView.Diamonds, PowerupsView.Powerups);
         }
 
@@ -68,7 +66,7 @@ namespace Assets.Scripts
 
             float speedWhileBoosted;
 
-            if (BoostEffect.IsActive())
+            if (PowerupsView.BoostEffect.IsActive())
             {
                 speedWhileBoosted = speed * 0.5f;
             }
@@ -114,7 +112,7 @@ namespace Assets.Scripts
 
         private void Update()
         {
-            if (BoostEffect.IsActive())
+            if (PowerupsView.BoostEffect.IsActive())
             {
                 IsBoosted = true;
             }
@@ -128,7 +126,7 @@ namespace Assets.Scripts
         {
             CollisionState = CollisionStates.JustCollided;
 
-            if (BoostEffect.IsActive())
+            if (PowerupsView.BoostEffect.IsActive())
             {
                 Score += cirle.Value;
                 cirle.Alive = false;
@@ -150,9 +148,9 @@ namespace Assets.Scripts
 
                 cirle.Alive = false;
 
-                if (ShieldEffect.IsActive())
+                if (PowerupsView.ShieldEffect.IsActive())
                 {
-                    ShieldEffect.ChangeColor(ColorPalette.Colors[Id]);
+                    PowerupsView.ShieldEffect.ChangeColor(ColorPalette.Colors[Id]);
                 }
             }
             else
@@ -161,9 +159,9 @@ namespace Assets.Scripts
                     return;
 
                 
-                if (ShieldEffect.IsActive())
+                if (PowerupsView.ShieldEffect.IsActive())
                 {
-                    ShieldEffect.Deactivate();
+                    PowerupsView.ShieldEffect.Deactivate();
                     cirle.Alive = false;
                     return;
                 }
@@ -187,10 +185,10 @@ namespace Assets.Scripts
             switch (powerupType)
             {
                 case PowerupType.Shield:
-                    ShieldEffect.Activate(ColorPalette.Colors[Id]);
+                    PowerupsView.ShieldEffect.Activate(ColorPalette.Colors[Id]);
                     break;
                 case PowerupType.Boost:
-                    BoostEffect.Activate(ColorPalette.Colors[Id]);
+                    PowerupsView.BoostEffect.Activate(ColorPalette.Colors[Id]);
                     break;
             }
         }

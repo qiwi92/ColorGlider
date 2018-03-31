@@ -10,7 +10,7 @@ namespace Assets.Scripts.Powerups
 
         private PowerupState _shieldState = PowerupState.Deactivated;
       
-        public float Duration;
+        [HideInInspector] public float Duration;
 
         private int _level;
 

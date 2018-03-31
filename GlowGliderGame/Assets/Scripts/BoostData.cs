@@ -11,7 +11,12 @@ namespace Assets.Scripts
                 return 0;
             }
 
-            return Mathf.Clamp(level * 0.05f, -1, 0.5f);
+            return Mathf.Clamp(0.05f, -1, 0.5f);
+        }
+
+        public float GetActiveDuration(int level)
+        {
+            return 3.0f + level * 0.5f;
         }
 
         public float GetCost(int level)
