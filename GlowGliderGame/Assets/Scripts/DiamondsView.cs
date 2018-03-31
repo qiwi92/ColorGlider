@@ -78,10 +78,10 @@ namespace Assets.Scripts
             }
         }
 
-        public float SetSpeed(int score)
+        public void SetSpeed(int score)
         {
             var baseSpeed = 3 + 0.1f * score;
-            return _speed = Random.Range(baseSpeed, baseSpeed * 1.3f);
+            _speed = Random.Range(baseSpeed, baseSpeed * 1.3f);
         }
 
         private void Reset(DiamondView diamond)

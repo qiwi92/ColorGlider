@@ -12,7 +12,7 @@ namespace Assets.Scripts
 
 
     }
-    public class CirclesView : MonoBehaviour, IItemSpeed
+    public class CirclesView : MonoBehaviour
     {
         [HideInInspector] public ColorPalette ColorPalette;
 
@@ -132,11 +132,11 @@ namespace Assets.Scripts
             circle.SetValue(spawnFilled);
         }
 
-        public float SetSpeedForReset(int score)
+        public void SetSpeed(int score)
         {
             _score = score;
             var baseSpeed = 3 + 0.1f * score;
-            return _speed = Random.Range(baseSpeed, baseSpeed * 1.3f);
+            _speed = Random.Range(baseSpeed, baseSpeed * 1.3f);
         }
 
         public void SetSpeedFactor(float speedFactor)
