@@ -16,7 +16,7 @@ namespace UI.HighScore
 
         public Text NewPlayerHighScoreText;
 
-        public void Awake()
+        public void Initialize()
         {
             for (int i = 0; i < 5; i++)
             {

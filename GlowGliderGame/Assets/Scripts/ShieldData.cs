@@ -11,6 +11,11 @@ namespace Assets.Scripts
                 return 0;
             }
 
+            if (level == 0)
+            {
+                return -1;
+            }
+
             return Mathf.Clamp(0.1f, 0, 0.5f);
         }
 
