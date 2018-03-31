@@ -74,13 +74,24 @@ namespace Assets.Scripts
             InputController.GliderTransform = Glider.transform;
             
             Setup();
+            
         }
 
         private void Setup()
         {
             Glider.IsAlive = false;
             Glider.ResetPosition();
+            MainView.SetColors(_color);
             SetColors();
+
+            Sounds.Setup();
+            Sounds.PlayDeathTheme(true);
+
+            var toggle = MainView.StartScreenView.ToggleSound;
+            toggle.onValueChanged.AddListener(delegate
+            {
+                Camera.main.GetComponent<AudioListener>().enabled = toggle.isOn;
+            });
         }
 
         private enum GameState
@@ -232,7 +243,7 @@ namespace Assets.Scripts
             MainView.StartScreenView.PlayButton.SetStateToNotPlaying();
             MainView.StartScreenView.PlayAnimation();
             MainView.StartScreenView.SetHighScore(_highScore);
-            MainView.StartScreenView.SetColors(_color);
+            MainView.SetColors(_color);
 
             _state = GameState.Dead;
         }

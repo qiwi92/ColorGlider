@@ -10,7 +10,8 @@ namespace Highscore
         [SerializeField] private HighScoreEntryView _highScoreEntryViewPrefab;
         [SerializeField] private Transform _highScoreEntryParent;
         [SerializeField] private NameInputView _nameInputView;
-
+        [SerializeField] private Image _backButtonImage;
+         
         public Transform PanelTransform;
         public Button PlayButton;
 
@@ -71,6 +72,11 @@ namespace Highscore
                 _nameInputView.Open();
             }
 
+        }
+
+        public void SetColors(Color color)
+        {
+            _backButtonImage.color = color;
         }
     }
 }
