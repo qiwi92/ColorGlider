@@ -8,7 +8,7 @@ namespace Assets.Scripts
     public class MainView : MonoBehaviour
     {
         public StartScreenView StartScreenView;
-        public PowerupShopView PowerupShopView;
+        public PowerupShopView ShopView;
 
         public GameObject ShopCanvas;
 
@@ -33,16 +33,16 @@ namespace Assets.Scripts
 
             var shopItemModels = new List<PowerupItemShopModel>
             {
-                new PowerupItemShopModel(ItemType.Shield),
-                new PowerupItemShopModel(ItemType.SpeedBoost),
+                new PowerupItemShopModel(ItemType.Shield, new ShieldData()),
+                //new PowerupItemShopModel(ItemType.SpeedBoost),
             };
 
-            PowerupShopView.CreatePowerupItemShopViews(shopItemModels);
+            ShopView.CreatePowerupItemShopViews(shopItemModels);
 
 
             _openShopButton = StartScreenView.OpenShoptButton;
             _openShopButton.onClick.AddListener(MoveShopPanel);
-            _closeShopButton = PowerupShopView.CloseShoptButton;
+            _closeShopButton = ShopView.CloseShoptButton;
             _closeShopButton.onClick.AddListener(MoveShopPanel);
         }
 
@@ -50,12 +50,12 @@ namespace Assets.Scripts
         {
             if (_shopIsOpen)
             {
-                PowerupShopView.PowerUpShopCanvasTransform.DOMove(Vector3.zero,0.4f);
+                ShopView.PowerUpShopCanvasTransform.DOMove(Vector3.zero,0.4f);
                 _shopIsOpen = false;
             }
             else
             {
-                PowerupShopView.PowerUpShopCanvasTransform.DOMove(Vector3.right * _screenWidth, 0.4f);
+                ShopView.PowerUpShopCanvasTransform.DOMove(Vector3.right * _screenWidth, 0.4f);
                 _shopIsOpen = true;
             }
         }

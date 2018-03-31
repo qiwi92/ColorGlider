@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Powerups
 {
-    public class Shield : MonoBehaviour , IPowerupEffect
+    public class ShieldEffect : MonoBehaviour , IPowerupEffect
     {
         private float _counter = 0;
         [SerializeField] private SpriteRenderer _shieldSpriteRenderer;
@@ -11,6 +11,13 @@ namespace Assets.Scripts.Powerups
         private PowerupState _shieldState = PowerupState.Deactivated;
       
         public float Duration;
+
+        private int _level;
+
+        public void Initialize(int lvl)
+        {
+            _level = lvl;
+        }
 
         public void Activate(Color color)
         {

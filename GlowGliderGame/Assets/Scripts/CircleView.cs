@@ -7,6 +7,7 @@ namespace Assets.Scripts
         [HideInInspector] public int Id;
         [HideInInspector] public bool Alive;
         [HideInInspector] public float Speed;
+        [HideInInspector] public float OldSpeed;
         [HideInInspector] public int Value;
 
         private bool _isAlive;
@@ -32,9 +33,9 @@ namespace Assets.Scripts
             }
         }
 
-        public void SetValue(int score)
+        public void SetValue(bool canSpawnFilled)
         {
-            if (score <= 9)
+            if (canSpawnFilled)
             {
                 Value = 1;
             }

@@ -134,6 +134,7 @@ namespace Assets.Scripts
 
             SetColors();
 
+            PowerupsView.SetStartValues();
             
             PanelImage.DOFade(0, 0.2f);
 

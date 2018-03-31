@@ -17,9 +17,15 @@ namespace Assets.Scripts.Powerups
         [HideInInspector] public PowerupView[] Powerups;
         [HideInInspector] public ColorPalette ColorPalette;
 
+        private IPowerupData shieldData;
+        private IPowerupData boostData;
+
         private float _width;
         public float Height;
 
+        private bool _isInitialized = false;
+        private float _counter;
+        private int _shieldLevel;
 
         public void SetUp(float width)
         {
@@ -29,17 +35,20 @@ namespace Assets.Scripts.Powerups
 
             var randomPos = new Vector3(Random.Range(-_width, _width), Height, 0);
 
+            //shieldData = new BoostData(); TODO
             var newBoostPowerup = Instantiate(PowerupPrefab, randomPos, Quaternion.identity);
             newBoostPowerup.PowerupType = PowerupType.Boost;
             newBoostPowerup.SetColors(ColorPalette.PowerupBoost);
             newBoostPowerup.CurentPowerupItemState = PowerupItemState.Dead;
 
 
+            shieldData = new ShieldData();
             randomPos = new Vector3(Random.Range(-_width, _width), Height, 0);
             var newShieldPowerup = Instantiate(ShieldPowerUp, randomPos, Quaternion.identity);
             newShieldPowerup.PowerupType = PowerupType.Shield;
             newShieldPowerup.SetColors(ColorPalette.PowerupShield);
             newShieldPowerup.CurentPowerupItemState = PowerupItemState.Dead;
+            
 
             Powerups[0] = newBoostPowerup;
             Powerups[1] = newShieldPowerup;
@@ -54,6 +63,25 @@ namespace Assets.Scripts.Powerups
             {
                 powerUp.SetSpawnChance(0.2f);
             }
+        }
+
+        public void SetStartValues()
+        {
+            //Powerups[0].SpawnChance =  // TODO
+
+            _shieldLevel = PlayerPrefs.GetInt(PowerupType.Shield.ToString());
+            Powerups[1].SpawnChance = shieldData.GetSpawnChance(_shieldLevel,0);
+            _counter = 0;
+            _isInitialized = true;
+            SetSpeed(0);
+        }
+
+        private void Update()
+        {
+            if (!_isInitialized) return;
+
+            _counter += Time.deltaTime;
+            Powerups[1].SpawnChance = shieldData.GetSpawnChance(_shieldLevel, _counter);
         }
 
         public void Move()
@@ -84,22 +112,24 @@ namespace Assets.Scripts.Powerups
             }
         }
 
-        public float SetSpeed(int score)
+        public void SetSpeed(int score)
         {
             var baseSpeed = 3 + 0.1f * score;
-            return _speed = Random.Range(baseSpeed, baseSpeed * 1.3f);
+            _speed = Random.Range(baseSpeed, baseSpeed * 1.3f);
         }
 
-        private void Reset(PowerupView diamond)
+        private void Reset(PowerupView powerup)
         {
-            diamond.transform.position = new Vector3(Random.Range(-_width, _width), Height, 0);
+            powerup.transform.position = new Vector3(Random.Range(-_width, _width), Height, 0);
+            powerup.Speed = _speed;
         }
 
         public void KillAll()
         {
-            foreach (var powerUp in Powerups)
+            foreach (var powerup in Powerups)
             {
-                powerUp.CurentPowerupItemState = PowerupItemState.Dying;
+                Reset(powerup);
+                powerup.CurentPowerupItemState = PowerupItemState.Dying;
             }
         }
     }

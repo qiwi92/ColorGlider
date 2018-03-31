@@ -1,9 +1,18 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Powerups;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Assets.Scripts
 {
-    public class CirclesView : MonoBehaviour 
+    public class ItemsView : MonoBehaviour
+    {
+        [SerializeField] private CirclesView _circlesView;
+        [SerializeField] private DiamondsView _diamondsView;
+        [SerializeField] private PowerupsView _powerupsView;
+
+
+    }
+    public class CirclesView : MonoBehaviour
     {
         [HideInInspector] public ColorPalette ColorPalette;
 
@@ -118,14 +127,41 @@ namespace Assets.Scripts
             circle.transform.position = new Vector3(randomX, Height + randomY, 0);
             circle.Speed = _speed;
             circle.SetFill(ColorPalette.Colors[circle.Id]);
-            circle.SetValue(_score);
+
+            var spawnFilled = _score >= 9;
+            circle.SetValue(spawnFilled);
         }
 
-        public float SetSpeed(int score)
+        public void SetSpeed(int score)
         {
             _score = score;
             var baseSpeed = 3 + 0.1f * score;
-            return _speed = Random.Range(baseSpeed, baseSpeed * 1.3f);
+            _speed = Random.Range(baseSpeed, baseSpeed * 1.3f);
         }
+
+        public void SetSpeedFactor(float speedFactor)
+        {
+            foreach (var circle in Circles)
+            {
+                var speed = circle.Speed;
+                circle.OldSpeed = speed;
+                circle.Speed = speed*speedFactor;
+            }
+        }
+
+        public void ResetSpeed()
+        {
+            foreach (var circle in Circles)
+            {
+                circle.Speed = circle.OldSpeed;
+            }
+        }
+    }
+
+    public interface IItemSpeed
+    {
+        float SetSpeedForReset(int score);
+        void SetSpeedFactor(float speedFactor);
+        void ResetSpeed();
     }
 }

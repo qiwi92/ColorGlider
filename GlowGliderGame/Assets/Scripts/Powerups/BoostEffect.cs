@@ -25,8 +25,6 @@ namespace Assets.Scripts.Powerups
                 BoostDebreeParticles,
                 SpeedEffectParticleSystem
             };
-
-            Debug.Log("Length: " + _particleSystems.Count);
         }
 
         private void Update()
@@ -89,7 +87,6 @@ namespace Assets.Scripts.Powerups
         {
             foreach (var particleSystems in _particleSystems)
             {
-                Debug.Log("Playing");
                 particleSystems.Play();
             }
         }

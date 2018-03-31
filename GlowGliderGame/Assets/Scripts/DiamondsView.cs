@@ -73,23 +73,21 @@ namespace Assets.Scripts
 
                 if(diamond.CanSapwn)
                 {
-                    diamond.transform.position += Vector3.down * _speed * Time.deltaTime;
+                    diamond.transform.position += Vector3.down * diamond.Speed * Time.deltaTime;
                 }
-
-
-
-                       
             }
         }
 
-        public float SetSpeed(int score)
+        public void SetSpeed(int score)
         {
             var baseSpeed = 3 + 0.1f * score;
-            return _speed = Random.Range(baseSpeed, baseSpeed * 1.3f);
+            _speed = Random.Range(baseSpeed, baseSpeed * 1.3f);
         }
 
         private void Reset(DiamondView diamond)
         {
+            diamond.IsAlive = false;
+            diamond.Speed = _speed;
             diamond.transform.position = new Vector3(Random.Range(-_width, _width), Height, 0);
         }
 
@@ -97,7 +95,7 @@ namespace Assets.Scripts
         {
             foreach (var diamond in Diamonds)
             {
-                diamond.IsAlive = false;
+                Reset(diamond);           
             }
         }
 

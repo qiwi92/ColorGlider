@@ -24,29 +24,39 @@ namespace HighScoreTester
 
             Console.WriteLine();
 
-            var random = new Random();
-            var publishTasks = new List<Task>();
-            Guid newGuid = Guid.NewGuid();
-            for (int i = 0; i < 20; i++)
+            //var random = new Random();
+            //var publishTasks = new List<Task>();
+            //Guid newGuid = Guid.NewGuid();
+            //for (int i = 0; i < 20; i++)
+            //{
+            //    newGuid = Guid.NewGuid();
+            //    var nameChars = Enumerable.Range(0, random.Next(4, 8))
+            //        .Select(x => (char) random.Next(65, 90))
+            //        .ToArray();
+
+            //    var request = new PublishRequest(newGuid.ToString(), new string(nameChars), random.Next(20, 120));
+            //    var publishTask = api.PublishScore(request);
+            //    publishTasks.Add(publishTask);
+            //}
+
+            //await Task.WhenAll(publishTasks);
+
+            //var aroundEntries = await api.GetRanksAroundPlayer(newGuid);
+
+            //foreach (var highScoreData in aroundEntries)
+            //{
+            //    Console.WriteLine(highScoreData);
+            //}
+
+            var analyticsApi = new AnalyticsApi(production);
+            await analyticsApi.PublishRoundData(new AnalyticsData
             {
-                newGuid = Guid.NewGuid();
-                var nameChars = Enumerable.Range(0, random.Next(4, 8))
-                    .Select(x => (char) random.Next(65, 90))
-                    .ToArray();
+                PlayerId = Guid.NewGuid().ToString(),
+                Score = 123,
+                GameDuration = 213
+            });
 
-                var request = new PublishRequest(newGuid.ToString(), new string(nameChars), random.Next(20, 120));
-                var publishTask = api.PublishScore(request);
-                publishTasks.Add(publishTask);
-            }
-
-            await Task.WhenAll(publishTasks);
-
-            var aroundEntries = await api.GetRanksAroundPlayer(newGuid);
-
-            foreach (var highScoreData in aroundEntries)
-            {
-                Console.WriteLine(highScoreData);
-            }
+            Console.WriteLine("Published analytics data.");
 
             Console.ReadLine();
         }
