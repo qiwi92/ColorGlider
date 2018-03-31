@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Assets.Scripts.Powerups;
 using DG.Tweening;
 using Highscore;
 using UnityEngine;
@@ -42,8 +43,8 @@ namespace Assets.Scripts
 
             var shopItemModels = new List<PowerupItemShopModel>
             {
-                new PowerupItemShopModel(ItemType.Shield, new ShieldData()),
-                new PowerupItemShopModel(ItemType.Shield, new BoostData()),
+                new PowerupItemShopModel(PowerupType.Shield, new ShieldData()),
+                new PowerupItemShopModel(PowerupType.Boost, new BoostData()),
             };
 
             ShopView.CreatePowerupItemShopViews(shopItemModels);

@@ -9,7 +9,7 @@ namespace Assets.Scripts.Powerups
         [SerializeField] private ParticleSystem BoostParticles;
         [SerializeField] private ParticleSystem BoostDebreeParticles;
         [SerializeField] private ParticleSystem SpeedEffectParticleSystem;
-        [SerializeField] private float Duration;
+        [HideInInspector] public float Duration;
         private float _counter = 0;
 
         private List<ParticleSystem> _particleSystems;

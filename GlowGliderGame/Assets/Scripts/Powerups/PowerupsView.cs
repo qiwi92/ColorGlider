@@ -30,7 +30,8 @@ namespace Assets.Scripts.Powerups
         private int _boostLevel;
         private readonly SpeedData _speedData = new SpeedData();
         
-
+        public ShieldEffect ShieldEffect;
+        public BoostEffect BoostEffect;
 
         public void SetUp(float width)
         {
@@ -66,11 +67,13 @@ namespace Assets.Scripts.Powerups
         public void SetStartValues()
         {
             _boostLevel = PlayerPrefs.GetInt(PowerupType.Boost.ToString());
-            Powerups[0].SpawnChance = _boostData.GetSpawnChance(_boostLevel, 0);
+            BoostEffect.Duration = _boostData.GetActiveDuration(_boostLevel);
+            Powerups[0].SpawnChance = _boostData.GetSpawnChance(_boostLevel, -1);
             _boostCounter = 0;
 
             _shieldLevel = PlayerPrefs.GetInt(PowerupType.Shield.ToString());
-            Powerups[1].SpawnChance = _shieldData.GetSpawnChance(_shieldLevel,0);
+            ShieldEffect.Duration = _shieldData.GetActiveDuration(_boostLevel);
+            Powerups[1].SpawnChance = _shieldData.GetSpawnChance(_shieldLevel,-1);
             _shieldCounter = 0;
 
             _isInitialized = true;

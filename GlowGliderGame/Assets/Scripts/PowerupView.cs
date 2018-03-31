@@ -19,7 +19,7 @@ namespace Assets.Scripts
 
         private Color _color;
 
-  
+        
 
         public float GetSize()
         {
