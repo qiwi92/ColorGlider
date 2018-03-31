@@ -75,6 +75,11 @@ namespace Assets.Scripts
             }
         }
 
+        public void TryOpenScore(bool highScoreUnlocked)
+        {
+            if(highScoreUnlocked)
+                MoveScorePanel();
+        }
 
         private void MoveShopPanel()
         {
@@ -115,6 +120,16 @@ namespace Assets.Scripts
             StartScreenView.SetColors(color);
             ShopView.SetColors(color);
             HighScoreView.SetColors(color);
+        }
+
+        public void SetHighScoreButtonState(bool isUnlocked)
+        {
+            _openScoreButton.gameObject.SetActive(isUnlocked);
+        }
+
+        public void SetShopButtonState(bool shopUnlocked)
+        {
+            _openShopButton.gameObject.SetActive(shopUnlocked);
         }
     }
 }
