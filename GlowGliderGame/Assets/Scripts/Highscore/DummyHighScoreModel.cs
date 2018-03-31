@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using GlowGlider.Shared;
 
 namespace Highscore
 {
