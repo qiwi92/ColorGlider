@@ -108,10 +108,30 @@ namespace Assets.Scripts
             Sounds.Setup();
             Sounds.PlayDeathTheme(true);
 
+
+            if (PlayerPrefs.GetInt("SoundIsOn") == 1 || !PlayerPrefs.HasKey("SoundIsOn"))
+            {
+                MainView.StartScreenView.ToggleSound.isOn = true;
+            }
+            else if(PlayerPrefs.GetInt("SoundIsOn") == 0)
+            {
+                MainView.StartScreenView.ToggleSound.isOn = false;
+                Sounds.Mute();
+            }
+
             var toggle = MainView.StartScreenView.ToggleSound;
             toggle.onValueChanged.AddListener(delegate
             {
-                Camera.main.GetComponent<AudioListener>().enabled = toggle.isOn;
+                if (toggle.isOn)
+                {
+                    Sounds.Unmute();
+                    PlayerPrefs.SetInt("SoundIsOn",1);
+                }
+                else
+                {
+                    Sounds.Mute();
+                    PlayerPrefs.SetInt("SoundIsOn", 0);
+                }
             });
         }
 
