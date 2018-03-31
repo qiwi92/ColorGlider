@@ -13,38 +13,9 @@ namespace GlowGlider.Server.Data
 
         public MySqlHighScoreRepo()
         {
-#if DEBUG
-            var connectionString = DebugConnectionString;
-#else
-            var connectionString = ReleaseConnectionString();
-#endif
+            var connectionString = Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb");
 
             _connection = new MySqlConnection(connectionString);
-        }
-
-        private static string ReleaseConnectionString()
-        {
-            return "Data Source=tcp:glowgliderdb.database.windows.net,1433;" +
-                   "Initial Catalog=GlowGlider_DataBase;" +
-                   "User Id=glowglider_admin@glowgliderdb;" +
-                   "Password=pK7O/OfaNB|:lwzY8:^q";
-        }
-
-        private static string DebugConnectionString
-        {
-            get
-            {
-                var builder = new MySqlConnectionStringBuilder
-                {
-                    Password = "LHpxTYQmWcY8kpgE",
-                    Database = "d029f449",
-                    UserID = "d029f449",
-                    Server = "unholyfist.de",
-                    AllowUserVariables = true,
-                };
-
-                return builder.GetConnectionString(true);
-            }
         }
 
         private void OpenConnectionIfNeeded()
