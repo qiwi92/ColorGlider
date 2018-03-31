@@ -1,6 +1,8 @@
 ﻿using System;
+using Analytics;
 using Assets.Scripts.Powerups;
 using DG.Tweening;
+using Highscore;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,6 +35,9 @@ namespace Assets.Scripts
 
         public Sounds Sounds;
 
+        private readonly AnalyticsApiModel _analyticsApi = new AnalyticsApiModel();
+        private readonly GuidProvider _guidProvider = new GuidProvider();
+        private float _gameDuration;
 
         void Awake ()
         {
@@ -118,6 +123,7 @@ namespace Assets.Scripts
 
         private void HandleStartingState()
         {
+            _gameDuration = 0;
             MainView.StartScreenView.PlayAnimation();
             MainView.DeactivateShopCanvas();
 
@@ -143,6 +149,8 @@ namespace Assets.Scripts
 
         private void HandlePlayingState()
         {
+            _gameDuration += Time.deltaTime;
+
             Glider.Collisions.CheckCollisions();
             Glider.Move(GliderMoveSpeed, _screenWidth,InputController.GetMoveDirection());
 
@@ -172,6 +180,7 @@ namespace Assets.Scripts
 
         private void HandleDyingState()
         {
+            _analyticsApi.TrackSession((ushort) _gameDuration, _guidProvider.GetGuid().ToString(),(ushort) _highScore);
             MainView.ActivateShopCanvas();
             Glider.ResetPositionSmooth();
             
