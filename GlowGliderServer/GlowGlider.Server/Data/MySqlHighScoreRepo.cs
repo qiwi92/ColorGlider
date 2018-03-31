@@ -7,22 +7,15 @@ using MySql.Data.MySqlClient;
 
 namespace GlowGlider.Server.Data
 {
-    public class MySqlHighScoreRepo : IHighScoreRepository
+    public class MySqlHighScoreRepo : IHighScoreRepository, IDisposable
     {
         private readonly MySqlConnection _connection;
 
         public MySqlHighScoreRepo()
         {
-            var builder = new MySqlConnectionStringBuilder
-            {
-                Password = "LHpxTYQmWcY8kpgE",
-                Database = "d029f449",
-                UserID = "d029f449",
-                Server = "unholyfist.de",
-                AllowUserVariables = true,
-            };
+            var connectionString = Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb");
 
-            _connection = new MySqlConnection(builder.GetConnectionString(true));
+            _connection = new MySqlConnection(connectionString);
         }
 
         private void OpenConnectionIfNeeded()
@@ -138,6 +131,11 @@ namespace GlowGlider.Server.Data
             command.Parameters.AddWithValue("playerId", playerId);
 
             return command;
+        }
+
+        public void Dispose()
+        {
+            _connection?.Dispose();
         }
     }
 }

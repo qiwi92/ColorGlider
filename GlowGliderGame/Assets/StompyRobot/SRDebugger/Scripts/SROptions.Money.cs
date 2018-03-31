@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using Money;
+using Assets.Scripts.Money;
 
 public partial class SROptions
 {

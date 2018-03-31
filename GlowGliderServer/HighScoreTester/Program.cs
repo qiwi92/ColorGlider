@@ -11,7 +11,9 @@ namespace HighScoreTester
     {
         static async Task Main(string[] args)
         {
-            var api = new HighScoreApi();
+            var production = "https://glowglider.azurewebsites.net";
+            var debug = "http://localhost:52004";
+            var api = new HighScoreApi(production);
 
             var top10Entries = await api.GetTop10Async();
 
@@ -25,7 +27,7 @@ namespace HighScoreTester
             var random = new Random();
             var publishTasks = new List<Task>();
             Guid newGuid = Guid.NewGuid();
-            for (int i = 0; i < 30; i++)
+            for (int i = 0; i < 20; i++)
             {
                 newGuid = Guid.NewGuid();
                 var nameChars = Enumerable.Range(0, random.Next(4, 8))

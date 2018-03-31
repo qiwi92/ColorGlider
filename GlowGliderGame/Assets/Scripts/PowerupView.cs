@@ -1,13 +1,36 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Powerups;
+using UnityEditor;
+using UnityEngine;
 
 namespace Assets.Scripts
 {
+    public class ShieldModel : IPowerupData
+    {
+        public float GetSpawnChance(int level)
+        {
+            return Mathf.Clamp(level * 0.1f , 0 , 0.5f);
+        }
+
+        public float GetCost(int level)
+        {
+            return 20*Mathf.Pow(1.1f, level);
+        }
+    }
+
+    public interface IPowerupData
+    {
+        float GetSpawnChance(int level);
+        float GetCost(int level);
+    }
+
+
     public class PowerupView : MonoBehaviour, ICollider
     {
-        [HideInInspector] public bool IsAlive;
-        [HideInInspector] public bool CanSpawn;
+        [HideInInspector] private bool _isAlive;
         private float _counter = 0;
         private float _spawnChance = 0;
+
+        public PowerupItemState CurentPowerupItemState;
 
         public SpriteRenderer OutlineSpriteRenderer;
         public SpriteRenderer LogoSpriteRenderer;
@@ -52,18 +75,66 @@ namespace Assets.Scripts
 
         private void Update()
         {
+            switch (CurentPowerupItemState)
+            {
+                case PowerupItemState.Spawn:
+                    HandleSpawn();
+                    break;
+                case PowerupItemState.Alive:
+                    HandleAlive();
+                    break;
+                case PowerupItemState.Dead:                 
+                    HandleDead();
+                    break;
+                case PowerupItemState.Dying:
+                    HandleDying();
+                    break;
+            }
+        }
+
+        private void HandleSpawn()
+        {
+            _isAlive = true;
+            CurentPowerupItemState = PowerupItemState.Alive;
+        }
+
+        private void HandleAlive()
+        {
+            if (!_isAlive)
+            {
+                CurentPowerupItemState = PowerupItemState.Dying;
+            }
+        }
+
+        private void HandleDying()
+        {
+            _isAlive = false;
+            CurentPowerupItemState = PowerupItemState.Dead;
+        }
+        private void HandleDead()
+        {
+            if (CanSpawn())
+            {
+                CurentPowerupItemState = PowerupItemState.Spawn;
+            }
+        }
+
+        private bool CanSpawn()
+        {
             _counter += Time.deltaTime;
-            if (_counter > 1 && !CanSpawn)
+            if (_counter > 1)
             {
                 var chance = Random.Range(0, 1.0f);
 
                 if (chance < _spawnChance)
                 {
-                    CanSpawn = true;
+                    return true;
                 }
-                
+
                 _counter = 0;
             }
-        }
+
+            return false;
+        }   
     }
 }

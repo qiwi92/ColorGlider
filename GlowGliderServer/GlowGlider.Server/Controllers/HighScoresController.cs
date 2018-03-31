@@ -44,11 +44,11 @@ namespace GlowGlider.Server.Controllers
                 {
                     PlayerAlias = player,
                     Score = score,
-                    PlayerId = Guid.NewGuid(),
+                    PlayerId = new Guid(request.PlayerId)
                 });
             }
 
-            return new OkObjectResult(Get(player));
+            return new OkResult();
         }
     }
 }
