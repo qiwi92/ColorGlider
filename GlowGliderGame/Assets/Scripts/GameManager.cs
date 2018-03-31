@@ -122,7 +122,7 @@ namespace Assets.Scripts
             MainView.DeactivateShopCanvas();
 
             Glider.Score = 0;        
-            CirclesView.SetSpeed(0);
+            CirclesView.SetSpeedForReset(0);
             CirclesView.ResetAllPositions();
             
             Glider.IsAlive = true;
@@ -150,7 +150,7 @@ namespace Assets.Scripts
             if (Glider.CollisionState == CollisionStates.JustCollided)
             {
                 ScoreView.SetScore(Glider.Score);
-                CirclesView.SetSpeed(Glider.Score);
+                CirclesView.SetSpeedForReset(Glider.Score);
                 SetColors();
                 SetCounterDots();
 

@@ -12,16 +12,20 @@ namespace Highscore
 {
     public class HighScoreModel : IHighScoreModel
     {
-        private HighScoreApi _highScoreApi = new HighScoreApi();
-        private GuidProvider _guidProvider = new GuidProvider();
+        private readonly HighScoreApi _highScoreApi = new HighScoreApi();
+        private readonly GuidProvider _guidProvider = new GuidProvider();
         private IReadOnlyList<HighScoreData> _highscoresAroundPlayer;
 
 
         public HighScoreModel()
         {
-            var playerId = PlayerId;
             ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
 
+            UpdateHighscore();
+        }
+
+        private void UpdateHighscore()
+        {
             Task.Run(ReadData)
                 .ContinueWith(c => _highscoresAroundPlayer = c.Result);
         }
@@ -43,10 +47,7 @@ namespace Highscore
             return null;
         }
 
-        private Guid PlayerId
-        {
-            get { return _guidProvider.GetGuid(); }
-        }
+        private Guid PlayerId => _guidProvider.GetGuid();
 
         private PlayerHighScore MapServerToViewHighscore(HighScoreData from)
         {
@@ -57,6 +58,15 @@ namespace Highscore
                 Rank = from.Rank,
                 Score = from.Score
             };
+        }
+
+        public void UploadHighScore(int highscore,string playerAlias)
+        {
+            var request = new PublishRequest(PlayerId.ToString(),playerAlias,highscore);
+            Task.Run(async () => await _highScoreApi.PublishScore(request)).ContinueWith(res =>
+            {
+                Debug.Log("Uploaded Highscore! " + request.ToString() );
+            });
         }
 
         public IEnumerable<PlayerHighScore> HighScoresAroundPlayer => _highscoresAroundPlayer.Select(MapServerToViewHighscore);

@@ -65,7 +65,12 @@ namespace Assets.Scripts.Powerups
                     Reset(powerUp);
                 }
 
-                if(powerUp.CurentPowerupItemState == PowerupItemState.Dying)
+                if (powerUp.CurentPowerupItemState == PowerupItemState.Alive)
+                {
+                    powerUp.transform.position += Vector3.down * _speed * Time.deltaTime;
+                }
+
+                if (powerUp.CurentPowerupItemState == PowerupItemState.Dying)
                 {
                     _emitParams.position = powerUp.transform.position;
 
@@ -75,10 +80,6 @@ namespace Assets.Scripts.Powerups
                     ParticleSystem.Emit(_emitParams, 4);
 
                     Reset(powerUp);
-                }
-                if(powerUp.CurentPowerupItemState == PowerupItemState.Alive)
-                {
-                    powerUp.transform.position += Vector3.down * _speed * Time.deltaTime;
                 }
             }
         }
