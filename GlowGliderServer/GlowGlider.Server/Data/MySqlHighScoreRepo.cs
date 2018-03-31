@@ -7,7 +7,7 @@ using MySql.Data.MySqlClient;
 
 namespace GlowGlider.Server.Data
 {
-    public class MySqlHighScoreRepo : IHighScoreRepository
+    public class MySqlHighScoreRepo : IHighScoreRepository, IDisposable
     {
         private readonly MySqlConnection _connection;
 
@@ -21,7 +21,7 @@ namespace GlowGlider.Server.Data
                 Server = "unholyfist.de",
                 AllowUserVariables = true,
             };
-
+            
             _connection = new MySqlConnection(builder.GetConnectionString(true));
         }
 
@@ -138,6 +138,11 @@ namespace GlowGlider.Server.Data
             command.Parameters.AddWithValue("playerId", playerId);
 
             return command;
+        }
+
+        public void Dispose()
+        {
+            _connection?.Dispose();
         }
     }
 }

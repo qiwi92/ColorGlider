@@ -10,10 +10,12 @@ namespace GlowGlider.Shared
 {
     public class HighScoreApi
     {
-        private readonly HttpClient _client = new HttpClient
+        private readonly HttpClient _client = new HttpClient();
+
+        public HighScoreApi(string addressUri)
         {
-            BaseAddress = new Uri("https://glowglider.azurewebsites.net")
-        };
+            _client.BaseAddress = new Uri(addressUri);
+        }
 
         public async Task<IReadOnlyList<HighScoreData>> GetTop10Async()
         {
