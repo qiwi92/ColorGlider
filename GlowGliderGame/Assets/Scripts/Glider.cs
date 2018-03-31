@@ -1,6 +1,5 @@
 ﻿using Assets.Scripts.Money;
 using Assets.Scripts.Powerups;
-using Assets.StompyRobot.SRDebugger.Scripts;
 using DG.Tweening;
 using UnityEngine;
 
