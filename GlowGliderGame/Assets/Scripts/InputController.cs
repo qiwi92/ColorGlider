@@ -5,62 +5,40 @@ namespace Assets.Scripts
 {
     public class InputController : MonoBehaviour
     {
-        [HideInInspector] public Transform GliderTransform;
-
-        private Direction _gliderMoveDirection;
-
-        [Range(0, 1)] public float Tolerance;
-        [Range(0, 1)] public float Sensibility;
+        //TODO parameters to config, remove Mono
+        [Range(1, 2)] public float Sensibility;
+        private readonly float _borderThreshold = 0.01f;
 
 
-        private void Update()
+        public void Move(Transform trans,float offset,float maxWidth,float speed)
         {
             if (Input.GetMouseButton(0))
             {
-                SetMoveDirection();
-            }
-            else
-            {
-                _gliderMoveDirection = Direction.None;
+                var mousePosition = GetMousePosition();
+                var targetPos = ConvertMousePosIntoTargetPos(mousePosition,offset, Sensibility, maxWidth);
+
+                if (Mathf.Abs(targetPos.x) < maxWidth)
+                {
+                    trans.position = SmothOverMoveTo(trans.position, targetPos, speed);
+                }
             }
         }
 
-        private void SetMoveDirection()
+        private Vector3 ConvertMousePosIntoTargetPos(Vector3 mousePos, float offset, float sensibility,float maxWidth)
         {
-            var mousePosition = GetMousePosition();
-            var targetPos = ConvertMousePosIntoTargetPos(mousePosition);
-            var gliderPos = GliderTransform.position;
+            var xOffset = mousePos.x* sensibility;
 
-            var distance = Mathf.Abs(targetPos.x - gliderPos.x);
-            var sign = (targetPos.x - gliderPos.x);
+            if (xOffset > maxWidth)
+            {
+                return new Vector3(maxWidth - _borderThreshold, -offset, 0);
+            }
 
-            if (sign < 0 && distance > Tolerance)
+            if (xOffset < -maxWidth)
             {
-                _gliderMoveDirection = Direction.Left;
+                return new Vector3(-maxWidth + _borderThreshold, -offset, 0);
             }
-            else if (sign > 0 && distance > Tolerance)
-            {
-                _gliderMoveDirection = Direction.Right;
-            }
-            else if(distance < Tolerance)
-            {
-                _gliderMoveDirection = Direction.None;
-            }
-            else
-            {
-                throw new Exception("Case not covered");
-            }
-        }
 
-        public Direction GetMoveDirection()
-        {
-            return _gliderMoveDirection;
-        }
-
-        private Vector3 ConvertMousePosIntoTargetPos(Vector3 mousePos)
-        {
-            var factor = 1 + Sensibility;
-            return new Vector3(mousePos.x*factor,-2,0);
+            return new Vector3(mousePos.x* sensibility, -offset, 0);
         }
 
         private Vector3 GetMousePosition()
@@ -69,5 +47,15 @@ namespace Assets.Scripts
             v3.z = 10f;
             return Camera.main.ScreenToWorldPoint(v3);
         }
+
+        private Vector3 SmothOverMoveTo(Vector3 from, Vector3 to, float speed)
+        {
+            var distance = Vector3.Distance(from, to);
+            float step = distance * Time.smoothDeltaTime * speed;
+
+            return Vector3.MoveTowards(from, to, step); 
+        }
+
+     
     }
 }

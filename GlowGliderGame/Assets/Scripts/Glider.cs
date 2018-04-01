@@ -19,7 +19,13 @@ namespace Assets.Scripts
         [HideInInspector] public PowerupsView PowerupsView;
 
         [Range(0.1f,1)] public float CollisionDistance;
+
         private readonly float _height = 2.80f;
+        public float Height => _height;
+
+        [SerializeField] private float _speed;
+        public float Speed => _speed;
+
         [HideInInspector] public int Id;
         [HideInInspector] public bool IsAlive;
     
@@ -31,13 +37,12 @@ namespace Assets.Scripts
 
         [HideInInspector] public bool IsBoosted;
 
-
-
         public Collisions Collisions;
 
         [HideInInspector] public Sounds Sounds;
 
         [HideInInspector] public ColorPalette ColorPalette;
+        
 
         public void Setup()
         {
@@ -60,39 +65,6 @@ namespace Assets.Scripts
             GliderSpriteOutline.DOColor(color, 0.4f);
         }
 
-        public void Move(float speed, float maxWidth, Direction direction)
-        {
-            Direction curentDirection;
-
-            float speedWhileBoosted;
-
-            if (PowerupsView.BoostEffect.IsActive())
-            {
-                speedWhileBoosted = speed * 0.5f;
-            }
-            else
-            {
-                speedWhileBoosted = speed;
-            }
-
-            if (this.transform.position.x > 0)
-            {
-                curentDirection = Direction.Right;
-            }
-            else
-            {
-                curentDirection = Direction.Left;
-            }
-
-            if (direction != curentDirection)
-            {
-                transform.position += speedWhileBoosted * Vector3.right * ((float)direction) * Time.deltaTime;
-            }
-            else if (Mathf.Abs(this.transform.position.x) < maxWidth)
-            {
-                transform.position += speedWhileBoosted * Vector3.right * ((float)direction) * Time.deltaTime;
-            }                     
-        }
 
         public void HandleCollision(ICollider collijder)
         {
@@ -228,6 +200,16 @@ namespace Assets.Scripts
                 EngineParticleSystem.startColor = ColorPalette.Colors[Id];
                 EngineDustParticleSystem.startColor = ColorPalette.Colors[Id];
             }        
+        }
+
+        public float GetSpeed()
+        {
+            if (IsBoosted)
+            {
+                return _speed*0.15f;
+            }
+
+            return _speed;
         }
     }
 

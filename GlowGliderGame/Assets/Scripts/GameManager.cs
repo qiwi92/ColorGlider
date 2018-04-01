@@ -23,8 +23,6 @@ namespace Assets.Scripts
 
         public ScoreView ScoreView;
 
-        public float GliderMoveSpeed;
-
         public Image PanelImage;
 
         private float _screenWidth;
@@ -76,7 +74,6 @@ namespace Assets.Scripts
 
             _color = ColorPalette.Colors[Glider.Id];
 
-            InputController.GliderTransform = Glider.transform;
             MainView.SetHighScoreButtonState(HighScoreUnlocked());
             MainView.SetShopButtonState(ShopUnlocked());
 
@@ -214,9 +211,7 @@ namespace Assets.Scripts
             _gameDuration += Time.deltaTime;
 
             Glider.Collisions.CheckCollisions();
-            Glider.Move(GliderMoveSpeed, _screenWidth,InputController.GetMoveDirection());
-
-            MoveWithArrows();
+            InputController.Move(Glider.transform,Glider.Height,_screenWidth,Glider.GetSpeed());
 
             if (Glider.CollisionState == CollisionStates.JustCollided)
             {
@@ -321,14 +316,6 @@ namespace Assets.Scripts
             ScoreView.SetCounterDots(Glider.Index, _color);
         }
 
-        private void MoveGlider(Direction direction)
-        {
-            if (_state == GameState.Playing)
-            {
-                Glider.Move(GliderMoveSpeed, _screenWidth, direction);
-            }  
-        }
-
         private void LoadValues()
         {
             _highScore = PlayerPrefs.GetInt("HighScore");
@@ -337,18 +324,6 @@ namespace Assets.Scripts
         private void SaveValues()
         {
             PlayerPrefs.SetInt("HighScore",_highScore);
-        }
-
-        private void MoveWithArrows()
-        {
-            if (Input.GetKey(KeyCode.LeftArrow))
-            {
-                MoveGlider(Direction.Left);
-            }
-            if (Input.GetKey(KeyCode.RightArrow))
-            {
-                MoveGlider(Direction.Right);
-            }
         }
 
         private enum BoostState
