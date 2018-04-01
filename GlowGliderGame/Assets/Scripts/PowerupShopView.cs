@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Assets.Scripts.Powerups;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,25 +12,30 @@ namespace Assets.Scripts
         [SerializeField] private Transform _powerupItemShopViewParent;
         [SerializeField] private PowerupItemShopView _powerupItemShopViewPrefab;
         [SerializeField] private ColorPalette _colorPalette;
-        [SerializeField] private Sprite _icon;
         [SerializeField] private Image _backButtonImage;
 
+        [SerializeField] private Sprite _shieldIcon;
+        [SerializeField] private Sprite _boostIcon;
 
 
-        public void CreatePowerupItemShopViews(List<PowerupItemShopModel> models)
+
+        public void CreatePowerupItemShopView(PowerupItemShopModel model, Sprite icon, Color color)
         {
-            foreach (var itemShopModel in models)
-            {
-                var itemShopView = Instantiate(_powerupItemShopViewPrefab);
-                itemShopView.transform.SetParent(_powerupItemShopViewParent,false);
+            var itemShopView = Instantiate(_powerupItemShopViewPrefab);
+            itemShopView.transform.SetParent(_powerupItemShopViewParent,false);
 
-                itemShopView.Setup(itemShopModel, _icon, _colorPalette.PowerupShield);
-            }
+            itemShopView.Setup(model, icon, color);
         }
 
         public void SetColors(Color color)
         {
             _backButtonImage.color = color;
+        }
+
+        public void Setup()
+        {
+            CreatePowerupItemShopView(new PowerupItemShopModel(PowerupType.Shield, new ShieldData()), _shieldIcon,_colorPalette.PowerupShield);
+            CreatePowerupItemShopView(new PowerupItemShopModel(PowerupType.Boost, new BoostData()), _boostIcon,_colorPalette.PowerupBoost);
         }
     }
 }
