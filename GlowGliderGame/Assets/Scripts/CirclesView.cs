@@ -106,10 +106,9 @@ namespace Assets.Scripts
             var randomY = Random.Range(0, 2*Height);
 
             circle.transform.position = new Vector3(randomX, Height + randomY, 0);
-            circle.SetFill(ColorPalette.Colors[circle.Id]);
 
             var spawnFilled = _score >= 9;
-            circle.SetValue(spawnFilled);
+            circle.SetValue(spawnFilled, ColorPalette.Colors[circle.Id]);
         }
 
         public void SetSpeed(int score, bool isBoosted)

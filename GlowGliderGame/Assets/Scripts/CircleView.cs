@@ -26,7 +26,7 @@ namespace Assets.Scripts
             FillSpriteRenderer.color = color;
         }
 
-        public void SetFill(Color color)
+        private void SetFill(Color color)
         {
             if (Value >= 2)
             {
@@ -38,7 +38,7 @@ namespace Assets.Scripts
             }
         }
 
-        public void SetValue(bool canSpawnFilled)
+        public void SetValue(bool canSpawnFilled, Color color)
         {
             if (!canSpawnFilled)
             {
@@ -48,7 +48,9 @@ namespace Assets.Scripts
             {
                 var randomValue = Random.Range(1, 3);
                 Value = randomValue;
-            }         
+            }
+
+            SetFill(color);
         }
 
         public float GetSize()
