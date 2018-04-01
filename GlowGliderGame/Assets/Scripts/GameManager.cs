@@ -6,6 +6,7 @@ using Assets.Scripts.Powerups;
 using DG.Tweening;
 using Highscore;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 namespace Assets.Scripts
@@ -108,6 +109,7 @@ namespace Assets.Scripts
             Sounds.Setup();
             Sounds.PlayDeathTheme(true);
 
+            Graphics.activeTier = (GraphicsTier) 1;
 
             if (PlayerPrefs.GetInt("SoundIsOn") == 1 || !PlayerPrefs.HasKey("SoundIsOn"))
             {
@@ -170,6 +172,9 @@ namespace Assets.Scripts
 
         private void HandleInitState()
         {
+            if(Input.GetKeyDown(KeyCode.Escape))
+                Application.Quit();
+
             if (MainView.StartScreenView.PlayButton.GetState())
             {
                 _state = GameState.Starting;
@@ -295,6 +300,9 @@ namespace Assets.Scripts
 
         private void HandleDeadState()
         {
+            if (Input.GetKeyDown(KeyCode.Escape))
+                Application.Quit();
+
             if (MainView.StartScreenView.PlayButton.GetState())
             {
                 Sounds.PlayDeathTheme(false);
