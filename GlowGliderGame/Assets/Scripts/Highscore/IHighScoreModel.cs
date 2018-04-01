@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using GlowGlider.Shared;
 
 namespace Highscore
@@ -7,5 +8,6 @@ namespace Highscore
     {
         IReadOnlyList<PlayerHighScore> RelevantHighScores { get; }
         void UploadHighScore(int highScore, string alias);
+        Action UpdateHighScoreAction { get; set; }
     }
 }

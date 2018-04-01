@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace Highscore
 {
+
     public class HighScoreModel : IHighScoreModel
     {
         private static TaskScheduler CurrentContext => TaskScheduler.FromCurrentSynchronizationContext();
@@ -14,7 +15,9 @@ namespace Highscore
         public IReadOnlyList<PlayerHighScore> RelevantHighScores { get; private set; }
         private readonly HighScoreApi _highScoreApi = new HighScoreApi("https://glowglider.azurewebsites.net");
         private readonly GuidProvider _guidProvider = new GuidProvider();
-        
+
+        public Action UpdateHighScoreAction { get; set; }
+
         public HighScoreModel()
         {
             UpdateHighscore();
@@ -25,7 +28,12 @@ namespace Highscore
             var playerId = PlayerId;
             var hasAlias = !string.IsNullOrEmpty(PlayerPrefsService.Instance.Alias);
             Task.Run(async () => await ReadData(playerId, hasAlias))
-                .ContinueWith(c => RelevantHighScores = ConvertScores(c.Result), CurrentContext);
+                .ContinueWith(c =>
+                {
+                    var playerHighScores = RelevantHighScores = ConvertScores(c.Result);
+                    UpdateHighScoreAction?.Invoke();
+                    return playerHighScores;
+                }, CurrentContext);
         }
 
 

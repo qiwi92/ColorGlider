@@ -23,6 +23,7 @@ namespace Highscore
         public void Initialize(IHighScoreModel model)
         {
             _model = model;
+            _model.UpdateHighScoreAction += UpdateHighScore;
 
             for (int i = 0; i < 10; i++)
             {
@@ -43,7 +44,7 @@ namespace Highscore
             _nameInputView.Close();
         }
 
-        private void Update()
+        private void UpdateHighScore()
         {
             var highscores = _model.RelevantHighScores;
             if (highscores?.Count > 0)
