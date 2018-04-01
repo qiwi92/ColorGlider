@@ -12,6 +12,7 @@ namespace Highscore
         [SerializeField] private NameInputView _nameInputView;
         [SerializeField] private Image _backButtonImage;
         [SerializeField] private Button _refreshButton;
+        [SerializeField] private Image _refreshButtonImage;
          
         public Transform PanelTransform;
         public Button PlayButton;
@@ -82,6 +83,7 @@ namespace Highscore
         public void SetColors(Color color)
         {
             _backButtonImage.color = color;
+            _refreshButtonImage.color = color;
         }
     }
 }

@@ -41,13 +41,9 @@ namespace Assets.Scripts
             StartScreenView.SetHighScore(highscore);
             HighScoreView.Initialize(new HighScoreModel());
 
-            var shopItemModels = new List<PowerupItemShopModel>
-            {
-                new PowerupItemShopModel(PowerupType.Shield, new ShieldData()),
-                new PowerupItemShopModel(PowerupType.Boost, new BoostData()),
-            };
+           
 
-            ShopView.CreatePowerupItemShopViews(shopItemModels);
+            ShopView.Setup();
 
 
             _openShopButton = StartScreenView.OpenShoptButton;
