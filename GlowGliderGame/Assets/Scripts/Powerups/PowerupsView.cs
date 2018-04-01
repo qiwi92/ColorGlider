@@ -7,8 +7,6 @@ namespace Assets.Scripts.Powerups
         public PowerupView PowerupPrefab;
         public PowerupView ShieldPowerUp;
     
-
-
         public ParticleSystem ParticleSystem;
 
         private ParticleSystem.EmitParams _emitParams;
@@ -92,6 +90,8 @@ namespace Assets.Scripts.Powerups
 
         public void Move()
         {
+            var smoothDeltaTime = Time.smoothDeltaTime;
+
             foreach (var powerUp in Powerups)
             {
                 if (powerUp.transform.position.y < -Height)
@@ -101,7 +101,7 @@ namespace Assets.Scripts.Powerups
 
                 if (powerUp.CurentPowerupItemState == PowerupItemState.Alive)
                 {
-                    powerUp.transform.position += Vector3.down * powerUp.Speed * Time.deltaTime;
+                    powerUp.transform.position += Vector3.down * powerUp.Speed * smoothDeltaTime;
                 }
 
                 if (powerUp.CurentPowerupItemState == PowerupItemState.Dying)

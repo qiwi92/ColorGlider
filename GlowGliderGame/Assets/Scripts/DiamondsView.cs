@@ -54,6 +54,8 @@ namespace Assets.Scripts
 
         public void Move()
         {
+            var smoothDeltaTime = Time.smoothDeltaTime;
+
             foreach (var diamond in Diamonds)
             {
                 if (diamond.transform.position.y < -Height)
@@ -72,7 +74,7 @@ namespace Assets.Scripts
 
                 if(diamond.CanSapwn)
                 {
-                    diamond.transform.position += Vector3.down * diamond.Speed * Time.deltaTime;
+                    diamond.transform.position += Vector3.down * diamond.Speed * smoothDeltaTime;
                 }
             }
         }

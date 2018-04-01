@@ -56,6 +56,8 @@ namespace Assets.Scripts
 
         public void Move()
         {
+            var smoothDeltaTime = Time.smoothDeltaTime;
+
             foreach (var circle in Circles)
             {
                 if (circle.transform.position.y < -Height)
@@ -71,25 +73,9 @@ namespace Assets.Scripts
                     ParticleSystem.Emit(_emitParams,10);
 
                     ResetCircle(circle);
-                    circle.Alive = true;
-                    
+                    circle.Alive = true;  
                 }
-
-                circle.transform.position += circle.Speed * Time.smoothDeltaTime * Vector3.down;
-            }
-        }
-
-        public void Explode()
-        {
-            foreach (var circle in Circles)
-            {
-                if (!circle.Alive)
-                {
-                    _emitParams.position = circle.transform.position;
-                    ParticleSystem.startColor = ColorPalette.Colors[circle.Id];
-
-                    ParticleSystem.Emit(_emitParams, 10);
-                }
+                circle.transform.position += circle.Speed * smoothDeltaTime * Vector3.down;
             }
         }
          

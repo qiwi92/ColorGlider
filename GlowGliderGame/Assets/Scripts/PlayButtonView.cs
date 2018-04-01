@@ -18,13 +18,6 @@ namespace Assets.Scripts
             Button.onClick.AddListener(ClickAnimation);
         }
 
-        public void Update()
-        {
-            var colors = Button.colors;
-            colors.normalColor = _isPlaying ? Color.green : Color.red;
-            Button.colors = colors;
-        }
-
         public void ClickAnimation()
         {
             Button.transform.DOPunchScale(Vector3.one *0.3f, 0.2f);
