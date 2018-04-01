@@ -8,6 +8,7 @@ namespace Highscore
     {
         IReadOnlyList<PlayerHighScore> RelevantHighScores { get; }
         void UploadHighScore(int highScore, string alias);
-        Action UpdateHighScoreAction { get; set; }
+        Action UpdateHighScoreCallback { get; set; }
+        void UpdateHighScore();
     }
 }

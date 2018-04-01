@@ -11,6 +11,7 @@ namespace Highscore
         [SerializeField] private Transform _highScoreEntryParent;
         [SerializeField] private NameInputView _nameInputView;
         [SerializeField] private Image _backButtonImage;
+        [SerializeField] private Button _refreshButton;
          
         public Transform PanelTransform;
         public Button PlayButton;
@@ -23,7 +24,7 @@ namespace Highscore
         public void Initialize(IHighScoreModel model)
         {
             _model = model;
-            _model.UpdateHighScoreAction += UpdateHighScore;
+            _model.UpdateHighScoreCallback += UpdateHighScore;
 
             for (int i = 0; i < 10; i++)
             {
@@ -36,6 +37,8 @@ namespace Highscore
 
             _nameInputView.Initialize();
             _nameInputView.SubmitRequested += NameInputViewOnSubmitRequested;
+
+            _refreshButton.onClick.AddListener(()=> _model.UpdateHighScore());
         }
 
         private void NameInputViewOnSubmitRequested(string playerAlias)

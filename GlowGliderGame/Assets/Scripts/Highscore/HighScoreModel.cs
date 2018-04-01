@@ -16,14 +16,14 @@ namespace Highscore
         private readonly HighScoreApi _highScoreApi = new HighScoreApi("https://glowglider.azurewebsites.net");
         private readonly GuidProvider _guidProvider = new GuidProvider();
 
-        public Action UpdateHighScoreAction { get; set; }
+        public Action UpdateHighScoreCallback { get; set; }
 
         public HighScoreModel()
         {
-            UpdateHighscore();
+            UpdateHighScore();
         }
 
-        private void UpdateHighscore()
+        public void UpdateHighScore()
         {
             var playerId = PlayerId;
             var hasAlias = !string.IsNullOrEmpty(PlayerPrefsService.Instance.Alias);
@@ -31,11 +31,10 @@ namespace Highscore
                 .ContinueWith(c =>
                 {
                     var playerHighScores = RelevantHighScores = ConvertScores(c.Result);
-                    UpdateHighScoreAction?.Invoke();
+                    UpdateHighScoreCallback?.Invoke();
                     return playerHighScores;
                 }, CurrentContext);
         }
-
 
         private IReadOnlyList<PlayerHighScore> ConvertScores(IReadOnlyList<HighScoreData> result)
         {
@@ -84,7 +83,7 @@ namespace Highscore
                 .ContinueWith(res =>
                 {
                     Debug.Log("Uploaded Highscore! " + request);
-                    UpdateHighscore();
+                    UpdateHighScore();
                 }, CurrentContext);
         }
     }
