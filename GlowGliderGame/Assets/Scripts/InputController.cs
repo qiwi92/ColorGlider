@@ -17,10 +17,7 @@ namespace Assets.Scripts
                 var mousePosition = GetMousePosition();
                 var targetPos = ConvertMousePosIntoTargetPos(mousePosition,offset, Sensibility, maxWidth);
 
-                if (Mathf.Abs(targetPos.x) < maxWidth)
-                {
-                    trans.position = SmothOverMoveTo(trans.position, targetPos, speed);
-                }
+                trans.position = SmothOverMoveTo(trans.position, targetPos, speed);
             }
         }
 
@@ -30,12 +27,12 @@ namespace Assets.Scripts
 
             if (xOffset > maxWidth)
             {
-                return new Vector3(maxWidth - _borderThreshold, -offset, 0);
+                return new Vector3(maxWidth, -offset, 0);
             }
 
             if (xOffset < -maxWidth)
             {
-                return new Vector3(-maxWidth + _borderThreshold, -offset, 0);
+                return new Vector3(-maxWidth, -offset, 0);
             }
 
             return new Vector3(mousePos.x* sensibility, -offset, 0);
