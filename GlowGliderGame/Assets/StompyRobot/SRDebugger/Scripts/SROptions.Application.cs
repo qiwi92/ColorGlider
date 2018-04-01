@@ -13,4 +13,7 @@ public partial class SROptions
 
     [Category(ApplicationCategory)]
     public string Guid => PlayerPrefsService.Instance.Guid;
+
+    [Category(ApplicationCategory)]
+    public string GraphicsTier => Graphics.activeTier.ToString();
 }
