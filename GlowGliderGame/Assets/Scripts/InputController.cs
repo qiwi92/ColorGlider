@@ -48,7 +48,13 @@ namespace Assets.Scripts
         private Vector3 SmothOverMoveTo(Vector3 from, Vector3 to, float speed)
         {
             var distance = Vector3.Distance(from, to);
-            float step = distance * Time.smoothDeltaTime * speed;
+
+            var actualSpeed =  distance* speed;
+            if (actualSpeed > speed)
+            {
+                actualSpeed = speed;
+            }
+            var step = actualSpeed * Time.smoothDeltaTime ;
 
             return Vector3.MoveTowards(from, to, step); 
         }
