@@ -7,6 +7,11 @@ namespace Highscore
 {
     public class HighScorePanelView : MonoBehaviour
     {
+        private const int NumberOfEntries = 10;
+
+        private static readonly PlayerHighScore EmptyHighScore = 
+            new PlayerHighScore { IsPlayer = false, PlayerName = "-----", Rank = 0, Score = 0 };
+
         [SerializeField] private HighScoreEntryView _highScoreEntryViewPrefab;
         [SerializeField] private Transform _highScoreEntryParent;
         [SerializeField] private NameInputView _nameInputView;
@@ -19,7 +24,7 @@ namespace Highscore
 
         private IHighScoreModel _model;
 
-        private readonly HighScoreEntryView[] _highScoreEntryViews = new HighScoreEntryView[10];
+        private readonly HighScoreEntryView[] _highScoreEntryViews = new HighScoreEntryView[NumberOfEntries];
         private int _currentPlayerHighScore;
 
         public void Initialize(IHighScoreModel model)
@@ -27,11 +32,11 @@ namespace Highscore
             _model = model;
             _model.UpdateHighScoreCallback += UpdateHighScore;
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < NumberOfEntries; i++)
             {
                 var entryView = Instantiate(_highScoreEntryViewPrefab);
                 entryView.transform.SetParent(_highScoreEntryParent, false);
-                entryView.UpdateDescription("....", 0, i, false);
+                entryView.UpdateDescription(EmptyHighScore);
 
                 _highScoreEntryViews[i] = entryView;
             }
@@ -57,21 +62,26 @@ namespace Highscore
             }
         }
 
-        private void SetHighScores(IEnumerable<PlayerHighScore> highScores)
+        private void SetHighScores(IReadOnlyList<PlayerHighScore> highScores)
         {
-            var index = 0;
-
-            foreach (var highScore in highScores)
+            for (var i = 0; i < NumberOfEntries; i++)
             {
-                _highScoreEntryViews[index].UpdateDescription(highScore.PlayerName, highScore.Score, highScore.Rank, highScore.IsPlayer);
-                index++;
+                var entryView = _highScoreEntryViews[i];
+                if (i < highScores.Count)
+                {
+                    entryView.UpdateDescription(highScores[i]);
+                }
+                else
+                {
+                    entryView.Disable();
+                }
             }
         }
 
         public void OpenHighScoreView(bool hasNewHighScore, int highScore)
         {
             _currentPlayerHighScore = highScore;
-            _nameInputView.NewPlayerHighScoreText.text = highScore.ToString("0");
+            _nameInputView.NewPlayerHighScoreText.text = highScore.ToString();
 
             if (hasNewHighScore)
             {

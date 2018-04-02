@@ -12,22 +12,30 @@ namespace Highscore
         [SerializeField] private Image _backgroundImage;
         [SerializeField] private ColorPalette _colorPalette;
 
-        public void UpdateDescription(string playerName, int score,int rank, bool highScoreIsPlayer)
+        public void UpdateDescription(PlayerHighScore highScore)
         {
-            _name.text = playerName;
-            _score.text = score.ToString();
-            _rank.text = rank + ".";
+            _name.text = highScore.PlayerName;
+            _score.text = highScore.Score.ToString();
+            _rank.text = highScore.Rank + ".";
 
             var playerEntryColor = _colorPalette.Colors[1];
             playerEntryColor.a = 0.5f;
 
-            playerEntryColor = highScoreIsPlayer ? playerEntryColor : _colorPalette.AlphaWhite;
-
-
+            playerEntryColor = highScore.IsPlayer 
+                ? playerEntryColor 
+                : _colorPalette.AlphaWhite;
+            
             _backgroundImage.color = playerEntryColor;
             _name.color = _colorPalette.Colors[1];
             _score.color = _colorPalette.Colors[0];
             _rank.color = _colorPalette.Colors[2];
+        }
+
+        public void Disable()
+        {
+            _name.text = string.Empty;
+            _score.text = string.Empty;
+            _rank.text = string.Empty;
         }
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace UI.HighScore
 {
-    public class NameInputView : MonoBehaviour
+    public sealed class NameInputView : MonoBehaviour
     {
         public GameObject SelectorPrefab;
         [SerializeField] private Button _submitButton;
@@ -48,12 +48,17 @@ namespace UI.HighScore
             gameObject.SetActive(true);
         }
 
+        private void Update()
+        {
+            _submitButton.interactable = !string.IsNullOrWhiteSpace(GetEnteredName());
+        }
+
         public void Close()
         {
             gameObject.SetActive(false);
         }
 
-        protected virtual void OnSubmitRequested()
+        private void OnSubmitRequested()
         {
             var enteredName = GetEnteredName();
             PlayerPrefsService.Instance.Alias = enteredName;
