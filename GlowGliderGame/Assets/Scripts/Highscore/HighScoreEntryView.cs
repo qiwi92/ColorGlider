@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Highscore
@@ -8,6 +9,8 @@ namespace Highscore
         [SerializeField] private Text _name;
         [SerializeField] private Text _score;
         [SerializeField] private Text _rank;
+        [SerializeField] private Image _backgroundImage;
+        [SerializeField] private ColorPalette _colorPalette;
 
         public void UpdateDescription(string playerName, int score,int rank, bool highScoreIsPlayer)
         {
@@ -15,12 +18,16 @@ namespace Highscore
             _score.text = score.ToString();
             _rank.text = rank + ".";
 
-            var col = _name.color;
-            col.a = highScoreIsPlayer ? 1 : 0.5f;
+            var playerEntryColor = _colorPalette.Colors[1];
+            playerEntryColor.a = 0.5f;
 
-            _name.color = col;
-            _score.color = col;
-            _rank.color = col;
+            playerEntryColor = highScoreIsPlayer ? playerEntryColor : _colorPalette.AlphaWhite;
+
+
+            _backgroundImage.color = playerEntryColor;
+            _name.color = _colorPalette.Colors[1];
+            _score.color = _colorPalette.Colors[0];
+            _rank.color = _colorPalette.Colors[2];
         }
     }
 }

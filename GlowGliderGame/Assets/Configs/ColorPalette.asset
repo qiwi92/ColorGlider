@@ -19,3 +19,4 @@ MonoBehaviour:
   Diamond: {r: 1, g: 0.74036515, b: 0.058823526, a: 1}
   PowerupBoost: {r: 1, g: 1, b: 1, a: 1}
   PowerupShield: {r: 0.6471601, g: 0.47794116, b: 1, a: 1}
+  AlphaWhite: {r: 1, g: 1, b: 1, a: 0.134}

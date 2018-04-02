@@ -10,5 +10,6 @@ namespace Assets.Scripts
         public Color Diamond;
         public Color PowerupBoost;
         public Color PowerupShield;
+        public Color AlphaWhite;
     }
 }
