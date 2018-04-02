@@ -6,17 +6,12 @@ namespace Assets.Scripts
 {
     public class ScoreView : MonoBehaviour
     {
-
         public Text Text;
         public Image ScoreImage;
         public Image ScoreImageHang;
+        public ScoreCircleView[] IndicatorImages;
 
         private Color lastColor;
-
-
-
-        public ScoreCircleView[] IndicatorImages;
-        
 
         public void SetScore (int score)
         {
@@ -76,10 +71,6 @@ namespace Assets.Scripts
             {
                 IndicatorImages[i].SetColor(color);
             }
-        }
-
-
-
-      
+        }      
     }
 }

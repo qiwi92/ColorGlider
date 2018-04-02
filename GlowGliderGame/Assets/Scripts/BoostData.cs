@@ -24,9 +24,9 @@ namespace Assets.Scripts
             return 3.0f + level * 0.5f;
         }
 
-        public float GetCost(int level)
+        public int GetCost(int level)
         {
-            return 200 * Mathf.Pow(1.1f, level);
+            return Mathf.RoundToInt(200 * Mathf.Pow(1.1f, level));
         }
 
         public string GetName()

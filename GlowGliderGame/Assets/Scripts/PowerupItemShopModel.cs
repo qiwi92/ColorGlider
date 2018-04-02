@@ -44,26 +44,10 @@ namespace Assets.Scripts
         }
 
         public PowerupType Type => _powerupType;
-
-        public bool IsMaxLevel
-        {
-            get { return _level >= MaxLevel; }
-        }
-
-        public bool IsUnlocked
-        {
-            get { return _level > 0; }
-        }
-
-        public double Cost
-        {
-            get { return _powerupData.GetCost(_level); }
-        }
-
-        public int MaxLevel
-        {
-            get { return 10; }
-        }
+        public bool IsMaxLevel => _level >= MaxLevel;
+        public bool IsUnlocked => _level > 0;
+        public double Cost => _powerupData.GetCost(_level);
+        public int MaxLevel => 10;
 
         public bool CanBuy()
         {

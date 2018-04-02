@@ -4,7 +4,7 @@
     {
         float GetSpawnChance(int level, float durationInSec);
         float GetActiveDuration(int level);
-        float GetCost(int level);
+        int GetCost(int level);
         string GetName();
     }
 }
