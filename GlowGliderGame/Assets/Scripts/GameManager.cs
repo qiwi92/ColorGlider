@@ -220,7 +220,13 @@ namespace Assets.Scripts
                 DiamondsView.SetSpeed(Glider.Score, Glider.IsBoosted);
                 PowerupsView.SetSpeed(Glider.Score, Glider.IsBoosted);
                 SetColors();
-                SetCounterDots();
+
+
+                if (!Glider.IsBoosted)
+                {
+                    SetCounterDots();
+                    MainView.PanelColorChange(_color, Glider.Index);
+                }
 
                 Glider.CollisionState = CollisionStates.None;
             }

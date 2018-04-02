@@ -16,6 +16,8 @@ namespace Assets.Scripts
         [SerializeField] private Image _openScoreButtonImage;
         [SerializeField] private Image _openShopButtonImage;
 
+       
+
         private float _initOffSet;
 
         private void Awake()
@@ -33,7 +35,7 @@ namespace Assets.Scripts
             PlayButton.ColoredCircleImage.color = color;
             _toggledOnImage.color = color;
             _openScoreButtonImage.color = color;
-            _openShopButtonImage.color = color;
+            _openShopButtonImage.color = color;        
         }
 
         public void PlayAnimation()

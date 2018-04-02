@@ -9,6 +9,9 @@ namespace Assets.Scripts
 {
     public class MainView : MonoBehaviour
     {
+        [SerializeField] private Image _leftImage;
+        [SerializeField] private Image _rightImage;
+
         public StartScreenView StartScreenView;
         public PowerupShopView ShopView;
         public HighScorePanelView HighScoreView;
@@ -109,6 +112,19 @@ namespace Assets.Scripts
         public void ActivateScoreCanvas()
         {
             ScorePanel.SetActive(true);
+        }
+
+        public void PanelColorChange(Color color, int index)
+        {
+            if (index == 2)
+            {
+                var newColor = color;
+                newColor.a = 0.3f;
+                var newColorTarget = newColor;
+                newColorTarget.a = 0.2f;
+                _leftImage.DOColor(newColor, 0.2f).OnComplete(() => { _leftImage.DOColor(newColorTarget, 0.2f); });
+                _rightImage.DOColor(newColor, 0.2f).OnComplete(() => { _rightImage.DOColor(newColorTarget, 0.2f); });
+            }               
         }
 
         public void SetColors(Color color)
