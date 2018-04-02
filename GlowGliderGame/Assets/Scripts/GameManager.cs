@@ -83,7 +83,7 @@ namespace Assets.Scripts
 
         private bool HighScoreUnlocked()
         {
-            return _highScore > 30;
+            return _highScore > 15;
         }
 
         private bool ShopUnlocked()
