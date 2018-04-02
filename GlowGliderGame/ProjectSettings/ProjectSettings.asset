@@ -248,7 +248,7 @@ PlayerSettings:
   AndroidTVCompatibility: 0
   AndroidIsGame: 1
   AndroidEnableTango: 0
-  androidEnableBanner: 1
+  androidEnableBanner: 0
   androidUseLowAccuracyLocation: 1
   m_AndroidBanners:
   - width: 320

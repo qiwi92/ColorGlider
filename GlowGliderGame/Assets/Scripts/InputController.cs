@@ -49,7 +49,7 @@ namespace Assets.Scripts
         {
             var distance = Vector3.Distance(from, to);
 
-            var actualSpeed =  distance* speed;
+            var actualSpeed =  distance * speed;
             if (actualSpeed > speed)
             {
                 actualSpeed = speed;
