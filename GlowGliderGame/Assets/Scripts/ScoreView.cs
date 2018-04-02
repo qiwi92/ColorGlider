@@ -25,9 +25,18 @@ namespace Assets.Scripts
 
         public void SetCounterDots(int index, Color color)
         {
-            if (index < 2)
+            if (index == 0)
             {
-                IndicatorImages[index].FillImage.DOColor(color, 0.2f);
+                IndicatorImages[0].FillImage.DOColor(color, 0.2f);
+                IndicatorImages[1].FillImage.DOFade(0, 0.2f);
+                IndicatorImages[2].FillImage.DOFade(0, 0.2f);
+                lastColor = color;
+            }
+            else if(index == 1)
+            {
+                IndicatorImages[0].FillImage.DOColor(color, 0.2f);
+                IndicatorImages[1].FillImage.DOColor(color, 0.2f);
+                IndicatorImages[2].FillImage.DOFade(0, 0.2f);
                 lastColor = color;
             }
             else if (index == 2)
@@ -40,19 +49,11 @@ namespace Assets.Scripts
                     }
                 });
             }
-        }
-
-        public void SetCounterDotsColor( Color color)
-        {
-            for (int i = 0; i < 3; i++)
+            else
             {
-                if (IndicatorImages[i].FillImage.color.a > 0.9f)
-                {
-                    IndicatorImages[i].FillImage.DOColor(color, 0.2f);
-                }
+                Debug.LogError("Incorrect index");
             }
         }
-
 
         public void EmptyDots()
         {
