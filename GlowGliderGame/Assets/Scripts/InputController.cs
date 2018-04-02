@@ -9,6 +9,8 @@ namespace Assets.Scripts
         [Range(1, 2)] public float Sensibility;
         private readonly float _borderThreshold = 0.01f;
 
+        private float _timer;
+
 
         public void Move(Transform trans,float offset,float maxWidth,float speed)
         {
@@ -17,7 +19,13 @@ namespace Assets.Scripts
                 var mousePosition = GetMousePosition();
                 var targetPos = ConvertMousePosIntoTargetPos(mousePosition,offset, Sensibility, maxWidth);
 
+ 
                 trans.position = SmothOverMoveTo(trans.position, targetPos, speed);
+
+            }
+            else
+            {
+                _timer = 0;
             }
         }
 
@@ -47,9 +55,10 @@ namespace Assets.Scripts
 
         private Vector3 SmothOverMoveTo(Vector3 from, Vector3 to, float speed)
         {
-            var distance = Vector3.Distance(from, to);
+            var distance =Mathf.Sqrt(Vector3.Distance(from, to));
 
             var actualSpeed =  distance * speed;
+            
             if (actualSpeed > speed)
             {
                 actualSpeed = speed;
