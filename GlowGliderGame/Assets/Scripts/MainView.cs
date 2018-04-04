@@ -12,12 +12,11 @@ namespace Assets.Scripts
         [SerializeField] private Image _leftImage;
         [SerializeField] private Image _rightImage;
 
-        public StartScreenView StartScreenView;
-        public PowerupShopView ShopView;
-        public HighScorePanelView HighScoreView;
+        [SerializeField]
+        private StartScreenView _startScreenView;
 
-        public GameObject ShopPanel;
-        public GameObject ScorePanel;
+        private PowerupShopView _shopView;
+        private HighScorePanelView _highScoreView;
 
         private Button _openShopButton;
         private Button _closeShopButton;
@@ -29,10 +28,17 @@ namespace Assets.Scripts
         private bool _scoreIsOpen;
 
         private float _screenWidth;
-        
 
-        public void Setup( int highscore)
+        public StartScreenView StartScreenView => _startScreenView; //todo these should not be directly accesible here
+        public PowerupShopView PowerupShopView => _shopView;
+        public HighScorePanelView HighScoreView => _highScoreView;
+
+
+        public void Setup(HighScorePanelView highScorePanelView, PowerupShopView shopView)
         {
+            _highScoreView = highScorePanelView;
+            _shopView = shopView;
+
             _shopIsOpen = false;
             _scoreIsOpen = false;
 
@@ -41,22 +47,18 @@ namespace Assets.Scripts
             MoveShopPanel();
             MoveScorePanel();
 
-            StartScreenView.SetHighScore(highscore);
-            HighScoreView.Initialize(new HighScoreModel());
+            _highScoreView.Initialize(new HighScoreModel());
 
-           
+            _shopView.Setup();
 
-            ShopView.Setup();
-
-
-            _openShopButton = StartScreenView.OpenShoptButton;
+            _openShopButton = _startScreenView.OpenShoptButton;
             _openShopButton.onClick.AddListener(MoveShopPanel);
-            _closeShopButton = ShopView.CloseShoptButton;
+            _closeShopButton = _shopView.CloseShoptButton;
             _closeShopButton.onClick.AddListener(MoveShopPanel);
 
-            _openScoreButton = StartScreenView.OpenScoreButton;
+            _openScoreButton = _startScreenView.OpenScoreButton;
             _openScoreButton.onClick.AddListener(MoveScorePanel);
-            _closeScoreButton = HighScoreView.PlayButton;
+            _closeScoreButton = _highScoreView.PlayButton;
             _closeScoreButton.onClick.AddListener(MoveScorePanel);
         }
 
@@ -64,12 +66,12 @@ namespace Assets.Scripts
         {
             if (_scoreIsOpen)
             {
-                HighScoreView.PanelTransform.DOMove(Vector3.zero, 0.4f);
+                _highScoreView.PanelTransform.DOMove(Vector3.zero, 0.4f);
                 _scoreIsOpen = false;
             }
             else
             {
-                HighScoreView.PanelTransform.DOMove(Vector3.left * _screenWidth, 0.4f);
+                _highScoreView.PanelTransform.DOMove(Vector3.left * _screenWidth, 0.4f);
                 _scoreIsOpen = true;
             }
         }
@@ -84,34 +86,34 @@ namespace Assets.Scripts
         {
             if (_shopIsOpen)
             {
-                ShopView.PowerUpShopCanvasTransform.DOMove(Vector3.zero,0.4f);
+                _shopView.PowerUpShopCanvasTransform.DOMove(Vector3.zero,0.4f);
                 _shopIsOpen = false;
             }
             else
             {
-                ShopView.PowerUpShopCanvasTransform.DOMove(Vector3.right * _screenWidth, 0.4f);
+                _shopView.PowerUpShopCanvasTransform.DOMove(Vector3.right * _screenWidth, 0.4f);
                 _shopIsOpen = true;
             }
         }
 
         public void DeactivateShopCanvas()
         {
-            ShopPanel.SetActive(false);
+            _shopView.Panel.SetActive(false);
         }
 
         public void ActivateShopCanvas()
         {
-            ShopPanel.SetActive(true);
+            _shopView.Panel.SetActive(true);
         }
 
         public void DeactivateScoreCanvas()
         {
-            ScorePanel.SetActive(false);
+            _highScoreView.Panel.SetActive(false);
         }
 
         public void ActivateScoreCanvas()
         {
-            ScorePanel.SetActive(true);
+            _highScoreView.Panel.SetActive(true);
         }
 
         public void PanelColorChange(Color color, int index)
@@ -129,9 +131,9 @@ namespace Assets.Scripts
 
         public void SetColors(Color color)
         {
-            StartScreenView.SetColors(color);
-            ShopView.SetColors(color);
-            HighScoreView.SetColors(color);
+            _startScreenView.SetColors(color);
+            _shopView.SetColors(color);
+            _highScoreView.SetColors(color);
         }
 
         public void SetHighScoreButtonState(bool isUnlocked)

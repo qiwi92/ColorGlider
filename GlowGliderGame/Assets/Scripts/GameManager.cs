@@ -13,7 +13,8 @@ namespace Assets.Scripts
 {
     public class GameManager : MonoBehaviour
     {
-        public MainView MainView;
+        private MainView _mainView;
+
         public InputController InputController;
         public ColorPalette ColorPalette;
         public CirclesView CirclesView;
@@ -39,15 +40,19 @@ namespace Assets.Scripts
         private readonly GuidProvider _guidProvider = new GuidProvider();
         private float _gameDuration;
 
-        void Awake ()
+        public void InitializeGame(MainView mainView)
         {
-            if(Debug.isDebugBuild)
+            _mainView = mainView;
+
+            if (Debug.isDebugBuild)
                SRDebug.Init();
 
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
             ServicePointManager.ServerCertificateValidationCallback = ServerUtils.MyRemoteCertificateValidationCallback;
 
             LoadValues();
+
+            mainView.StartScreenView.SetHighScore(_highScore);
 
             _boostState = BoostState.None;
             _state = GameState.Init;
@@ -56,7 +61,6 @@ namespace Assets.Scripts
             Glider.Sounds = Sounds;
 
             _screenWidth = Camera.main.orthographicSize * Camera.main.aspect;
-            MainView.Setup(_highScore);
 
             Glider.CirclesView = CirclesView;
             Glider.DiamondsView = DiamondsView;
@@ -74,8 +78,8 @@ namespace Assets.Scripts
 
             _color = ColorPalette.Colors[Glider.Id];
 
-            MainView.SetHighScoreButtonState(HighScoreUnlocked());
-            MainView.SetShopButtonState(ShopUnlocked());
+            _mainView.SetHighScoreButtonState(HighScoreUnlocked());
+            _mainView.SetShopButtonState(ShopUnlocked());
 
             Setup();
         }
@@ -100,7 +104,7 @@ namespace Assets.Scripts
         {
             Glider.IsAlive = false;
             Glider.ResetPosition();
-            MainView.SetColors(_color);
+            _mainView.SetColors(_color);
             SetColors();
 
             Sounds.Setup();
@@ -110,15 +114,15 @@ namespace Assets.Scripts
 
             if (PlayerPrefs.GetInt("SoundIsOn") == 1 || !PlayerPrefs.HasKey("SoundIsOn"))
             {
-                MainView.StartScreenView.ToggleSound.isOn = true;
+                _mainView.StartScreenView.ToggleSound.isOn = true;
             }
             else if(PlayerPrefs.GetInt("SoundIsOn") == 0)
             {
-                MainView.StartScreenView.ToggleSound.isOn = false;
+                _mainView.StartScreenView.ToggleSound.isOn = false;
                 Sounds.Mute();
             }
 
-            var toggle = MainView.StartScreenView.ToggleSound;
+            var toggle = _mainView.StartScreenView.ToggleSound;
             toggle.onValueChanged.AddListener(delegate
             {
                 if (toggle.isOn)
@@ -172,7 +176,7 @@ namespace Assets.Scripts
             if(Input.GetKeyDown(KeyCode.Escape))
                 Application.Quit();
 
-            if (MainView.StartScreenView.PlayButton.GetState())
+            if (_mainView.StartScreenView.PlayButton.GetState())
             {
                 _state = GameState.Starting;
             }
@@ -181,9 +185,9 @@ namespace Assets.Scripts
         private void HandleStartingState()
         {
             _gameDuration = 0;
-            MainView.StartScreenView.PlayAnimation();
-            MainView.DeactivateShopCanvas();
-            MainView.DeactivateScoreCanvas();
+            _mainView.StartScreenView.PlayAnimation();
+            _mainView.DeactivateShopCanvas();
+            _mainView.DeactivateScoreCanvas();
 
             Glider.Score = SROptions.StartScoreOption;        
             SetSpeeds(false);
@@ -225,7 +229,7 @@ namespace Assets.Scripts
                 if (!Glider.IsBoosted)
                 {
                     SetCounterDots();
-                    MainView.PanelColorChange(_color, Glider.Index);
+                    _mainView.PanelColorChange(_color, Glider.Index);
                 }
 
                 Glider.CollisionState = CollisionStates.None;
@@ -269,8 +273,8 @@ namespace Assets.Scripts
         private void HandleDyingState()
         {
             _analyticsApi.TrackSession((ushort) _gameDuration, _guidProvider.GetGuid().ToString(),(ushort)Glider.Score);
-            MainView.ActivateShopCanvas();
-            MainView.ActivateScoreCanvas();
+            _mainView.ActivateShopCanvas();
+            _mainView.ActivateScoreCanvas();
             Glider.ResetPositionSmooth();
             
             PanelImage.DOFade(0.8f, 0.2f);
@@ -283,17 +287,17 @@ namespace Assets.Scripts
             {
                 _highScore = Glider.Score;
                 SaveValues();
-                MainView.TryOpenScore(HighScoreUnlocked());
-                MainView.HighScoreView.OpenHighScoreView(true,_highScore);
+                _mainView.TryOpenScore(HighScoreUnlocked());
+                _mainView.HighScoreView.OpenHighScoreView(true,_highScore);
             }
 
-            MainView.StartScreenView.PlayButton.SetStateToNotPlaying();
-            MainView.StartScreenView.PlayAnimation();
-            MainView.StartScreenView.SetHighScore(_highScore);
-            MainView.SetColors(_color);
+            _mainView.StartScreenView.PlayButton.SetStateToNotPlaying();
+            _mainView.StartScreenView.PlayAnimation();
+            _mainView.StartScreenView.SetHighScore(_highScore);
+            _mainView.SetColors(_color);
 
-            MainView.SetHighScoreButtonState(HighScoreUnlocked());
-            MainView.SetShopButtonState(ShopUnlocked());
+            _mainView.SetHighScoreButtonState(HighScoreUnlocked());
+            _mainView.SetShopButtonState(ShopUnlocked());
 
 
             _state = GameState.Dead;
@@ -304,7 +308,7 @@ namespace Assets.Scripts
             if (Input.GetKeyDown(KeyCode.Escape))
                 Application.Quit();
 
-            if (MainView.StartScreenView.PlayButton.GetState())
+            if (_mainView.StartScreenView.PlayButton.GetState())
             {
                 Sounds.PlayDeathTheme(false);
                 _state = GameState.Starting;

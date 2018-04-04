@@ -18,7 +18,11 @@ namespace Highscore
         [SerializeField] private Image _backButtonImage;
         [SerializeField] private Button _refreshButton;
         [SerializeField] private Image _refreshButtonImage;
-         
+
+
+        [SerializeField] public GameObject Panel;
+        [SerializeField] private Canvas _canvas;
+
         public Transform PanelTransform;
         public Button PlayButton;
 
@@ -26,6 +30,11 @@ namespace Highscore
 
         private readonly HighScoreEntryView[] _highScoreEntryViews = new HighScoreEntryView[NumberOfEntries];
         private int _currentPlayerHighScore;
+
+        public void SetupCamera(Camera cam)
+        {
+            _canvas.worldCamera = cam;
+        }
 
         public void Initialize(IHighScoreModel model)
         {

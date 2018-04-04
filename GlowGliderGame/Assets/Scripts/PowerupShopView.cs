@@ -17,9 +17,16 @@ namespace Assets.Scripts
         [SerializeField] private Sprite _shieldIcon;
         [SerializeField] private Sprite _boostIcon;
 
+        [SerializeField] public GameObject Panel;
 
+        [SerializeField] private Canvas _canvas;
 
-        public void CreatePowerupItemShopView(PowerupItemShopModel model, Sprite icon, Color color)
+        public void SetupCamera(Camera cam)
+        {
+            _canvas.worldCamera = cam;
+        }
+
+        private void CreatePowerupItemShopView(PowerupItemShopModel model, Sprite icon, Color color)
         {
             var itemShopView = Instantiate(_powerupItemShopViewPrefab);
             itemShopView.transform.SetParent(_powerupItemShopViewParent,false);
