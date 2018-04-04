@@ -17,7 +17,7 @@ namespace Assets.Scripts
             _powerupType = type;
             _powerupData = powerupData;
             Name = powerupData.GetName();
-            _level = PlayerPrefs.GetInt(type.ToString());
+            _level = SavegameService.Instance.GetPowerupLevel(_powerupType);
         }
 
         public int Level
@@ -26,7 +26,7 @@ namespace Assets.Scripts
             private set
             {
                 _level = value;
-                PlayerPrefs.SetInt(_powerupType.ToString(),value);
+                SavegameService.Instance.SavePowerupLevel(_powerupType, value);
             }
         }
 

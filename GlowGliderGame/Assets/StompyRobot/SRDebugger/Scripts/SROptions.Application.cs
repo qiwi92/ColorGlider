@@ -8,11 +8,11 @@ public partial class SROptions
     [Category(ApplicationCategory)]
     public void ClearSavegame()
     {
-        PlayerPrefs.DeleteAll();
+        SavegameService.Instance.ClearSavegame();
     }
 
     [Category(ApplicationCategory)]
-    public string Guid => PlayerPrefsService.Instance.Guid;
+    public string Guid => SavegameService.Instance.Guid;
 
     [Category(ApplicationCategory)]
     public string GraphicsTier => Graphics.activeTier.ToString();

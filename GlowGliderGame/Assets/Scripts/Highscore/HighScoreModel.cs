@@ -26,7 +26,7 @@ namespace Highscore
         public void UpdateHighScore()
         {
             var playerId = PlayerId;
-            var hasAlias = !string.IsNullOrEmpty(PlayerPrefsService.Instance.Alias);
+            var hasAlias = !string.IsNullOrEmpty(SavegameService.Instance.Alias);
             Task.Run(async () => await ReadData(playerId, hasAlias))
                 .ContinueWith(c =>
                 {

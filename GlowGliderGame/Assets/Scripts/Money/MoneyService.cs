@@ -17,7 +17,7 @@ namespace Assets.Scripts.Money
             set
             {
                 _money = value;
-                PlayerPrefs.SetInt("Money",value);
+                SavegameService.Instance.Money = value;
                 NotifyObservers(value);
             }
         }
@@ -48,7 +48,7 @@ namespace Assets.Scripts.Money
 
         private void SetMoneyFromSaveGame()
         {
-            Money = PlayerPrefs.GetInt("Money");
+            Money = SavegameService.Instance.Money;
         }
 
         public void AddObserver(IObserver observer)

@@ -7,7 +7,7 @@ namespace Highscore
     {
         public Guid GetGuid()
         {
-            var guidString = PlayerPrefsService.Instance.Guid;
+            var guidString = SavegameService.Instance.Guid;
 
             if (!string.IsNullOrEmpty(guidString))
                 return new Guid(guidString);
@@ -15,7 +15,7 @@ namespace Highscore
             var guid = GenerateGuid();
 
             Debug.Log("Guid Generated: " + guid);
-            PlayerPrefsService.Instance.Guid = guid.ToString();
+            SavegameService.Instance.Guid = guid.ToString();
 
             return guid;
         }

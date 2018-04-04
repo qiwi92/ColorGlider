@@ -92,11 +92,11 @@ namespace Assets.Scripts
 
         private bool ShopUnlocked()
         {
-            if (PlayerPrefsService.Instance.HasUnlockedShop)
+            if (SavegameService.Instance.HasUnlockedShop)
                 return true;
 
             var shouldUnlock = MoneyService.Instance.CurrentMoney >= 20;
-            PlayerPrefsService.Instance.HasUnlockedShop = shouldUnlock;
+            SavegameService.Instance.HasUnlockedShop = shouldUnlock;
             return shouldUnlock;
         }
 
@@ -112,11 +112,11 @@ namespace Assets.Scripts
 
             Graphics.activeTier = (GraphicsTier) 1;
 
-            if (PlayerPrefs.GetInt("SoundIsOn") == 1 || !PlayerPrefs.HasKey("SoundIsOn"))
+            if (SavegameService.Instance.SoundIsOn)
             {
                 _mainView.StartScreenView.ToggleSound.isOn = true;
             }
-            else if(PlayerPrefs.GetInt("SoundIsOn") == 0)
+            else
             {
                 _mainView.StartScreenView.ToggleSound.isOn = false;
                 Sounds.Mute();
@@ -128,12 +128,12 @@ namespace Assets.Scripts
                 if (toggle.isOn)
                 {
                     Sounds.Unmute();
-                    PlayerPrefs.SetInt("SoundIsOn",1);
+                    SavegameService.Instance.SoundIsOn = true;
                 }
                 else
                 {
                     Sounds.Mute();
-                    PlayerPrefs.SetInt("SoundIsOn", 0);
+                    SavegameService.Instance.SoundIsOn = false;
                 }
             });
         }
@@ -328,12 +328,12 @@ namespace Assets.Scripts
 
         private void LoadValues()
         {
-            _highScore = PlayerPrefs.GetInt("HighScore");
+            _highScore = SavegameService.Instance.HighScore;
         }
 
         private void SaveValues()
         {
-            PlayerPrefs.SetInt("HighScore",_highScore);
+            SavegameService.Instance.HighScore = _highScore;
         }
 
         private enum BoostState
